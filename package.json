@@ -1,0 +1,21 @@
+{
+  "name": "react-live-reload",
+  "version": "0.0.1",
+  "description": "React live reload  configuration using bable 6.0 and grunt",
+  "main": "grunt.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SC7639/react-live-reload-grunt.git"
+  },
+  "keywords": [
+    "grunt",
+    "react",
+    "babel",
+    "es6"
+  ],
+  "author": "Scott Crossan",
+  "license": "ISC"
+}
