@@ -30,6 +30,11 @@ module.exports = function (grunt) {
 				options: browserifyOptions(4477),
 				src: 'js/app.js',
 				dest: 'js/bundle.js'
+			},
+			hedgehogRegistry: {
+				options: browserifyOptions(4477),
+				src: 'components/register-hedgehog.js',
+				dest: 'js/register-hedgehog.bundle.js'
 			}
 		},
 
@@ -41,7 +46,8 @@ module.exports = function (grunt) {
     });
 
 	// Default task
-	grunt.registerTask('default', ['env:build', 'browserify']);
+	grunt.registerTask('default', ['env:build', 'browserify:app']);
+	grunt.registerTask('hedgehog-registry', ['env:build', 'browserify:hedgehogRegistry']);
 
 	// Load up tasks
 	grunt.loadNpmTasks('grunt-browserify');

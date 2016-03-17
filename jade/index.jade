@@ -1,0 +1,30 @@
+doctype html
+html(lang='en')
+    head
+        title Hedgehog Registry - #{title}
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+        meta(name='description', content='hedgehog registry')
+        meta(name='keywords', content='african pygmy hedghog club uk registry')
+        meta(name='author', content='Scott Crossan')
+
+        //- ----- link website ----- //
+        //- link(rel='icon' href='src/img/favicon.png' type='image/x-icon')
+
+        script(type='text/javascript', src='/jquery.min.js')
+        script(type='text/javascript', src='/uikit.min.js')
+        
+            
+        //- ----- CSS Files ----- //
+        link(rel='stylesheet', href='/style.css')
+        //- link(rel='stylesheet', href='/uikit.almost-flat.css')
+    
+    body
+        div.banner        
+            
+        include nav
+        
+        div.main#app!= html
+        
+        
+            

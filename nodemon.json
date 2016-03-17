@@ -1,0 +1,10 @@
+{
+    "harmony_default_parameters": true,
+    "harmony_destructuring": true,
+    "ignore": [
+        "components/register-hedgehog.js",
+        "*.bundle.js",
+        "components/input.js",
+        "components/uikit-form.js"
+    ]
+}

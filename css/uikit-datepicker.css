@@ -1,0 +1,341 @@
+/* Keyframes: Fade
+ * Used by dropdown, datepicker and slideshow component
+ ========================================================================== */
+@-webkit-keyframes uk-fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes uk-fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/*! UIkit 2.24.3 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/* ========================================================================
+   Component: Datepicker
+ ========================================================================== */
+/*
+ * 1. Highest z-index
+ * 2. Reset dropdown width
+ * 3. Set animation
+ * 4. Needed for scale animation
+ */
+.uk-datepicker {
+  /* 1 */
+  z-index: 1050;
+  /* 2 */
+  width: auto;
+  /* 3 */
+  -webkit-animation: uk-fade 0.2s ease-in-out;
+  animation: uk-fade 0.2s ease-in-out;
+  /* 4 */
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  font: normal 14px / 20px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+/* Sub-object: `uk-datepicker-nav`
+========================================================================== */
+.uk-datepicker-nav {
+  margin-bottom: 15px;
+  text-align: center;
+  line-height: 20px;
+}
+/*
+ * Micro clearfix
+ */
+.uk-datepicker-nav:before,
+.uk-datepicker-nav:after {
+  content: "";
+  display: table;
+}
+.uk-datepicker-nav:after {
+  clear: both;
+}
+/*
+ * Previous and next navigation
+ */
+.uk-datepicker-nav a {
+  color: #444;
+  text-decoration: none;
+}
+.uk-datepicker-nav a:hover {
+  color: #444;
+}
+.uk-datepicker-previous {
+  float: left;
+}
+.uk-datepicker-next {
+  float: right;
+}
+.uk-datepicker-previous:after,
+.uk-datepicker-next:after {
+  width: 20px;
+  font-family: FontAwesome;
+}
+.uk-datepicker-previous:after {
+  content: "\f053";
+}
+.uk-datepicker-next:after {
+  content: "\f054";
+}
+/* Sub-object: `uk-datepicker-heading`
+========================================================================== */
+/* Sub-object: `uk-datepicker-table`
+========================================================================== */
+/* Block element behavior */
+.uk-datepicker-table {
+  width: 100%;
+}
+.uk-datepicker-table th,
+.uk-datepicker-table td {
+  padding: 2px;
+}
+.uk-datepicker-table th {
+  font-size: 12px;
+}
+/*
+ * Item
+ */
+.uk-datepicker-table a {
+  display: block;
+  width: 26px;
+  line-height: 24px;
+  text-align: center;
+  color: #444;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+/*
+ * Sub-object: `uk-datepicker-table-muted`
+ */
+a.uk-datepicker-table-muted {
+  color: #999 !important;
+}
+/*
+ * Hover
+ * 1. Apply hover style also to focus state
+ * 2. Remove default focus style
+ */
+.uk-datepicker-table a:hover,
+.uk-datepicker-table a:focus {
+  background-color: #fafafa;
+  color: #444;
+  /* 2 */
+  outline: none;
+  border-color: rgba(0, 0, 0, 0.16);
+  text-shadow: 0 1px 0 #fff;
+}
+/* OnClick */
+.uk-datepicker-table a:active {
+  background-color: #eee;
+  color: #444;
+}
+/*
+ * Active
+ */
+.uk-datepicker-table a.uk-active {
+  background: #00a8e6;
+  color: #fff;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+/* ========================================================================
+   Component: Dropdown
+ ========================================================================== */
+/*
+ * 1. Hide by default
+ * 2. Set position
+ * 3. Box-sizing is needed for `uk-dropdown-justify`
+ * 4. Set width
+ */
+.uk-dropdown,
+.uk-dropdown-blank {
+  /* 1 */
+  display: none;
+  /* 2 */
+  position: absolute;
+  z-index: 1020;
+  /* 3 */
+  box-sizing: border-box;
+  /* 4 */
+  width: 200px;
+}
+/*
+ * Dropdown style
+ * 1. Reset button group whitespace hack
+ */
+.uk-dropdown {
+  padding: 15px;
+  background: #fff;
+  color: #444;
+  /* 1 */
+  font-size: 1rem;
+  vertical-align: top;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+/*
+ * 1. Show dropdown
+ * 2. Set animation
+ * 3. Needed for scale animation
+ */
+.uk-open > .uk-dropdown,
+.uk-open > .uk-dropdown-blank {
+  /* 1 */
+  display: block;
+  /* 2 */
+  -webkit-animation: uk-fade 0.2s ease-in-out;
+  animation: uk-fade 0.2s ease-in-out;
+  /* 3 */
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+}
+/* Alignment modifiers
+ ========================================================================== */
+/*
+ * Modifier
+ */
+.uk-dropdown-top {
+  margin-top: -5px;
+}
+.uk-dropdown-bottom {
+  margin-top: 5px;
+}
+.uk-dropdown-left {
+  margin-left: -5px;
+}
+.uk-dropdown-right {
+  margin-left: 5px;
+}
+/* Nav in dropdown
+ ========================================================================== */
+.uk-dropdown .uk-nav {
+  margin: 0 -15px;
+}
+/* Grid and panel in dropdown
+ ========================================================================== */
+/*
+* Vertical gutter
+*/
+/*
+ * Grid
+ * Higher specificity to override large gutter
+ */
+.uk-grid .uk-dropdown-grid + .uk-dropdown-grid {
+  margin-top: 15px;
+}
+/* Panels */
+.uk-dropdown-grid > [class*='uk-width-'] > .uk-panel + .uk-panel {
+  margin-top: 15px;
+}
+/* Tablet and bigger */
+@media (min-width: 768px) {
+  /*
+     * Horizontal gutter
+     */
+  .uk-dropdown:not(.uk-dropdown-stack) > .uk-dropdown-grid {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+  .uk-dropdown:not(.uk-dropdown-stack) > .uk-dropdown-grid > [class*='uk-width-'] {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  /*
+     * Column divider
+     */
+  .uk-dropdown:not(.uk-dropdown-stack) > .uk-dropdown-grid > [class*='uk-width-']:nth-child(n+2) {
+    border-left: 1px solid #ddd;
+  }
+  /*
+     * Width multiplier for dropdown columns
+     */
+  .uk-dropdown-width-2:not(.uk-dropdown-stack) {
+    width: 400px;
+  }
+  .uk-dropdown-width-3:not(.uk-dropdown-stack) {
+    width: 600px;
+  }
+  .uk-dropdown-width-4:not(.uk-dropdown-stack) {
+    width: 800px;
+  }
+  .uk-dropdown-width-5:not(.uk-dropdown-stack) {
+    width: 1000px;
+  }
+}
+/* Phone landscape and smaller */
+@media (max-width: 767px) {
+  /*
+     * Stack columns and take full width
+     */
+  .uk-dropdown-grid > [class*='uk-width-'] {
+    width: 100%;
+  }
+  /*
+     * Vertical gutter
+     */
+  .uk-dropdown-grid > [class*='uk-width-']:nth-child(n+2) {
+    margin-top: 15px;
+  }
+}
+/*
+* Stack grid columns
+*/
+.uk-dropdown-stack > .uk-dropdown-grid > [class*='uk-width-'] {
+  width: 100%;
+}
+.uk-dropdown-stack > .uk-dropdown-grid > [class*='uk-width-']:nth-child(n+2) {
+  margin-top: 15px;
+}
+/* Modifier `uk-dropdown-small`
+ ========================================================================== */
+/*
+ * Set min-width and text expands dropdown if needed
+ */
+.uk-dropdown-small {
+  min-width: 150px;
+  width: auto;
+  padding: 5px;
+  white-space: nowrap;
+}
+/*
+ * Nav in dropdown
+ */
+.uk-dropdown-small .uk-nav {
+  margin: 0 -5px;
+}
+/* Modifier: `uk-dropdown-navbar`
+ ========================================================================== */
+.uk-dropdown-navbar {
+  margin-top: 6px;
+  background: #fff;
+  color: #444;
+  left: -1px;
+}
+.uk-open > .uk-dropdown-navbar {
+  -webkit-animation: uk-slide-top-fixed 0.2s ease-in-out;
+  animation: uk-slide-top-fixed 0.2s ease-in-out;
+}
+/* Modifier `uk-dropdown-scrollable`
+ ========================================================================== */
+/*
+ * Usefull for long lists
+ */
+.uk-dropdown-scrollable {
+  overflow-y: auto;
+  max-height: 200px;
+}
+/* Sub-object: `uk-dropdown-overlay`
+ ========================================================================== */
+.uk-dropdown-navbar.uk-dropdown-flip {
+  left: auto;
+}
