@@ -41,6 +41,9 @@ module.exports = function (grunt) {
 		env: {
 			build: {
 				NODE_ENV: 'development'
+			},
+			production: {
+				NODE_ENV: 'production'
 			}
 		}
     });

@@ -24,8 +24,18 @@ export default class Input extends React.Component {
         let {name, parentUpdateState} = this.props;
         let {input: ref} = this.refs;
 
+
         if(prevState.valid !== this.state.valid && parentUpdateState) {
             parentUpdateState(name, this.state, ref);
+        }
+    }
+
+    componentWillReceiveProps(newProps) {
+        let {value} = newProps;
+        if(value != this.state.value) {
+            this.setState({
+                value
+            });
         }
     }
 
