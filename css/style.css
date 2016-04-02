@@ -139,3 +139,30 @@ div.uk-datepicker {
 div.validate {
 	color: #f00;
 }
+
+div#modal-title {
+	color: #000;
+	background-color: #a6c8d2;
+	font-size: 22pt;
+	width: 107.5%;
+	height: auto;
+	position: relative;
+	left: -20px;
+    top: -20px;
+	margin-bottom: -35px;
+	-webkit-border-radius: 5px 5px 0px 0px; /*creates rounded edges*/
+	-moz-border-radius: 5px;
+	border-radious: 5px;
+	text-align: center;
+}
+
+span#modal-close {
+	float: right;
+	margin-right: 5px;
+	margin-top: -2px;
+	cursor: pointer;
+}
+
+span#modal-close:hover {
+	opacity: 0.6;
+}

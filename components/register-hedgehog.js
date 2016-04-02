@@ -3,10 +3,10 @@
 import React from 'react';
 import Form from './uikit-form';
 import DOB from './dob-input';
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
 import moment from 'moment';
 import InputGroup from './input-group';
-import Input from './input'
+import Input from './input';
 import PaymentModal from './payment-modal';
 import async from 'async';
 
@@ -92,14 +92,25 @@ class RegisterHedgehog extends React.Component {
      * @param {DomNode} ref
      */
     inputState(name, state, ref) {
+        /* jshint ignore: start */
         let inputs = this.state.inputs;
         inputs[name] = {
             ...state,
             ref
-        };
+        }
 
         this.setState({
             inputs
+        });
+        /* jshint ignore: end */
+    }
+
+    modalClose() {
+        this.setState({
+            paymentModal: {
+                display: false,
+                data: {}
+            }
         });
     }
 
@@ -110,6 +121,7 @@ class RegisterHedgehog extends React.Component {
         } = this.state.paymentModal;
 
         return (
+            /* jshint ignore: start */
             <div style={{
                 display: 'flex',
                 flexDirection: 'column'
@@ -118,6 +130,7 @@ class RegisterHedgehog extends React.Component {
                 <PaymentModal
                     display={displayPayment}
                     data={paymentData}
+                    onClose={this.modalClose.bind(this)}
                 />
 
                 <h2>
@@ -140,12 +153,14 @@ class RegisterHedgehog extends React.Component {
                         name="breeder_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
+                        value="test"
                     />
 
                     <Input
                         type="text"
                         name="breeder_affix"
                         parentUpdateState={this.inputState.bind(this)}
+                        value="test affix"
                     />
 
                     <Input
@@ -153,6 +168,7 @@ class RegisterHedgehog extends React.Component {
                         name="hedgehog_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
+                        value="test name"
                     />
 
                     <select name="hedgehog_gender">
@@ -178,6 +194,7 @@ class RegisterHedgehog extends React.Component {
                         name="hedgehog_colour"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
+                        value="test colour"
                     />
 
                     <Input
@@ -191,6 +208,7 @@ class RegisterHedgehog extends React.Component {
                         name="sire_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
+                        value="test sire"
                     />
 
                     <Input
@@ -204,6 +222,7 @@ class RegisterHedgehog extends React.Component {
                         name="dam_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
+                        value="test dam"
                     />
 
                     <Input
@@ -217,6 +236,7 @@ class RegisterHedgehog extends React.Component {
                         name="previous_owners_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
+                        value="test owner"
                     />
 
                 <Input
@@ -224,6 +244,7 @@ class RegisterHedgehog extends React.Component {
                     name="your_name"
                     required={true}
                     parentUpdateState={this.inputState.bind(this)}
+                    value="Scott Crossan"
                 />
 
                     <textarea
@@ -236,12 +257,14 @@ class RegisterHedgehog extends React.Component {
                         type="email"
                         name="previous_owners_email"
                         parentUpdateState={this.inputState.bind(this)}
+                        value="test@te.st"
                     />
 
                     <Input
                         type="email"
                         name="breeders_email"
                         parentUpdateState={this.inputState.bind(this)}
+                        value="test@st.et"
                     />
 
                     <Input
@@ -249,6 +272,7 @@ class RegisterHedgehog extends React.Component {
                         name="your_email"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
+                        value="scrott@gmail.com"
                     />
 
                     <button className="uk-button uk-button-primary uk-button-large">
@@ -256,16 +280,19 @@ class RegisterHedgehog extends React.Component {
                     </button>
                 </Form>
             </div>
+            /* jshint ignore: end */
         );
     }
 }
 
 
 if(typeof window !== 'undefined' && window.document)  { // If module is on the client side
+/* jshint ignore: start */
     ReactDOM.render(
         <RegisterHedgehog />,
         document.getElementById('app')
     );
+    /* jshint ignore: end */
 }
 else {
     module.exports = RegisterHedgehog;

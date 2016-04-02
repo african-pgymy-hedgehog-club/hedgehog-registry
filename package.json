@@ -4,6 +4,8 @@
   "description": "Register hedgehogs and hedgehog litters",
   "main": "grunt.js",
   "scripts": {
+    "test-index": "mocha -w tests/index.js",
+    "test-register": "mocha -w tests/register.js",
     "test-api": "mocha -w tests/api.js",
     "start": "node --harmony index",
     "dev": "nodemon index"

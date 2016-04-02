@@ -7,7 +7,7 @@ export default class Input extends React.Component {
         this.state = {
             valid: true,
             invalidMessage: '',
-            value: ''
+            value: props.value || ''
         };
     }
 
@@ -15,14 +15,16 @@ export default class Input extends React.Component {
         let {name, parentUpdateState} = this.props;
         let {input: ref} = this.refs;
 
-        parentUpdateState(name, this.state, ref);
+        if(parentUpdateState) {
+            parentUpdateState(name, this.state, ref);
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
         let {name, parentUpdateState} = this.props;
         let {input: ref} = this.refs;
 
-        if(prevState.valid !== this.state.valid) {
+        if(prevState.valid !== this.state.valid && parentUpdateState) {
             parentUpdateState(name, this.state, ref);
         }
     }
@@ -116,15 +118,24 @@ export default class Input extends React.Component {
      * @return {jsx}
      */
     input(style) {
-        let {type, name} = this.props;
+        let {
+            type,
+            name,
+            className
+        } = this.props;
         let require = this.props.required || undefined;
         type = (type == 'email' ? 'text' : type);
+        style = {
+            ...style,
+            ...this.props.style
+        }
 
         return (
             <input
                 style={style}
                 type={type}
                 name={name}
+                className={className}
                 ref="input"
                 onChange={e => this.setState({
                     value: this.refs.input.value

@@ -8,8 +8,9 @@ const router = require('small-router')(http);
 const api = require('../routes/api');
 
 const SERVER_URL = 'http://localhost:8000';
+let route = '/api/';
 
-describe('api', () => {
+describe('api routes', () => {
     before(() => {
         api(router);
 
@@ -17,7 +18,7 @@ describe('api', () => {
     });
 
     describe('/api/register/hedgehog', () => {
-        let route = '/api/register/hedgehog';
+        route += 'register/hedgehog';
         let postData = {
             breeder_name: 'test',
             hedgehog_name: 'test name',
@@ -54,7 +55,7 @@ describe('api', () => {
                 }
 
                 JSON.parse(body).should.deepEqual({
-                    breederName: 'test',
+                    name: 'test',
                     type: 'hedgehog'
                 });
                 done();

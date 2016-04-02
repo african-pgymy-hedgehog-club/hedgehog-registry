@@ -29,7 +29,13 @@ const UIkitForm = ({
                     'textarea'
                 ];
                 let type = input.type.name || input.type;
+                if(type == 'Input') {
+                    if(input.props.type == 'hidden')
+                        type = 'hidden';
 
+                    if(input.props.type == 'submit')
+                        type = 'submit';
+                }
 
                 if(typesWithLabels.indexOf(type) !== -1) { // If the type of form input if in the types array
 
@@ -45,7 +51,7 @@ const UIkitForm = ({
                         </div>
                     );
                 }
-                else {
+                else if(type !== 'hidden' && type !== 'submit') {
                     input = (
                         <div className="uk-form-row" key={index}>
                             <div className="uk-form-controls">

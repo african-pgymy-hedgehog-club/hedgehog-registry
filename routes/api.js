@@ -21,7 +21,6 @@ const transporter = nodemailer.createTransport(
 module.exports = (router) => {
     router.prefix = '/api/register/';
     router.addRoute('hedgehog', (req, res, url) => {
-        console.log("api register hedgehog");
         router.parseData(req, (err, fields, files) => {
             if(err) {
                 return console.log(`Error: ${err.stack || err.message.toString()}`);
@@ -31,29 +30,37 @@ module.exports = (router) => {
 
             // console.log(table);
 
-            // transporter.sendMail({
-            //     from: `"${fields.your_name}"<${fields.your_email}>`,
-            //     to: 'registrations@hedgehogregistry.co.uk',
-            //     subject: 'Register Hedgehog',
-            //     html: table
-            // }, (err, info) => {
-            //     if(err){
-            //         console.error(err);
-            //         res.writeHead(500, { 'Content-Type': 'text/plain' });
-            //         res.end('Error occurred');
-            //     }
-            // });
+            transporter.sendMail({
+                from: `"${fields.your_name}"<${fields.your_email}>`,
+                to: 'registrations@hedgehogregistry.co.uk',
+                subject: 'Register Hedgehog',
+                html: table
+            }, (err, info) => {
+                if(err){
+                    console.error(err);
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    return res.end('Error occurred');
+                }
+
+                let data = {
+                    name: fields.breeder_name,
+                    type: 'hedgehog'
+                };
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end( JSON.stringify(data) );
+            });
 
             // console.log("fields", fields);
             // console.log("files", files);
-
-            let data = {
-                breederName: fields.breeder_name,
-                type: 'hedgehog'
-            };
-
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end( JSON.stringify(data) );
+            //
+            // let data = {
+            //     name: fields.breeder_name,
+            //     type: 'hedgehog'
+            // };
+            //
+            // res.writeHead(200, { 'Content-Type': 'application/json' });
+            // res.end( JSON.stringify(data) );
         });
     });
 }
