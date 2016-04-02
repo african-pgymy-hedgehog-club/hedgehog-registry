@@ -153,14 +153,14 @@ class RegisterHedgehog extends React.Component {
                         name="breeder_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value="test"
+                        value=""
                     />
 
                     <Input
                         type="text"
                         name="breeder_affix"
                         parentUpdateState={this.inputState.bind(this)}
-                        value="test affix"
+                        value=""
                     />
 
                     <Input
@@ -168,7 +168,7 @@ class RegisterHedgehog extends React.Component {
                         name="hedgehog_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value="test name"
+                        value=""
                     />
 
                     <select name="hedgehog_gender">
@@ -194,7 +194,7 @@ class RegisterHedgehog extends React.Component {
                         name="hedgehog_colour"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value="test colour"
+                        value=""
                     />
 
                     <Input
@@ -208,7 +208,7 @@ class RegisterHedgehog extends React.Component {
                         name="sire_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value="test sire"
+                        value=""
                     />
 
                     <Input
@@ -222,7 +222,7 @@ class RegisterHedgehog extends React.Component {
                         name="dam_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value="test dam"
+                        value=""
                     />
 
                     <Input
@@ -236,7 +236,7 @@ class RegisterHedgehog extends React.Component {
                         name="previous_owners_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value="test owner"
+                        value=""
                     />
 
                 <Input
@@ -244,7 +244,7 @@ class RegisterHedgehog extends React.Component {
                     name="your_name"
                     required={true}
                     parentUpdateState={this.inputState.bind(this)}
-                    value="Scott Crossan"
+                    value=""
                 />
 
                     <textarea
@@ -257,14 +257,14 @@ class RegisterHedgehog extends React.Component {
                         type="email"
                         name="previous_owners_email"
                         parentUpdateState={this.inputState.bind(this)}
-                        value="test@te.st"
+                        value=""
                     />
 
                     <Input
                         type="email"
                         name="breeders_email"
                         parentUpdateState={this.inputState.bind(this)}
-                        value="test@st.et"
+                        value=""
                     />
 
                     <Input
@@ -272,7 +272,7 @@ class RegisterHedgehog extends React.Component {
                         name="your_email"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value="scrott@gmail.com"
+                        value=""
                     />
 
                     <button className="uk-button uk-button-primary uk-button-large">

@@ -9,6 +9,6 @@ require('./routes/api')(router);
 require('./routes/register')(router);
 
 
-router.listen(process.env.PORT || 3000, (parameters) => {
-    console.log("Server listening on port 3000");
+router.listen(process.env.PORT || 3100, (parameters) => {
+    console.log("Server listening on port 3100");
 });
