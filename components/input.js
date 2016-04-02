@@ -30,9 +30,11 @@ export default class Input extends React.Component {
         }
     }
 
+
     componentWillReceiveProps(newProps) {
         let {value} = newProps;
-        if(value != this.state.value) {
+
+        if(value == '') {
             this.setState({
                 value
             });
