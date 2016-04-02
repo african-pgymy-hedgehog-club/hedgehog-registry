@@ -110,11 +110,15 @@ class RegisterHedgehog extends React.Component {
      */
     inputState(name, state, ref) {
         /* jshint ignore: start */
+
         let inputs = this.state.inputs;
         inputs[name] = {
             ...state,
-            ref
+            ref,
+            value: ref.value
         }
+
+        console.log();
 
         this.setState({
             inputs
@@ -170,14 +174,14 @@ class RegisterHedgehog extends React.Component {
                         name="breeder_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.breeders_email || {value: ""}).value}
+                        value={(this.state.inputs.breeder_name || {value: ""}).value}
                     />
 
                     <Input
                         type="text"
                         name="breeder_affix"
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.breeders_email || {value: ""}).value}
+                        value={(this.state.inputs.breeder_affix || {value: ""}).value}
                     />
 
                     <Input
@@ -185,7 +189,7 @@ class RegisterHedgehog extends React.Component {
                         name="hedgehog_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.breeders_email || {value: ""}).value}
+                        value={(this.state.inputs.hedgehog_name || {value: ""}).value}
                     />
 
                     <select name="hedgehog_gender">
@@ -211,7 +215,7 @@ class RegisterHedgehog extends React.Component {
                         name="hedgehog_colour"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.breeders_email || {value: ""}).value}
+                        value={(this.state.inputs.hedgehog_colour || {value: ""}).value}
                     />
 
                     <Input
@@ -225,7 +229,7 @@ class RegisterHedgehog extends React.Component {
                         name="sire_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.breeders_email || {value: ""}).value}
+                        value={(this.state.inputs.sire_name || {value: ""}).value}
                     />
 
                     <Input
@@ -239,7 +243,7 @@ class RegisterHedgehog extends React.Component {
                         name="dam_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.breeders_email || {value:""}).value}
+                        value={(this.state.inputs.dam_name || {value:""}).value}
                     />
 
                     <Input
@@ -253,7 +257,7 @@ class RegisterHedgehog extends React.Component {
                         name="previous_owners_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.breeders_email || {value: ""}).value}
+                        value={(this.state.inputs.previous_owners_name || {value: ""}).value}
                     />
 
                 <Input
@@ -261,7 +265,7 @@ class RegisterHedgehog extends React.Component {
                     name="your_name"
                     required={true}
                     parentUpdateState={this.inputState.bind(this)}
-                    value={(this.state.inputs.breeders_email || {value: ""}).value}
+                    value={(this.state.inputs.your_name || {value: ""}).value}
                 />
 
                     <textarea
@@ -274,7 +278,7 @@ class RegisterHedgehog extends React.Component {
                         type="email"
                         name="previous_owners_email"
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.breeders_email || {value: ""}).value}
+                        value={(this.state.inputs.previous_owners_email || {value: ""}).value}
                     />
 
                     <Input

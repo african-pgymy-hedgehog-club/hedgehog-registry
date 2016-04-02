@@ -25,7 +25,7 @@ export default class Input extends React.Component {
         let {input: ref} = this.refs;
 
 
-        if(prevState.valid !== this.state.valid && parentUpdateState) {
+        if((prevState.valid !== this.state.valid || prevState.value !== ref.value) && parentUpdateState) {
             parentUpdateState(name, this.state, ref);
         }
     }
