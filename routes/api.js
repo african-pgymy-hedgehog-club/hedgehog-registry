@@ -26,13 +26,14 @@ module.exports = (router) => {
                 return console.log(`Error: ${err.stack || err.message.toString()}`);
             }
 
-            console.log(fields, Object.keys(files));
+            // console.log(fields, Object.keys(files));
+            let uploadPath = 'images/uploads/';
 
             Promise.all(Object.keys(files).filter((file) => ( // Filter out any missing files
                 file.size > 0 ? true : false
             )).map((file) => { // Map files object to attachment array and copy file from tmp to local folder
                 file = files[file];
-                let newPath = `images/uploads/${file.name}`;
+                let newPath = `${uploadPath}${file.name}`;
 
                 return new Promise((resolve, reject) => { // Wrap fs.copy in Promise api
                     fs.copy(file.path, newPath, (err) => { // Copy temp file
@@ -47,8 +48,6 @@ module.exports = (router) => {
                     });
                 });
             })).then((attachments) => {
-                console.log("hii");
-                console.log("uploadedFiles", attachments);
                 let table = jade.renderFile('templates/hedgehog-table.jade', {
                     fields,
                     type: 'Hedgehog'
@@ -67,9 +66,15 @@ module.exports = (router) => {
                             throw err;
                         }
 
-                        resolve({
-                            name: fields.breeder_name,
-                            type: 'hedgehog'
+                        fs.emptyDir(uploadPath, (err) => {
+                            if(err) {
+                                throw err;
+                            }
+
+                            resolve({
+                                name: fields.breeder_name,
+                                type: 'hedgehog'
+                            });
                         });
                     });
                 });
