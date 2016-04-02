@@ -30,7 +30,7 @@ module.exports = (router) => {
             let uploadPath = 'images/uploads/';
 
             Promise.all(Object.keys(files).filter((file) => ( // Filter out any missing files
-                file.size > 0 ? true : false
+                files[file].size > 0 ? true : false
             )).map((file) => { // Map files object to attachment array and copy file from tmp to local folder
                 file = files[file];
                 let newPath = `${uploadPath}${file.name}`;
