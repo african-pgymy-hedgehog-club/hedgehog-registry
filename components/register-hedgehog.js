@@ -48,6 +48,12 @@ class RegisterHedgehog extends React.Component {
                     }
                 }
 
+                // console.log(inputs);
+                //
+                // this.setState({
+                //     inputs
+                // });
+
                 fetch('/api/register/hedgehog', { // Post form data to server
                     method: 'POST',
                     body: formData
