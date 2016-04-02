@@ -4,9 +4,9 @@
   "description": "Register hedgehogs and hedgehog litters",
   "main": "grunt.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test-api": "mocha -w tests/api.js",
     "start": "node --harmony index",
-    "dev-start": "nodemon index"
+    "dev": "nodemon index"
   },
   "babel": {
     "presets": [
@@ -26,13 +26,20 @@
   "author": "Scott Crossan",
   "license": "ISC",
   "dependencies": {
+    "async": "^1.5.2",
     "babel-core": "^6.7.2",
+    "babel-preset-stage-2": "^6.5.0",
+    "formidable": "^1.0.17",
     "jade": "^1.11.0",
     "jquery": "^2.2.1",
     "moment": "^2.12.0",
+    "nodemailer": "^2.3.0",
+    "nodemailer-sendmail-transport": "^1.0.0",
     "promise-mysql": "^1.3.1",
     "react": "^0.14.3",
-    "react-dom": "^0.14.3"
+    "react-dom": "^0.14.3",
+    "react-modal": "^0.6.1",
+    "small-router": "^1.0.0"
   },
   "devDependencies": {
     "babel-plugin-react-transform": "^1.1.1",
@@ -42,7 +49,11 @@
     "grunt": "^0.4.5",
     "grunt-browserify": "^4.0.1",
     "grunt-env": "^0.4.4",
+    "istanbul": "^0.4.2",
     "livereactload": "^2.1.0",
-    "react-proxy": "^2.0.0"
+    "mocha": "^2.4.5",
+    "react-proxy": "^2.0.0",
+    "request": "^2.69.0",
+    "should": "^8.3.0"
   }
 }

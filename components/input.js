@@ -11,6 +11,22 @@ export default class Input extends React.Component {
         };
     }
 
+    componentDidMount() {
+        let {name, parentUpdateState} = this.props;
+        let {input: ref} = this.refs;
+
+        parentUpdateState(name, this.state, ref);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        let {name, parentUpdateState} = this.props;
+        let {input: ref} = this.refs;
+
+        if(prevState.valid !== this.state.valid) {
+            parentUpdateState(name, this.state, ref);
+        }
+    }
+
     /**
      * Validate input values against types of input
      * @param {object} e

@@ -7,17 +7,119 @@ import ReactDOM from 'react-dom'
 import moment from 'moment';
 import InputGroup from './input-group';
 import Input from './input'
-
-let formRef;
+import PaymentModal from './payment-modal';
+import async from 'async';
 
 class RegisterHedgehog extends React.Component {
+    constructor() {
+        super();
+
+        this.formRef;
+        this.state = {
+            paymentModal: {
+                display: false,
+                data: {}
+            },
+            inputs: {}
+        };
+    }
+
+    /**
+     * Send form data to server and use json response for paypal payment details in payment modal
+     * @param {event} e
+     */
+    submitForm(e) {
+        e.preventDefault();
+
+        this.formValid((err, valid) => {
+            if(err) {
+                console.error(err);
+            }
+
+            if(valid) {
+                let formData = new FormData(this.formRef);
+
+                fetch('/api/register/hedgehog', { // Post form data to server
+                    method: 'POST',
+                    body: formData
+                }).then(res => {
+                    return res.json();
+                }).then(data => {
+                    return this.setState({
+                        paymentModal: {
+                            display: true,
+                            data
+                        }
+                    });
+                }).catch(err => {
+                    console.error(err);
+                });
+            }
+        });
+    }
+
+    /**
+     * Check if all inputs in the form are valid
+     * @param {function} cb
+     * @return {bool}
+     */
+    formValid(cb) {
+        let {inputs} = this.state;
+        let valid = true;
+
+        for (let input in inputs) { // For ech input check if they are valid
+            let ref = inputs[input].ref;
+            ref.focus();
+            ref.blur();
+        }
+
+        setTimeout(() => { // Allow inputs to update before checking if they are valid
+            for (let input in inputs) { // For ech input check if they are valid
+                if (inputs.hasOwnProperty(input) && !inputs[input].valid) {
+                    valid = false;
+                    break;
+                }
+            }
+
+            cb(null, valid);
+        }, 0);
+    }
+
+    /**
+     * Get the state of each input and store it by name
+     * @param {string} name
+     * @param {object} state
+     * @param {DomNode} ref
+     */
+    inputState(name, state, ref) {
+        let inputs = this.state.inputs;
+        inputs[name] = {
+            ...state,
+            ref
+        };
+
+        this.setState({
+            inputs
+        });
+    }
 
     render() {
+        let {
+            data: paymentData,
+            display: displayPayment
+        } = this.state.paymentModal;
+
         return (
             <div style={{
                 display: 'flex',
                 flexDirection: 'column'
             }}>
+
+                <PaymentModal
+                    display={displayPayment}
+                    data={paymentData}
+                />
+
                 <h2>
                     Register Hedgehog
                 </h2>
@@ -29,40 +131,28 @@ class RegisterHedgehog extends React.Component {
                     }}
 
                     referance={node => {
-                        formRef = node;
+                        this.formRef = node;
                     }}
-                    onSubmit={e => {
-                        e.preventDefault();
-
-                        let formData = new FormData(formRef);
-
-                        fetch('/', {
-                            method: 'POST',
-                            body: formData
-                        }).then(res => {
-                            return res.json();
-                        }).then(text => {
-                            return
-                        }).catch(err => {
-                            console.error(err);
-                        });
-                    }}
+                    onSubmit={this.submitForm.bind(this)}
                 >
                     <Input
                         type="text"
                         name="breeder_name"
                         required={true}
+                        parentUpdateState={this.inputState.bind(this)}
                     />
 
                     <Input
                         type="text"
                         name="breeder_affix"
+                        parentUpdateState={this.inputState.bind(this)}
                     />
 
                     <Input
                         type="text"
                         name="hedgehog_name"
                         required={true}
+                        parentUpdateState={this.inputState.bind(this)}
                     />
 
                     <select name="hedgehog_gender">
@@ -85,42 +175,56 @@ class RegisterHedgehog extends React.Component {
 
                     <Input
                         type="text"
-                        name="hedgehog_color"
+                        name="hedgehog_colour"
                         required={true}
+                        parentUpdateState={this.inputState.bind(this)}
                     />
 
                     <Input
                         type="file"
                         name="hedgehog_image"
+                        parentUpdateState={this.inputState.bind(this)}
                     />
 
                     <Input
                         type="text"
                         name="sire_name"
                         required={true}
+                        parentUpdateState={this.inputState.bind(this)}
                     />
 
                     <Input
                         type="text"
                         name="sire_reg_number"
+                        parentUpdateState={this.inputState.bind(this)}
                     />
 
                     <Input
                         type="text"
                         name="dam_name"
                         required={true}
+                        parentUpdateState={this.inputState.bind(this)}
                     />
 
                     <Input
                         type="text"
                         name="dam_reg_number"
+                        parentUpdateState={this.inputState.bind(this)}
                     />
 
                     <Input
                         type="text"
-                        name="owners_name"
+                        name="previous_owners_name"
                         required={true}
+                        parentUpdateState={this.inputState.bind(this)}
                     />
+
+                <Input
+                    type="text"
+                    name="your_name"
+                    required={true}
+                    parentUpdateState={this.inputState.bind(this)}
+                />
 
                     <textarea
                         cols="25"
@@ -130,18 +234,21 @@ class RegisterHedgehog extends React.Component {
 
                     <Input
                         type="email"
-                        name="owners_email"
+                        name="previous_owners_email"
+                        parentUpdateState={this.inputState.bind(this)}
                     />
 
                     <Input
                         type="email"
                         name="breeders_email"
+                        parentUpdateState={this.inputState.bind(this)}
                     />
 
                     <Input
                         type="email"
                         name="your_email"
                         required={true}
+                        parentUpdateState={this.inputState.bind(this)}
                     />
 
                     <button className="uk-button uk-button-primary uk-button-large">

@@ -5,6 +5,7 @@
         "components/register-hedgehog.js",
         "*.bundle.js",
         "components/input.js",
-        "components/uikit-form.js"
+        "components/uikit-form.js",
+        "components/payment-modal.js"
     ]
 }

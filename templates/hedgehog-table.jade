@@ -1,0 +1,6 @@
+table(border="1" style="text-align: center;")
+    each val, name in fields
+        tr
+            td= name.replace(/_/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase())
+            td= val
+        

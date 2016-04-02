@@ -5,7 +5,8 @@ const UIkitForm = ({
     onSubmit,
     children,
     style = {},
-    referance
+    referance,
+    action = null
 }) => {
     let className = `uk-form uk-form-${type}`;
 
@@ -17,7 +18,7 @@ const UIkitForm = ({
 
     return (
         /* jshint ignore: start */
-        <form className={className} onSubmit={onSubmit} style={style} ref={referance}>
+        <form className={className} onSubmit={onSubmit} style={style} ref={referance} method='POST' action={action}>
             {children.map((input, index) => {
                 let {name} = input.props
                 let typesWithLabels = [
