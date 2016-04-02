@@ -26,10 +26,12 @@ module.exports = (router) => {
                 return console.log(`Error: ${err.stack || err.message.toString()}`);
             }
 
-            let table = jade.renderFile('templates/hedgehog-table.jade', {fields});
+            let table = jade.renderFile('templates/hedgehog-table.jade', {
+                fields,
+                type: 'Hedgehog'
+            });
 
             // console.log(table);
-
             transporter.sendMail({
                 from: `"${fields.your_name}"<${fields.your_email}>`,
                 to: 'registrations@hedgehogregistry.co.uk',
