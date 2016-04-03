@@ -2,10 +2,11 @@ module.exports = function (grunt) {
 
 	function browserifyOptions(port, live) {
 		port = port || 4774;
-		live = live || false
+		live = live || false;
 
+		var options = {};
 		if(!live) {
-			var options = {
+			options = {
 				browserifyOptions: {
 					debug: true
 				},
@@ -23,9 +24,7 @@ module.exports = function (grunt) {
 			};
 		}
 		else if(live) {
-			var options = {
-				watch: true,
-				keepAlive: true,
+			options = {
 				transform: [
 					[{}, 'babelify', {
 						loose: 'all'
@@ -64,16 +63,28 @@ module.exports = function (grunt) {
 		    dev: {
 				NODE_ENV: 'development',
 			}
+		},
+
+		uglify: {
+			hedgehogRegistry: {
+				options: {
+					beautify: true
+				},
+				files: {
+					'js/register-hedgehog.min.js': ['js/register-hedgehog.bundle.js']
+				}
+			}
 		}
     });
 
 	// Default task
 	grunt.registerTask('default', ['env:build', 'browserify:app']);
 	grunt.registerTask('hedgehog-registry-dev', ['env:dev', 'browserify:hedgehogRegistryDev']);
-	grunt.registerTask('hedgehog-registry-live', ['env:dist', 'browserify:hedgehogRegistryLive']);
+	grunt.registerTask('hedgehog-registry-live', ['env:dist', 'browserify:hedgehogRegistryLive', 'uglify:hedgehogRegistry']);
 
 	// Load up tasks
 	grunt.loadNpmTasks('grunt-browserify');
 	grunt.loadNpmTasks('grunt-env');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 
 };

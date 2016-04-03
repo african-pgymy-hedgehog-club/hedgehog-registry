@@ -24,11 +24,13 @@ const UIkitForm = ({
                 let typesWithLabels = [
                     'input',
                     'Input',
+                    'text',
+                    'email',
                     'select',
                     'DOB',
                     'textarea'
                 ];
-                let type = input.type.name || input.type;
+                let type = input.props.type || input.type;
                 if(type == 'Input') {
                     if(input.props.type == 'hidden')
                         type = 'hidden';
@@ -36,6 +38,8 @@ const UIkitForm = ({
                     if(input.props.type == 'submit')
                         type = 'submit';
                 }
+
+                console.log("input", input);
 
                 if(typesWithLabels.indexOf(type) !== -1) { // If the type of form input if in the types array
 

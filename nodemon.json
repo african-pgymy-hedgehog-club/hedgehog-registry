@@ -4,6 +4,7 @@
     "ignore": [
         "components/register-hedgehog.js",
         "*.bundle.js",
+        "*.min.js",
         "components/input.js",
         "components/uikit-form.js",
         "components/payment-modal.js"
