@@ -28,6 +28,7 @@ const UIkitForm = ({
                     'email',
                     'select',
                     'DOB',
+                    'dob',
                     'textarea'
                 ];
                 let type = input.props.type || input.type;

@@ -208,6 +208,7 @@ class RegisterHedgehog extends React.Component {
                             minDate: moment(new Date()).subtract(5, 'years').format("DD.MM.YYYY"), //"16.05.15",
                             maxDate: moment(new Date()).subtract(4, 'months').format("DD.MM.YYYY") //"08.03.15"
                         }}
+                        type="dob"
                     />
 
                     <Input
@@ -260,13 +261,13 @@ class RegisterHedgehog extends React.Component {
                         value={(this.state.inputs.previous_owners_name || {value: ""}).value}
                     />
 
-                <Input
-                    type="text"
-                    name="your_name"
-                    required={true}
-                    parentUpdateState={this.inputState.bind(this)}
-                    value={(this.state.inputs.your_name || {value: ""}).value}
-                />
+                    <Input
+                        type="text"
+                        name="your_name"
+                        required={true}
+                        parentUpdateState={this.inputState.bind(this)}
+                        value={(this.state.inputs.your_name || {value: ""}).value}
+                    />
 
                     <textarea
                         cols="25"
