@@ -716,7 +716,7 @@ var RegisterHedgehog = function (_React$Component) {
                         _uikitForm2.default,
                         { type: 'horizontal',
                             style: {
-                                margin: 'auto',
+                                marginLeft: '20%',
                                 paddingBottom: 15
                             },
 
@@ -904,7 +904,7 @@ var UIkitForm = function UIkitForm(_ref) {
         children.map(function (input, index) {
             var name = input.props.name;
 
-            var typesWithLabels = ['input', 'Input', 'text', 'email', 'select', 'DOB', 'dob', 'textarea'];
+            var typesWithLabels = ['input', 'Input', 'text', 'email', 'select', 'DOB', 'dob', 'file', 'textarea'];
             var type = input.props.type || input.type;
             if (type == 'Input') {
                 if (input.props.type == 'hidden') type = 'hidden';
@@ -912,7 +912,7 @@ var UIkitForm = function UIkitForm(_ref) {
                 if (input.props.type == 'submit') type = 'submit';
             }
 
-            console.log("input", input);
+            // console.log("input", type);
 
             if (typesWithLabels.indexOf(type) !== -1) {
 
