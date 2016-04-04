@@ -160,7 +160,7 @@ class RegisterHedgehog extends React.Component {
 
                 <Form type="horizontal"
                     style={{
-                        margin: 'auto',
+                        marginLeft: '20%',
                         paddingBottom: 15
                     }}
 
