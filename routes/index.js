@@ -12,6 +12,7 @@ const babelify = require('babelify');
 const About = require('../components/about');
 
 module.exports = (router) => {
+
     router.addAssetPath('css', 'css/');
     router.addAssetPath('images', 'images/');
     router.addAssetPath('js', 'js/');

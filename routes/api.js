@@ -38,7 +38,7 @@ module.exports = (router) => {
                 return new Promise((resolve, reject) => { // Wrap fs.copy in Promise api
                     fs.copy(file.path, newPath, (err) => { // Copy temp file
                         if(err) {
-                            throw err;
+                            return reject(new Error(err));
                         }
 
                         resolve({
@@ -63,12 +63,12 @@ module.exports = (router) => {
                         attachments: attachments
                     }, (err, info) => {
                         if(err){
-                            throw err;
+                            return reject(new Error(err));
                         }
 
                         fs.emptyDir(uploadPath, (err) => {
                             if(err) {
-                                throw err;
+                                return reject(new Error(err));
                             }
 
                             resolve({
@@ -78,9 +78,13 @@ module.exports = (router) => {
                         });
                     });
                 });
+            }, err => { // Catch reject call
+                throw err;
             }).then((data) => {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end( JSON.stringify(data) );
+            }, (err) => { // Catch reject call
+                throw err;
             }).catch(err => {
                 console.error(err.stack || err);
                 res.writeHead(500, { 'Content-Type': 'text/plain' });

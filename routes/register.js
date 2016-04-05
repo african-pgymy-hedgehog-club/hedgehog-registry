@@ -12,7 +12,7 @@ module.exports = (router) => {
     router.prefix = '/register/';
     router.addRoute('hedgehog', (req, res, url) => {
         let registerHedgehog = `
-            <script type="text/javascript" src="register-hedgehog.min.js"></script>
+            <script type="text/javascript" src="register-hedgehog.bundle.js"></script>
             <script type="text/javascript" src="datepicker.min.js"></script>
         `;
 
@@ -26,6 +26,5 @@ module.exports = (router) => {
     });
 
     router.addRoute('litter', (req, res, url) => {
-        res.end("COW");
     });
 }

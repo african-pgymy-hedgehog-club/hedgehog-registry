@@ -1,5 +1,6 @@
 "use strict";
 
+require('es6-promise').polyfill();
 import React from 'react';
 import Form from './uikit-form';
 import DOB from './dob-input';
@@ -117,8 +118,6 @@ class RegisterHedgehog extends React.Component {
             ref,
             value: ref.value
         }
-
-        console.log();
 
         this.setState({
             inputs
