@@ -86,9 +86,13 @@ module.exports = (router) => {
             }, (err) => { // Catch reject call
                 throw err;
             }).catch(err => {
+                let errRes = {
+                    error: err.stack || err.toString()
+                };
+
                 console.error(err.stack || err);
-                res.writeHead(500, { 'Content-Type': 'text/plain' });
-                res.end('Error occurred');
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end( JSON.stringify(errRes) );
             });
 
 

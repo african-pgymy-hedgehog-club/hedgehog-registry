@@ -2,7 +2,8 @@
 @import "uikit-button.css";
 @import "uikit-form.css";
 @import "uikit-datepicker.css";
-@import "uk-icon.css";
+@import "uikit-icon.css";
+@import "uikit-alert.css";
 
 html, body
 {

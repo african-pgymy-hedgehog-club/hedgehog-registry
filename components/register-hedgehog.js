@@ -9,19 +9,20 @@ import moment from 'moment';
 import InputGroup from './input-group';
 import Input from './input';
 import PaymentModal from './payment-modal';
-import async from 'async';
 
 class RegisterHedgehog extends React.Component {
     constructor() {
         super();
 
-        this.formRef;
+        this.formRef; /* jshint ignore: line */
         this.state = {
             paymentModal: {
+                lading: false,
                 display: false,
                 data: {}
             },
-            inputs: {}
+            inputs: {},
+            error: false
         };
     }
 
@@ -40,20 +41,19 @@ class RegisterHedgehog extends React.Component {
             if(valid) {
                 let formData = new FormData(this.formRef);
 
-                // Empty inputs after submitting form
-                let inputs = {};
-                for (let input in this.state.inputs) { // For ech input check if they are valid
-                    if (this.state.inputs.hasOwnProperty(input)) {
-                        inputs[input] = this.state.inputs[input];
-                        inputs[input].value = '';
-                    }
-                }
-
                 // console.log(inputs);
                 //
                 // this.setState({
                 //     inputs
                 // });
+
+                this.setState({
+                    paymentModal: {
+                        loading: true,
+                        display: true,
+                        data: this.state.paymentModal.data
+                    }
+                });
 
                 fetch('/api/register/hedgehog', { // Post form data to server
                     method: 'POST',
@@ -61,9 +61,24 @@ class RegisterHedgehog extends React.Component {
                 }).then(res => {
                     return res.json();
                 }).then(data => {
+                    if(data.error) {
+                        this.setState({
+                            paymentModal: {
+                            /* jshint ignore: start */
+                            ...this.state.paymentModal,
+                            /* jshint ignore: end */
+                                loading: false
+                            },
+                            error: true
+                        });
+
+                        throw data.error;
+                    }
+                    
                     let inputs = {};
                     return this.setState({
                         paymentModal: {
+                            loading: false,
                             display: true,
                             data
                         },
@@ -122,23 +137,31 @@ class RegisterHedgehog extends React.Component {
         this.setState({
             inputs
         });
+
         /* jshint ignore: end */
     }
 
+    /**
+     * Close modal by changing display state
+     */
     modalClose() {
         this.setState({
             paymentModal: {
                 display: false,
                 data: {}
-            }
+            },
+            error: false
         });
     }
 
     render() {
         let {
             data: paymentData,
-            display: displayPayment
+            display: displayPayment,
+            loading
         } = this.state.paymentModal;
+
+        console.log(this.state.inputs);
 
         return (
             /* jshint ignore: start */
@@ -151,6 +174,8 @@ class RegisterHedgehog extends React.Component {
                     display={displayPayment}
                     data={paymentData}
                     onClose={this.modalClose.bind(this)}
+                    error={this.state.error}
+                    loading={loading}
                 />
 
                 <h2>
