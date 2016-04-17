@@ -8,6 +8,18 @@ const UIkitForm = ({
     referance,
     action = null
 }) => {
+    const TYPES_WITH_LABELS = [
+        'input',
+        'Input',
+        'text',
+        'email',
+        'select',
+        'DOB',
+        'dob',
+        'file',
+        'textarea'
+    ];
+
     let className = `uk-form uk-form-${type}`;
 
     if(children === undefined) {
@@ -19,55 +31,52 @@ const UIkitForm = ({
     return (
         /* jshint ignore: start */
         <form className={className} onSubmit={onSubmit} style={style} ref={referance} method='POST' action={action}>
-            {children.map((input, index) => {
-                let {name} = input.props
-                let typesWithLabels = [
-                    'input',
-                    'Input',
-                    'text',
-                    'email',
-                    'select',
-                    'DOB',
-                    'dob',
-                    'file',
-                    'textarea'
-                ];
-                let type = input.props.type || input.type;
-                if(type == 'Input') {
-                    if(input.props.type == 'hidden')
-                        type = 'hidden';
+            {children.map((input, index) => { // For each child input
+                input = (!Array.isArray(input) ? [input] : input); // Make sure input is an array to make dealing with array inputs easier
 
-                    if(input.props.type == 'submit')
-                        type = 'submit';
-                }
+                return input.map((input, index1) => { // Incase there are dynamic arrays of children inputs
+                    let {name} = input.props
+                    let type = input.props.type || input.type;
+                    if(type == 'Input') {
+                        if(input.props.type == 'hidden')
+                            type = 'hidden';
 
-                // console.log("input", type);
+                        if(input.props.type == 'submit')
+                            type = 'submit';
+                    }
 
-                if(typesWithLabels.indexOf(type) !== -1) { // If the type of form input if in the types array
-
-                    input = (
-                        <div className="uk-form-row" key={index}>
-                            <label className="uk-form-label" htmlFor={name}>
-                                {/* Replace _ with a space and for each space change the first letter after to uppercase */}
-                                {name.replace(/_/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase())}:
-                            </label>
-                            <div className="uk-form-controls">
+                    if(TYPES_WITH_LABELS.indexOf(type) !== -1) { // If the type of form input if in the types array
+                        input = (
+                            <div className="uk-form-row" key={`${index}${index1}`}>
+                                <label className="uk-form-label" htmlFor={name}>
+                                    {/* Replace _ with a space and for each space change the first letter after to uppercase */}
+                                    {name.replace(/([\d]+)/g, '').replace(/_/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase())}:
+                                </label>
+                                <div className="uk-form-controls">
+                                    {input}
+                                </div>
+                            </div>
+                        );
+                    }
+                    else if(type !== 'hidden' && type !== 'submit' && type !== 'hr') {
+                        input = (
+                            <div className="uk-form-row" key={`${index}${index1}`}>
+                                <div className="uk-form-controls">
+                                    {input}
+                                </div>
+                            </div>
+                        );
+                    }
+                    else {
+                        input = (
+                            <div className="uk-form-row" key={`${index}${index1}`}>
                                 {input}
                             </div>
-                        </div>
-                    );
-                }
-                else if(type !== 'hidden' && type !== 'submit') {
-                    input = (
-                        <div className="uk-form-row" key={index}>
-                            <div className="uk-form-controls">
-                                {input}
-                            </div>
-                        </div>
-                    );
-                }
+                        );
+                    }
 
-                return input;
+                    return input;
+                });
             })}
         </form>
         /* jshint ignore: end */

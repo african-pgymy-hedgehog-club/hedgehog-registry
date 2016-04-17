@@ -109,4 +109,8 @@ module.exports = (router) => {
             // res.end( JSON.stringify(data) );
         });
     });
+
+    router.addRoute('litter', (err, req, res) => {
+        
+    });
 };

@@ -9,21 +9,11 @@ import moment from 'moment';
 import InputGroup from './input-group';
 import Input from './input';
 import PaymentModal from './payment-modal';
+import FormBase from './form-base';
 
-class RegisterHedgehog extends React.Component {
+class RegisterHedgehog extends FormBase {
     constructor() {
         super();
-
-        this.formRef; /* jshint ignore: line */
-        this.state = {
-            paymentModal: {
-                lading: false,
-                display: false,
-                data: {}
-            },
-            inputs: {},
-            error: false
-        };
     }
 
     /**
@@ -74,7 +64,7 @@ class RegisterHedgehog extends React.Component {
 
                         throw data.error;
                     }
-                    
+
                     let inputs = {};
                     return this.setState({
                         paymentModal: {
@@ -88,69 +78,6 @@ class RegisterHedgehog extends React.Component {
                     console.error(err);
                 });
             }
-        });
-    }
-
-    /**
-     * Check if all inputs in the form are valid
-     * @param {function} cb
-     * @return {bool}
-     */
-    formValid(cb) {
-        let {inputs} = this.state;
-        let valid = true;
-
-        for (let input in inputs) { // For ech input check if they are valid
-            let ref = inputs[input].ref;
-            ref.focus();
-            ref.blur();
-        }
-
-        setTimeout(() => { // Allow inputs to update before checking if they are valid
-            for (let input in inputs) { // For ech input check if they are valid
-                if (inputs.hasOwnProperty(input) && !inputs[input].valid) {
-                    valid = false;
-                    break;
-                }
-            }
-
-            cb(null, valid);
-        }, 0);
-    }
-
-    /**
-     * Get the state of each input and store it by name
-     * @param {string} name
-     * @param {object} state
-     * @param {DomNode} ref
-     */
-    inputState(name, state, ref) {
-        /* jshint ignore: start */
-
-        let inputs = this.state.inputs;
-        inputs[name] = {
-            ...state,
-            ref,
-            value: ref.value
-        }
-
-        this.setState({
-            inputs
-        });
-
-        /* jshint ignore: end */
-    }
-
-    /**
-     * Close modal by changing display state
-     */
-    modalClose() {
-        this.setState({
-            paymentModal: {
-                display: false,
-                data: {}
-            },
-            error: false
         });
     }
 
@@ -230,7 +157,7 @@ class RegisterHedgehog extends React.Component {
                         data={{
                             format: "DD/MM/YYYY",
                             minDate: moment(new Date()).subtract(5, 'years').format("DD.MM.YYYY"), //"16.05.15",
-                            maxDate: moment(new Date()).subtract(4, 'months').format("DD.MM.YYYY") //"08.03.15"
+                            maxDate: moment(new Date()).subtract(2, 'weeks').format("DD.MM.YYYY") //"08.03.15"
                         }}
                         type="dob"
                     />

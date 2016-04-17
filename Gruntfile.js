@@ -44,15 +44,25 @@ module.exports = function (grunt) {
 				src: 'js/app.js',
 				dest: 'js/bundle.js'
 			},
-			hedgehogRegistryDev: {
+			registerHedgehogDev: {
 				options: browserifyOptions(4477),
 				src: 'components/register-hedgehog.js',
 				dest: 'js/register-hedgehog.bundle.js'
 			},
-			hedgehogRegistryLive: {
+			registerHedgehogLive: {
 				options: browserifyOptions(4477, true),
 				src: 'components/register-hedgehog.js',
 				dest: 'js/register-hedgehog.bundle.js'
+			},
+			registerLitterDev: {
+				options: browserifyOptions(4477),
+				src: 'components/register-litter.js',
+				dest: 'js/register-litter.bundle.js'
+			},
+			registerLitterLive: {
+				options: browserifyOptions(4477, true),
+				src: 'components/register-litter.js',
+				dest: 'js/register-litter.bundle.js'
 			}
 		},
 
@@ -66,21 +76,31 @@ module.exports = function (grunt) {
 		},
 
 		uglify: {
-			hedgehogRegistry: {
+			registerHedgehog: {
 				options: {
 					beautify: true
 				},
 				files: {
 					'js/register-hedgehog.min.js': ['js/register-hedgehog.bundle.js']
 				}
+			},
+			registerLitter: {
+				options: {
+					beautify: true
+				},
+				files: {
+					'js/register-litter.min.js': ['js/register-litter.bundle.js']
+				}
 			}
 		}
     });
 
 	// Default task
-	grunt.registerTask('default', ['env:build', 'browserify:app']);
-	grunt.registerTask('hedgehog-registry-dev', ['env:dev', 'browserify:hedgehogRegistryDev']);
-	grunt.registerTask('hedgehog-registry-live', ['env:dist', 'browserify:hedgehogRegistryLive', 'uglify:hedgehogRegistry']);
+	grunt.registerTask('default', ['env:dev', 'browserify:app']);
+	grunt.registerTask('register-hedgehog-dev', ['env:dev', 'browserify:registerHedgehogDev']);
+	grunt.registerTask('register-hedgehog-live', ['env:dist', 'browserify:registerHedgehogLive', 'uglify:registerHedgehog']);
+	grunt.registerTask('register-litter-dev', ['env:dev', 'browserify:registerLitterDev']);
+	grunt.registerTask('register-litter-live', ['env:dist', 'browserify:registerLitterLive', 'uglify:registerLitter']);
 
 	// Load up tasks
 	grunt.loadNpmTasks('grunt-browserify');

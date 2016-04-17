@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DOB = ({name, data}) => (
+const DOB = ({name, data, value}) => (
     <div>
         <script type="text/javascript" src="datepicker.min.js"></script>
         <input
