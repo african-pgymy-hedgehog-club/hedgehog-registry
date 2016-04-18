@@ -1,6 +1,6 @@
 @CHARSET "UTF-8";
-@import "uikit-button.css";
 @import "uikit-form.css";
+@import "uikit-button.css";
 @import "uikit-datepicker.css";
 @import "uikit-icon.css";
 @import "uikit-alert.css";
@@ -15,7 +15,7 @@ html, body
 
 .banner
 {
-	background-image: url(../images/banner.jpg);
+	background-image: url(/images/banner.jpg);
 	width: 1000px;
 	height: 163px;
 	margin-left: auto;

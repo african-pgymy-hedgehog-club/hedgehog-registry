@@ -11,10 +11,10 @@ html(lang='en')
         //- link(rel='icon' href='src/img/favicon.png' type='image/x-icon')
 
         script(type="text/javascript", src="/fetch.js")
-        
-        script(type='text/javascript', src='/jquery.min.js')
-        script(type='text/javascript', src='/uikit.min.js')
-        
+        script(type="text/javascript", src="/jquery.min.js")
+        script(type="text/javascript", src="/uikit.min.js")
+        script(type="text/javascript", src="/jspm_packages/system.js")
+        script(type="text/javascript", src="/config.js")
             
         //- ----- CSS Files ----- //
         link(rel='stylesheet', href='/style.css')
@@ -27,5 +27,21 @@ html(lang='en')
         
         div.main#app!= html
         
+        if(component)
+            input(type="hidden", name="component", value=component)
+            
+            script.
+                let component = $('input[name="component"]').val();
+                if(location.origin.match(/localhost/)) {
+                    System.trace = true;
+                    System.import('capaj/systemjs-hot-reloader').then((HotReloader) => {
+                        return new HotReloader.default('http://localhost:5776');
+                    }).then((hr) => {
+                        System.import(`components/${component}`);
+                    });
+                }        
+                else {
+                    System.import(`/components/${component}`);
+                }
         
             

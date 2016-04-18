@@ -1,6 +1,6 @@
 "use strict";
 
-require('es6-promise').polyfill();
+import Promise from 'es6-promise';
 import React from 'react';
 import Form from './uikit-form';
 import DOB from './dob-input';
@@ -10,6 +10,7 @@ import InputGroup from './input-group';
 import Input from './input';
 import PaymentModal from './payment-modal';
 import FormBase from './form-base';
+
 
 class RegisterHedgehog extends FormBase {
     constructor() {
@@ -120,6 +121,7 @@ class RegisterHedgehog extends FormBase {
                     }}
                     onSubmit={this.submitForm.bind(this)}
                 >
+
                     <Input
                         type="text"
                         name="breeder_name"
@@ -160,6 +162,7 @@ class RegisterHedgehog extends FormBase {
                             maxDate: moment(new Date()).subtract(2, 'weeks').format("DD.MM.YYYY") //"08.03.15"
                         }}
                         type="dob"
+                        required={true}
                     />
 
                     <Input

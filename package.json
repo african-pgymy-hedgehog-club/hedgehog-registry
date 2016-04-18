@@ -2,13 +2,14 @@
   "name": "hedgehog-registry",
   "version": "0.0.1",
   "description": "Register hedgehogs and hedgehog litters",
-  "main": "grunt.js",
   "scripts": {
     "test-index": "mocha -w tests/index.js",
     "test-register": "mocha -w tests/register.js",
     "test-api": "mocha -w tests/api.js",
     "start": "node --harmony index",
-    "dev": "nodemon index"
+    "nodemon": "nodemon index",
+    "hot-reload-server": "chokidar-socket-emitter -p components",
+    "dev": "node ./node_modules/concurrently/src/main.js --kill-others \"npm run nodemon\" \"npm run hot-reload-server\""
   },
   "babel": {
     "presets": [
@@ -52,15 +53,39 @@
     "babel-preset-es2015": "^6.1.18",
     "babel-preset-react": "^6.1.18",
     "babelify": "^7.2.0",
+    "chokidar-socket-emitter": "^0.5.1",
+    "concurrently": "^2.0.0",
     "grunt": "^0.4.5",
     "grunt-browserify": "^4.0.1",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-env": "^0.4.4",
     "istanbul": "^0.4.2",
+    "jspm": "^0.16.33",
     "livereactload": "^2.1.0",
     "mocha": "^2.4.5",
     "react-proxy": "^2.0.0",
     "request": "^2.69.0",
     "should": "^8.3.0"
+  },
+  "jspm": {
+    "directories": {
+      "baseURL": "js"
+    },
+    "dependencies": {
+      "es6-promise": "npm:es6-promise@^3.1.2",
+      "fetch-ie8": "npm:fetch-ie8@^1.4.2",
+      "jquery": "npm:jquery@^2.2.3",
+      "moment": "npm:moment@^2.12.0",
+      "react": "npm:react@^15.0.1",
+      "react-dom": "npm:react-dom@^15.0.1",
+      "react-modal": "npm:react-modal@^1.1.1",
+      "react-uikit-alert": "npm:react-uikit-alert@^0.2.3"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "capaj/systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@^0.5.7",
+      "core-js": "npm:core-js@^1.1.4"
+    }
   }
 }

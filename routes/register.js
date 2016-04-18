@@ -12,13 +12,13 @@ module.exports = (router) => {
     router.prefix = '/register/';
     router.addRoute('hedgehog', (req, res, url) => {
         let registerHedgehog = `
-            <script type="text/javascript" src="register-hedgehog.bundle.js"></script>
-            <script type="text/javascript" src="datepicker.min.js"></script>
+            <script type="text/javascript" src="/datepicker.min.js"></script>
         `;
 
         let html = jade.renderFile('jade/index.jade', {
             title: "Register Hedgehog",
-            html: registerHedgehog
+            html: registerHedgehog,
+            component: 'register-hedgehog'
         });
 
         res.writeHead(200, { 'Content-Type': 'text/html' });
@@ -27,13 +27,13 @@ module.exports = (router) => {
 
     router.addRoute('litter', (req, res, url) => {
         let registerHedgehog = `
-            <script type="text/javascript" src="register-litter.bundle.js"></script>
-            <script type="text/javascript" src="datepicker.min.js"></script>
+            <script type="text/javascript" src="/datepicker.min.js"></script>
         `;
 
         let html = jade.renderFile('jade/index.jade', {
             title: "Register Litter",
-            html: registerHedgehog
+            html: registerHedgehog,
+            component: 'register-litter'
         });
 
         res.writeHead(200, { 'Content-Type': 'text/html' });

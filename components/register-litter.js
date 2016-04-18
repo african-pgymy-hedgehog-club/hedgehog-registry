@@ -1,6 +1,6 @@
 "use strict";
 
-require('es6-promise').polyfill();
+import 'es6-promise';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import FormBase from './form-base';
@@ -10,7 +10,7 @@ import Input from './input';
 import DOB from './dob-input';
 import moment from 'moment';
 
-let hogletIDCounter = 0;
+let hogletIDCounter = 1;
 
 class RegisterLitter extends FormBase {
     constructor() {
@@ -34,6 +34,8 @@ class RegisterLitter extends FormBase {
             'gender',
             'colour',
             'image',
+            'owner_name',
+            'owner_address',
             'hr'
         ];
 
@@ -43,9 +45,10 @@ class RegisterLitter extends FormBase {
             return HOGLET_INPUT_TYPES.map((inputType, index) => {
                 let element;
 
-                if(inputType == 'name' || inputType == 'colour') {
+                if(inputType == 'name' || inputType == 'colour' || inputType == 'owner_name') {
                     element = (
                         <Input
+                            key={`${id}${index}`}
                             type="text"
                             name={`hoglet_${inputType}${id}`}
                             parentUpdateState={this.inputState.bind(this)}
@@ -55,7 +58,7 @@ class RegisterLitter extends FormBase {
                 }
                 else if(inputType == 'gender') {
                     element = (
-                        <select name={`hedgehog_gender${id}`}>
+                        <select name={`hedgehog_gender${id}`} key={`${id}${index}`}>
                             <option value="male">
                                 Male
                             </option>
@@ -68,19 +71,31 @@ class RegisterLitter extends FormBase {
                 else if(inputType == 'image') {
                     element = (
                         <Input
+                            key={`${id}${index}`}
                             type="file"
                             name={`hedgehog_image${id}`}
                             parentUpdateState={this.inputState.bind(this)}
                         />
                     );
                 }
+                else if(inputType == 'owner_address') {
+                    element = (
+                        <textarea
+                            key={`${id}${index}`}
+                            cols="25"
+                            rows="5"
+                            name={inputType}
+                        >
+                        </textarea>
+                    );
+                }
                 else if(inputType == 'hr' && this.state.hoglets.length > 1) {
                     element = (
-                        <hr />
+                        <hr key={`${id}${index}`} />
                     );
                 }
 
-                if(element) { // If
+                if(element) {
                     hogletInputs.push(element);
                 }
 
@@ -99,7 +114,7 @@ class RegisterLitter extends FormBase {
             loading
         } = this.state.paymentModal;
 
-        console.log(moment(new Date()).subtract(4, 'months').format('DD.MM.YYYY'));
+        // console.log(moment(new Date()).subtract(4, 'months').format('DD.MM.YYYY'));
 
         return (
             /* jshint ignore: start */
@@ -145,8 +160,8 @@ class RegisterLitter extends FormBase {
                     <DOB
                         name="date_of_birth"
                         data={{
-                            format: "DD/MM/YY",
-                            minDate: moment(new Date()).subtract(5, 'months').format("DD.MM.YYYY"),
+                            format: "DD/MM/YYYY",
+                            minDate: moment(new Date()).subtract(3, 'years').format("DD.MM.YYYY"),
                             maxDate: moment(new Date()).subtract(2, 'weeks').format("DD.MM.YYYY")
                         }}
                         type="dob"

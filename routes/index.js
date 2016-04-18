@@ -15,8 +15,15 @@ module.exports = (router) => {
 
     router.addAssetPath('css', 'css/');
     router.addAssetPath('images', 'images/');
+    router.addAssetPath('components', 'components/');
     router.addAssetPath('js', 'js/');
     router.addAssetPath('fonts', 'css/fonts/');
+
+    router.addRoute('/favicon.ico', (req, res, url) => {
+        res.writeHead(200, {'Content-Type': 'image/x-icon'});
+        res.end();
+        return;
+    })
 
     router.addRoute(['/', '/about'], (req, res, url) => {
         let aboutHTML = ReactDOMServer.renderToString(
