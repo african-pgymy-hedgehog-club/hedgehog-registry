@@ -9,8 +9,9 @@ import Form from './uikit-form';
 import Input from './input';
 import DOB from './dob-input';
 import moment from 'moment';
+import InputGroup from './input-group';
 
-let hogletIDCounter = 1;
+let hogletIDCounter = 2;
 
 class RegisterLitter extends FormBase {
     constructor() {
@@ -21,14 +22,147 @@ class RegisterLitter extends FormBase {
             ...this.state,
             hoglets: [{
                 id: 1,
-                name: 'test',
-                colour: '',
+                visible: false,
+                name: {
+                    value: 'Test'
+                }
+            }, {
+                id: 2,
+                visible: false,
+                name: {
+                    value: 'Test22'
+                }
             }]
             /* jshint ignore: end */
         };
     }
 
+    addHoglet() {
+        ++hogletIDCounter;
+
+        let hoglets = this.state.hoglets.map((hoglet) => {
+            return {
+                ...hoglet,
+                visible: false
+            };
+        });
+
+        this.setState({
+            hoglets: [
+                ...hoglets,
+                {
+                    id: hogletIDCounter,
+                    visible: true,
+                    name: {
+                        value: ''
+                    }
+                }
+            ]
+        });
+    }
+
+    removeHoglet(hogletID) {
+        let hoglets = this.state.hoglets.filter(({ id }) => hogletID !== id);
+
+        this.setState({hoglets});
+    }
+
+    /**
+     * Get the state of each hoglet's inputs and store it by name
+     * @param {number} id
+     * @param {string} name
+     * @param {object} state
+     * @param {DomNode} ref
+     */
+    hogletState(id, name, state, ref) {
+        name = name.replace('hoglet_', '');
+        let hoglets = this.state.hoglets.map((hoglet, index) => {
+            if(hoglet.id === id) {
+                hoglet[name] = {
+                    ref,
+                    ...state
+                };
+            }
+
+            return hoglet;
+        });
+
+        this.setState({hoglets});
+    }
+
+    /**
+     * Create jsx inputs for each hoglet
+     */
     hogletInputs() {
+        let hogletInputs = [];
+
+        this.state.hoglets.forEach(({id, name, visible}, hogletIndex) => {
+            if(id > 1) {
+                let removeHedgehog = (
+                    <InputGroup onClick={() => {
+                        this.removeHoglet(id);
+                    }} key={id}>
+                        <i className="uk-icon-times-circle"
+                            style={{
+                                color: '#d00',
+                                marginRight: 10,
+                                cursor: 'pointer'
+                            }}
+                            data-id={id}
+                        ></i>
+                        <span style={{ cursor: 'pointer' }}>Remove Hedgehog</span>
+                    </InputGroup>
+                );
+
+                hogletInputs.push(removeHedgehog);
+            }
+
+            if(this.state.hoglets.length > 1) {
+                let hideHedgehog = (
+                    <InputGroup
+                        style={{
+                            marginLeft: -150,
+                            cursor: 'pointer'
+                        }}
+                        key={id}
+                        onClick={() => {
+                            this.setState({
+                                hoglets: this.state.hoglets.map((hoglet) => {
+                                    if(hoglet.id === id) {
+                                        hoglet.visible = !hoglet.visible;
+                                    }
+
+                                    return hoglet;
+                                })
+                            });
+                        }}
+                    >
+                        <i
+                            className={visible ? "uk-icon-angle-left" : "uk-icon-angle-down"}
+                            style={{
+                                marginRight: 10
+                            }}
+                        ></i>
+                        <b>{name.value}</b>
+                    </InputGroup>
+                );
+
+                hogletInputs.push(hideHedgehog);
+            }
+
+            if(visible) {
+                this.hogletInputTypes(id, hogletIndex, hogletInputs)
+            }
+
+            return;
+        });
+
+        return hogletInputs;
+    }
+
+    hogletInputTypes(id, hogletIndex, hogletInputs) {
+        console.log("hogletInputTypes");
+
         const HOGLET_INPUT_TYPES = [
             'name',
             'gender',
@@ -39,73 +173,70 @@ class RegisterLitter extends FormBase {
             'hr'
         ];
 
-        let hogletInputs = [];
-        this.state.hoglets.map(({id, name}) => {
-            /* jshint ignore: start */
-            return HOGLET_INPUT_TYPES.map((inputType, index) => {
-                let element;
+        let inputElements = HOGLET_INPUT_TYPES.map((inputType, index) => {
+            let element;
 
-                if(inputType == 'name' || inputType == 'colour' || inputType == 'owner_name') {
-                    element = (
-                        <Input
-                            key={`${id}${index}`}
-                            type="text"
-                            name={`hoglet_${inputType}${id}`}
-                            parentUpdateState={this.inputState.bind(this)}
-                            value={(this.state.inputs[`hoglet${inputType}${id}`] || {value: ''}).value}
-                        />
-                    );
-                }
-                else if(inputType == 'gender') {
-                    element = (
-                        <select name={`hedgehog_gender${id}`} key={`${id}${index}`}>
-                            <option value="male">
-                                Male
-                            </option>
-                            <option value="female">
-                                Female
-                            </option>
-                        </select>
-                    );
-                }
-                else if(inputType == 'image') {
-                    element = (
-                        <Input
-                            key={`${id}${index}`}
-                            type="file"
-                            name={`hedgehog_image${id}`}
-                            parentUpdateState={this.inputState.bind(this)}
-                        />
-                    );
-                }
-                else if(inputType == 'owner_address') {
-                    element = (
-                        <textarea
-                            key={`${id}${index}`}
-                            cols="25"
-                            rows="5"
-                            name={inputType}
-                        >
-                        </textarea>
-                    );
-                }
-                else if(inputType == 'hr' && this.state.hoglets.length > 1) {
-                    element = (
-                        <hr key={`${id}${index}`} />
-                    );
-                }
+            if(inputType == 'name' || inputType == 'colour' || inputType == 'owner_name') {
+                element = (
+                    <Input
+                        key={`${id}${index}`}
+                        type="text"
+                        name={`hoglet_${inputType}`}
+                        parentUpdateState={this.hogletState.bind(this, id)}
+                        value={(this.state.hoglets[hogletIndex][inputType] || {value: ''}).value}
+                    />
+                );
+            }
+            else if(inputType == 'gender') {
+                element = (
+                    <select name={`hedgehog_gender${id}`} key={`${id}${index}`}>
+                        <option value="male">
+                            Male
+                        </option>
+                        <option value="female">
+                            Female
+                        </option>
+                    </select>
+                );
+            }
+            else if(inputType == 'image') {
+                element = (
+                    <Input
+                        key={`${id}${index}`}
+                        type="file"
+                        name={`image`}
+                        parentUpdateState={this.hogletState.bind(this, id)}
+                    />
+                );
+            }
+            else if(inputType == 'owner_address') {
+                element = (
+                    <textarea
+                        key={`${id}${index}`}
+                        cols="25"
+                        rows="5"
+                        name={inputType}
+                        data-id={id}
+                    >
+                    </textarea>
+                );
+            }
+            else if(inputType == 'hr' && this.state.hoglets.length > 1) {
+                element = (
+                    <hr key={`${id}${index}`} />
+                );
+            }
 
-                if(element) {
-                    hogletInputs.push(element);
-                }
+            if(element) {
+                hogletInputs.push(element);
+            }
 
-                return element
-            });
-            /* jshint ignore: end */
+            return element
         });
 
-        return hogletInputs;
+        return inputElements;
     }
+
 
     render() {
         let {
@@ -113,6 +244,8 @@ class RegisterLitter extends FormBase {
             display: displayPayment,
             loading
         } = this.state.paymentModal;
+
+        // console.log(this.state.hoglets);
 
         // console.log(moment(new Date()).subtract(4, 'months').format('DD.MM.YYYY'));
 
@@ -137,7 +270,7 @@ class RegisterLitter extends FormBase {
 
                 <Form type="horizontal"
                     style={{
-                        marginLeft: '20%',
+                        margin: 'auto',
                         paddingBottom: 15
                     }}
                     referance={node => {
@@ -167,6 +300,17 @@ class RegisterLitter extends FormBase {
                         type="dob"
                         required={true}
                     />
+
+                    <InputGroup onClick={this.addHoglet.bind(this)}>
+                        <i className="uk-icon-plus-circle"
+                            style={{
+                                color: '#0d0',
+                                marginRight: 10,
+                                cursor: 'pointer'
+                            }}
+                        ></i>
+                        <span style={{ cursor: 'pointer' }}>Add Hedgehog</span>
+                    </InputGroup>
 
                     {this.hogletInputs()}
 

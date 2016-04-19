@@ -6,7 +6,6 @@ import Form from './uikit-form';
 import DOB from './dob-input';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
-import InputGroup from './input-group';
 import Input from './input';
 import PaymentModal from './payment-modal';
 import FormBase from './form-base';

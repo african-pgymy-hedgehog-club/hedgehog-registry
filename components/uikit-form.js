@@ -38,11 +38,13 @@ const UIkitForm = ({
                     let {name} = input.props
                     let type = input.props.type || input.type;
                     if(type == 'Input') {
-                        if(input.props.type == 'hidden')
+                        if(input.props.type == 'hidden') {
                             type = 'hidden';
+                        }
 
-                        if(input.props.type == 'submit')
+                        if(input.props.type == 'submit') {
                             type = 'submit';
+                        }
                     }
 
                     if(TYPES_WITH_LABELS.indexOf(type) !== -1) { // If the type of form input if in the types array
@@ -60,18 +62,18 @@ const UIkitForm = ({
                     }
                     else if(type !== 'hidden' && type !== 'submit' && type !== 'hr') {
                         input = (
-                            <div className="uk-form-row" key={`${index}${index1}`}>
-                                <div className="uk-form-controls">
-                                    {input}
-                                </div>
+                        <div className="uk-form-row" key={`${index}${index1}`}>
+                            <div className="uk-form-controls">
+                                {input}
                             </div>
+                        </div>
                         );
                     }
                     else {
                         input = (
-                            <div className="uk-form-row" key={`${index}${index1}`}>
-                                {input}
-                            </div>
+                        <div className="uk-form-row" key={`${index}${index1}`}>
+                            {input}
+                        </div>
                         );
                     }
 

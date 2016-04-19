@@ -26,6 +26,12 @@ html(lang='en')
         include nav
         
         div.main#app!= html
+            if(component)
+                div#loading
+                    |Loading... 
+                    img(src="/images/loader.gif", style="margin-left: 10px;")
+        
+            
         
         if(component)
             input(type="hidden", name="component", value=component)
@@ -37,7 +43,12 @@ html(lang='en')
                     System.import('capaj/systemjs-hot-reloader').then((HotReloader) => {
                         return new HotReloader.default('http://localhost:5776');
                     }).then((hr) => {
-                        System.import(`components/${component}`);
+                        System.import(`components/${component}`).then(() => {
+                            $('div#loading').remove();
+                        }).catch(err => {
+                            $('div#loading').html(`<pre>${err}</pre>`);
+                            console.error(err);
+                        });
                     });
                 }        
                 else {

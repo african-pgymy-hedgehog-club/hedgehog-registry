@@ -167,3 +167,20 @@ span#modal-close {
 span#modal-close:hover {
 	opacity: 0.6;
 }
+
+/* Alignment of block elements
+ ========================================================================== */
+/*
+ * Float blocks
+ * 1. Prevent content overflow on small devices
+ */
+.uk-float-left {
+  float: left;
+}
+.uk-float-right {
+  float: right;
+}
+/* 1 */
+[class*='uk-float-'] {
+  max-width: 100%;
+}
