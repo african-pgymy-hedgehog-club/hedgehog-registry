@@ -9,7 +9,9 @@
     "start": "node --harmony index",
     "nodemon": "nodemon index",
     "hot-reload-server": "chokidar-socket-emitter -p components",
-    "dev": "node ./node_modules/concurrently/src/main.js --kill-others \"npm run nodemon\" \"npm run hot-reload-server\""
+    "dev": "node ./node_modules/concurrently/src/main.js --kill-others \"npm run nodemon\" \"npm run hot-reload-server\"",
+    "build": "jspm bundle-sfx",
+    "build-litter": "\"npm run build --\"components\register-litter.js js\register-litter.bundle.js\"\""
   },
   "babel": {
     "presets": [
