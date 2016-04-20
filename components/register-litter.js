@@ -11,7 +11,7 @@ import DOB from './dob-input';
 import moment from 'moment';
 import InputGroup from './input-group';
 
-let hogletIDCounter = 2;
+let hogletIDCounter = 1;
 
 class RegisterLitter extends FormBase {
     constructor() {
@@ -22,15 +22,9 @@ class RegisterLitter extends FormBase {
             ...this.state,
             hoglets: [{
                 id: 1,
-                visible: false,
+                visible: true,
                 name: {
-                    value: 'Test'
-                }
-            }, {
-                id: 2,
-                visible: false,
-                name: {
-                    value: 'Test22'
+                    value: ''
                 }
             }]
             /* jshint ignore: end */
@@ -161,8 +155,6 @@ class RegisterLitter extends FormBase {
     }
 
     hogletInputTypes(id, hogletIndex, hogletInputs) {
-        console.log("hogletInputTypes");
-
         const HOGLET_INPUT_TYPES = [
             'name',
             'gender',
@@ -184,6 +176,7 @@ class RegisterLitter extends FormBase {
                         name={`hoglet_${inputType}`}
                         parentUpdateState={this.hogletState.bind(this, id)}
                         value={(this.state.hoglets[hogletIndex][inputType] || {value: ''}).value}
+                        required={((inputType != 'owner_name') ? true : false)}
                     />
                 );
             }
