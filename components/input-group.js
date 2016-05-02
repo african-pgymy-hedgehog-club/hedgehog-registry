@@ -4,13 +4,13 @@ const InputGroup = ({
     className,
     children,
     onClick = () => {},
-    style = {} 
+    style = {}
 }) => {
     children = (Array.isArray(children) ? children : [children])
 
     return (
         /* jshint ignore: start */
-        <div className={className} onClick={onClick} style={style}>
+        <div id="input-group" className={className} onClick={onClick} style={style}>
             {children.map((input, index) => {
                 if(typeof(input) === 'string') {
                     input = <span>{input}</span>;

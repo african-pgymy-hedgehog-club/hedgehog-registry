@@ -67,7 +67,8 @@
     "mocha": "^2.4.5",
     "react-proxy": "^2.0.0",
     "request": "^2.69.0",
-    "should": "^8.3.0"
+    "should": "^8.3.0",
+    "wallabify": "0.0.14"
   },
   "jspm": {
     "directories": {

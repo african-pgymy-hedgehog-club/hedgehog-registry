@@ -8,6 +8,6 @@ require('./routes/index')(router);
 require('./routes/api')(router);
 require('./routes/register')(router);
 
-router.listen(process.env.PORT || 3101, (parameters) => {
-    console.log("Server listening on port 3100");
+router.listen(process.env.PORT || 3100, (parameters) => {
+    console.log("Server listening on port 3101");
 });

@@ -60,7 +60,7 @@ module.exports = (router) => {
                         to: 'registrations@hedgehogregistry.co.uk',
                         subject: 'Register Hedgehog',
                         html: table,
-                        attachments: attachments
+                        attachments
                     }, (err, info) => {
                         if(err){
                             return reject(new Error(err));
@@ -95,8 +95,6 @@ module.exports = (router) => {
                 res.end( JSON.stringify(errRes) );
             });
 
-
-
             // console.log("fields", fields);
             // console.log("files", files);
             //
@@ -110,7 +108,77 @@ module.exports = (router) => {
         });
     });
 
-    router.addRoute('litter', (err, req, res) => {
-        
+    router.addRoute('litter', (req, res, url) => {
+        router.parseData(req, (err, fields, files) => {
+            if(err) {
+                return console.error(`Error: ${err.stack || err.message.toString()}`);
+            }
+
+            let uploadPath = 'images/uploads';
+
+            Promise.all(Object.keys(files).filter((file) => ( // Filter out any missing files
+                files[file].size > 0 ? true : false
+            )).map((file) => { // Map files to attachment array and copy file from tmp to local folder
+                file = files[file];
+                let newPath = `${uploadPath}${file.name}`;
+
+                return new Promise((resolve, reject) => { // Wrap fs.copy in Promise api
+                    fs.copy(file.path, newPath, (err) => {
+                        if(err) {
+                            return reject(new Error(err));
+                        }
+
+                        resolve({
+                            fileName: file.name,
+                            path: newPath
+                        });
+                    });
+                });
+            })).then((attachments) => {
+                let table = jade.renderFile('templates/hedgehog-litter.jade', {
+                    fields,
+                    type: 'Litter'
+                });
+
+                // console.log(table);
+                return new Promise((resolve, reject) => {
+                    transporter.sendmail({
+                        from: `"${fields.your_name}"<${fields.your_email}>`,
+                        to: 'registrations@hedgehogregistry.co.uk',
+                        subject: 'Register Litter',
+                        html: table,
+                        attachments
+                    }, (err, info) => {
+                        if(err) {
+                            return reject(new Error(err));
+                        }
+
+                        fs.emptyDir(uploadPath, (err) => {
+                            if(err) {
+                                return reject(new Error(err));
+                            }
+
+                            resolve({
+                                name: fields.breeder_affix,
+                                type: 'litter'
+                            });
+                        });
+                    });
+                });
+            }, err => { // Catch reject call
+                throw err;
+            }).then((data) => {
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end( JSON.stringify(data) );
+            }, err => { // Catch reject call
+                let errRes = {
+                    error: err.stack || err.toString()
+                };
+
+                console.error(err.stack || err);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end( JSON.stringify(errRes) );
+            });
+        });
     });
 };

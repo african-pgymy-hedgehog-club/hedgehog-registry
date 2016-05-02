@@ -22,7 +22,6 @@ class RegisterLitter extends FormBase {
             ...this.state,
             hoglets: [{
                 id: 1,
-                visible: true,
                 name: {
                     value: ''
                 }
@@ -31,13 +30,76 @@ class RegisterLitter extends FormBase {
         };
     }
 
+    /**
+     * Send form data to server and use json response for payal payment details in payment modal
+     * @param {event} e
+     */
+    submitForm(e) {
+        e.preventDefault();
+
+        this.formValid((err, valid) => {
+            if(err) {
+                console.error(err);
+            }
+
+            if(valid) {
+                let formData = new FormData(this.formRef);
+
+                this.setState({
+                    paymentModal: {
+                        loading: true,
+                        display: true,
+                        data: this.state.paymentModal.data
+                    }
+                });
+
+                fetch('/api/register/litter', {
+                    method: 'POST',
+                    body: formData
+                }).then(res => {
+                    return res.json();
+                }).then(data => {
+                    if(data.error) {
+                        this.setState({
+                            paymentModal: {
+                                ...this.state.paymentModal,
+                                loading: false
+                            },
+                            error: true
+                        });
+
+                        throw data.error;
+                    }
+
+                    let inputs = {};
+                    return this.setState({
+                        paymentModal: {
+                            loading: false,
+                            display: true,
+                            data
+                        },
+                        hoglets: [{
+                            id: 1,
+                            name: {
+                                value: ''
+                            },
+                            owner_address: {
+                                value: ''
+                            }
+                        }],
+                        inputs
+                    });
+                });
+            }
+        });
+    }
+
     addHoglet() {
         ++hogletIDCounter;
 
         let hoglets = this.state.hoglets.map((hoglet) => {
             return {
                 ...hoglet,
-                visible: false
             };
         });
 
@@ -111,42 +173,7 @@ class RegisterLitter extends FormBase {
                 hogletInputs.push(removeHedgehog);
             }
 
-            if(this.state.hoglets.length > 1) {
-                let hideHedgehog = (
-                    <InputGroup
-                        style={{
-                            marginLeft: -150,
-                            cursor: 'pointer'
-                        }}
-                        key={id}
-                        onClick={() => {
-                            this.setState({
-                                hoglets: this.state.hoglets.map((hoglet) => {
-                                    if(hoglet.id === id) {
-                                        hoglet.visible = !hoglet.visible;
-                                    }
-
-                                    return hoglet;
-                                })
-                            });
-                        }}
-                    >
-                        <i
-                            className={visible ? "uk-icon-angle-left" : "uk-icon-angle-down"}
-                            style={{
-                                marginRight: 10
-                            }}
-                        ></i>
-                        <b>{name.value}</b>
-                    </InputGroup>
-                );
-
-                hogletInputs.push(hideHedgehog);
-            }
-
-            if(visible) {
-                this.hogletInputTypes(id, hogletIndex, hogletInputs)
-            }
+            this.hogletInputTypes(id, hogletIndex, hogletInputs)
 
             return;
         });
@@ -182,7 +209,7 @@ class RegisterLitter extends FormBase {
             }
             else if(inputType == 'gender') {
                 element = (
-                    <select name={`hedgehog_gender${id}`} key={`${id}${index}`}>
+                    <select name="hedgehog_gender" key={`${id}${index}`}>
                         <option value="male">
                             Male
                         </option>
@@ -267,8 +294,9 @@ class RegisterLitter extends FormBase {
                         paddingBottom: 15
                     }}
                     referance={node => {
-                        this.form = node;
+                        this.formRef = node;
                     }}
+                    onSubmit={this.submitForm.bind(this)}
                 >
                     <Input
                         type="text"
@@ -307,6 +335,64 @@ class RegisterLitter extends FormBase {
 
                     {this.hogletInputs()}
 
+                    <Input
+                        type="text"
+                        name="sire_name"
+                        parentUpdateState={this.inputState.bind(this)}
+                        value={(this.state.inputs.sire_name || {value: ''}).value}
+                        required={true}
+                    />
+
+                    <Input
+                        type="text"
+                        name="sire_reg_number"
+                        parentUpdateState={this.inputState.bind(this)}
+                        value={(this.state.inputs.sire_reg_number || {value: ''}).value}
+                    />
+
+                    <Input
+                        type="text"
+                        name="dam_name"
+                        parentUpdateState={this.inputState.bind(this)}
+                        value={(this.state.inputs.dam_name || {value: ''}).value}
+                        required={true}
+                    />
+
+                    <Input
+                        type="text"
+                        name="dam_reg_number"
+                        parentUpdateState={this.inputState.bind(this)}
+                        value={(this.state.inputs.dam_reg_number || {value: ''}).value}
+                    />
+
+                    <Input
+                        type="text"
+                        name="your_name"
+                        parentUpdateState={this.inputState.bind(this)}
+                        value={(this.state.inputs.your_name || {value: ''}).value}
+                        required={true}
+                    />
+
+                    <Input
+                        type="text"
+                        name="your_email"
+                        parentUpdateState={this.inputState.bind(this)}
+                        value={(this.state.inputs.your_email || {value: ''}).value}
+                        required={true}
+                    />
+
+                    <InputGroup>
+                        <button
+                            className="uk-button uk-button-primary uk-button-large"
+                            style={{ marginRight: 15 }}
+                        >
+                            Send Registration
+                        </button>
+
+                        {/*<button className="uk-button uk-button-primary uk-button-large">
+                            Rest Form
+                        </button>*/}
+                    </InputGroup>
 
                 </Form>
             </div>

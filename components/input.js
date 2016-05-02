@@ -135,7 +135,7 @@ export default class Input extends React.Component {
             name,
             className
         } = this.props;
-        let require = this.props.required || undefined;
+        let require = this.props.required || false;
         type = (type == 'email' ? 'text' : type);
         style = {
             ...style,
@@ -164,7 +164,7 @@ export default class Input extends React.Component {
      */
     invalid() {
         let {type, name} = this.props;
-        let require = this.props.required || undefined;
+        let require = this.props.required || false;
         let style = {
             border: "1px solid #f00"
         };

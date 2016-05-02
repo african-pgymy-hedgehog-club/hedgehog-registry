@@ -1,0 +1,10 @@
+table(border="1" style="text-align: center;")
+    tr
+        td(colspan="2") 
+            h2 #{type} Registration Form 
+            
+    each val, name in fields
+        - name = name.replace(/_/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase()).replace(/(Hoglets)\[(\d)\]\[/, '').replace(']', '')
+        tr
+            td= name
+            td= val

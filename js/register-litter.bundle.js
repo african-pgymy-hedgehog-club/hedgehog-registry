@@ -182,7 +182,7 @@ var InputGroup = function InputGroup(_ref) {
         /* jshint ignore: start */
         _react2.default.createElement(
             'div',
-            { className: className, onClick: onClick, style: style },
+            { id: 'input-group', className: className, onClick: onClick, style: style },
             children.map(function (input, index) {
                 if (typeof input === 'string') {
                     input = _react2.default.createElement(
@@ -390,7 +390,7 @@ var Input = function (_React$Component) {
             var name = _props4.name;
             var className = _props4.className;
 
-            var require = this.props.required || undefined;
+            var require = this.props.required || false;
             type = type == 'email' ? 'text' : type;
             style = _extends({}, style, this.props.style);
 
@@ -424,7 +424,7 @@ var Input = function (_React$Component) {
             var type = _props5.type;
             var name = _props5.name;
 
-            var require = this.props.required || undefined;
+            var require = this.props.required || false;
             var style = {
                 border: "1px solid #f00"
             };
@@ -735,7 +735,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var hogletIDCounter = 2;
+var hogletIDCounter = 1;
 
 var RegisterLitter = function (_FormBase) {
     _inherits(RegisterLitter, _FormBase);
@@ -748,15 +748,8 @@ var RegisterLitter = function (_FormBase) {
         _this.state = _extends({}, _this.state, {
             hoglets: [{
                 id: 1,
-                visible: false,
                 name: {
-                    value: 'Test'
-                }
-            }, {
-                id: 2,
-                visible: false,
-                name: {
-                    value: 'Test22'
+                    value: ''
                 }
             }]
             /* jshint ignore: end */
@@ -764,15 +757,81 @@ var RegisterLitter = function (_FormBase) {
         return _this;
     }
 
+    /**
+     * Send form data to server and use json response for payal payment details in payment modal
+     * @param {event} e
+     */
+
+
     _createClass(RegisterLitter, [{
+        key: 'submitForm',
+        value: function submitForm(e) {
+            var _this2 = this;
+
+            e.preventDefault();
+
+            this.formValid(function (err, valid) {
+                if (err) {
+                    console.error(err);
+                }
+
+                if (valid) {
+                    var formData = new FormData(_this2.formRef);
+
+                    _this2.setState({
+                        paymentModal: {
+                            loading: true,
+                            display: true,
+                            data: _this2.state.paymentModal.data
+                        }
+                    });
+
+                    fetch('/api/register/litter', {
+                        method: 'POST',
+                        body: formData
+                    }).then(function (res) {
+                        return res.json();
+                    }).then(function (data) {
+                        if (data.error) {
+                            _this2.setState({
+                                paymentModal: _extends({}, _this2.state.paymentModal, {
+                                    loading: false
+                                }),
+                                error: true
+                            });
+
+                            throw data.error;
+                        }
+
+                        var inputs = {};
+                        return _this2.setState({
+                            paymentModal: {
+                                loading: false,
+                                display: true,
+                                data: data
+                            },
+                            hoglets: [{
+                                id: 1,
+                                name: {
+                                    value: ''
+                                },
+                                owner_address: {
+                                    value: ''
+                                }
+                            }],
+                            inputs: inputs
+                        });
+                    });
+                }
+            });
+        }
+    }, {
         key: 'addHoglet',
         value: function addHoglet() {
             ++hogletIDCounter;
 
             var hoglets = this.state.hoglets.map(function (hoglet) {
-                return _extends({}, hoglet, {
-                    visible: false
-                });
+                return _extends({}, hoglet);
             });
 
             this.setState({
@@ -828,7 +887,7 @@ var RegisterLitter = function (_FormBase) {
     }, {
         key: 'hogletInputs',
         value: function hogletInputs() {
-            var _this2 = this;
+            var _this3 = this;
 
             var hogletInputs = [];
 
@@ -841,7 +900,7 @@ var RegisterLitter = function (_FormBase) {
                     var removeHedgehog = _react2.default.createElement(
                         _inputGroup2.default,
                         { onClick: function onClick() {
-                                _this2.removeHoglet(id);
+                                _this3.removeHoglet(id);
                             }, key: id },
                         _react2.default.createElement('i', { className: 'uk-icon-times-circle',
                             style: {
@@ -861,46 +920,7 @@ var RegisterLitter = function (_FormBase) {
                     hogletInputs.push(removeHedgehog);
                 }
 
-                if (_this2.state.hoglets.length > 1) {
-                    var hideHedgehog = _react2.default.createElement(
-                        _inputGroup2.default,
-                        {
-                            style: {
-                                marginLeft: -150,
-                                cursor: 'pointer'
-                            },
-                            key: id,
-                            onClick: function onClick() {
-                                _this2.setState({
-                                    hoglets: _this2.state.hoglets.map(function (hoglet) {
-                                        if (hoglet.id === id) {
-                                            hoglet.visible = !hoglet.visible;
-                                        }
-
-                                        return hoglet;
-                                    })
-                                });
-                            }
-                        },
-                        _react2.default.createElement('i', {
-                            className: visible ? "uk-icon-angle-left" : "uk-icon-angle-down",
-                            style: {
-                                marginRight: 10
-                            }
-                        }),
-                        _react2.default.createElement(
-                            'b',
-                            null,
-                            name.value
-                        )
-                    );
-
-                    hogletInputs.push(hideHedgehog);
-                }
-
-                if (visible) {
-                    _this2.hogletInputTypes(id, hogletIndex, hogletInputs);
-                }
+                _this3.hogletInputTypes(id, hogletIndex, hogletInputs);
 
                 return;
             });
@@ -910,9 +930,7 @@ var RegisterLitter = function (_FormBase) {
     }, {
         key: 'hogletInputTypes',
         value: function hogletInputTypes(id, hogletIndex, hogletInputs) {
-            var _this3 = this;
-
-            console.log("hogletInputTypes");
+            var _this4 = this;
 
             var HOGLET_INPUT_TYPES = ['name', 'gender', 'colour', 'image', 'owner_name', 'owner_address', 'hr'];
 
@@ -924,13 +942,14 @@ var RegisterLitter = function (_FormBase) {
                         key: '' + id + index,
                         type: 'text',
                         name: 'hoglet_' + inputType,
-                        parentUpdateState: _this3.hogletState.bind(_this3, id),
-                        value: (_this3.state.hoglets[hogletIndex][inputType] || { value: '' }).value
+                        parentUpdateState: _this4.hogletState.bind(_this4, id),
+                        value: (_this4.state.hoglets[hogletIndex][inputType] || { value: '' }).value,
+                        required: inputType != 'owner_name' ? true : false
                     });
                 } else if (inputType == 'gender') {
                     element = _react2.default.createElement(
                         'select',
-                        { name: 'hedgehog_gender' + id, key: '' + id + index },
+                        { name: 'hedgehog_gender', key: '' + id + index },
                         _react2.default.createElement(
                             'option',
                             { value: 'male' },
@@ -947,7 +966,7 @@ var RegisterLitter = function (_FormBase) {
                         key: '' + id + index,
                         type: 'file',
                         name: 'image',
-                        parentUpdateState: _this3.hogletState.bind(_this3, id)
+                        parentUpdateState: _this4.hogletState.bind(_this4, id)
                     });
                 } else if (inputType == 'owner_address') {
                     element = _react2.default.createElement('textarea', {
@@ -957,7 +976,7 @@ var RegisterLitter = function (_FormBase) {
                         name: inputType,
                         'data-id': id
                     });
-                } else if (inputType == 'hr' && _this3.state.hoglets.length > 1) {
+                } else if (inputType == 'hr' && _this4.state.hoglets.length > 1) {
                     element = _react2.default.createElement('hr', { key: '' + id + index });
                 }
 
@@ -973,7 +992,7 @@ var RegisterLitter = function (_FormBase) {
     }, {
         key: 'render',
         value: function render() {
-            var _this4 = this;
+            var _this5 = this;
 
             var _state$paymentModal = this.state.paymentModal;
             var paymentData = _state$paymentModal.data;
@@ -984,82 +1003,132 @@ var RegisterLitter = function (_FormBase) {
 
             // console.log(moment(new Date()).subtract(4, 'months').format('DD.MM.YYYY'));
 
-            return(
-                /* jshint ignore: start */
+            return _react2.default.createElement(
+                'div',
+                { style: {
+                        display: 'flex',
+                        flexDirection: 'column'
+                    } },
+                _react2.default.createElement(_paymentModal2.default, {
+                    display: displayPayment,
+                    data: paymentData,
+                    onClose: this.modalClose.bind(this),
+                    error: this.state.error,
+                    loading: loading
+                }),
                 _react2.default.createElement(
-                    'div',
-                    { style: {
-                            display: 'flex',
-                            flexDirection: 'column'
-                        } },
-                    _react2.default.createElement(_paymentModal2.default, {
-                        display: displayPayment,
-                        data: paymentData,
-                        onClose: this.modalClose.bind(this),
-                        error: this.state.error,
-                        loading: loading
+                    'h2',
+                    null,
+                    'Register Litter'
+                ),
+                _react2.default.createElement(
+                    _uikitForm2.default,
+                    { type: 'horizontal',
+                        style: {
+                            margin: 'auto',
+                            paddingBottom: 15
+                        },
+                        referance: function referance(node) {
+                            _this5.formRef = node;
+                        },
+                        onSubmit: this.submitForm.bind(this)
+                    },
+                    _react2.default.createElement(_input2.default, {
+                        type: 'text',
+                        name: 'breeder_name',
+                        parentUpdateState: this.inputState.bind(this),
+                        required: true,
+                        value: (this.state.inputs.breeder_name || { value: '' }).value
+                    }),
+                    _react2.default.createElement(_input2.default, {
+                        type: 'text',
+                        name: 'breeder_affix',
+                        parentUpdateState: this.inputState.bind(this),
+                        value: (this.state.inputs.breeder_affix || { value: '' }).value
+                    }),
+                    _react2.default.createElement(_dobInput2.default, {
+                        name: 'date_of_birth',
+                        data: {
+                            format: "DD/MM/YYYY",
+                            minDate: (0, _moment2.default)(new Date()).subtract(3, 'years').format("DD.MM.YYYY"),
+                            maxDate: (0, _moment2.default)(new Date()).subtract(2, 'weeks').format("DD.MM.YYYY")
+                        },
+                        type: 'dob',
+                        required: true
                     }),
                     _react2.default.createElement(
-                        'h2',
-                        null,
-                        'Register Litter'
-                    ),
-                    _react2.default.createElement(
-                        _uikitForm2.default,
-                        { type: 'horizontal',
+                        _inputGroup2.default,
+                        { onClick: this.addHoglet.bind(this) },
+                        _react2.default.createElement('i', { className: 'uk-icon-plus-circle',
                             style: {
-                                margin: 'auto',
-                                paddingBottom: 15
-                            },
-                            referance: function referance(node) {
-                                _this4.form = node;
+                                color: '#0d0',
+                                marginRight: 10,
+                                cursor: 'pointer'
                             }
-                        },
-                        _react2.default.createElement(_input2.default, {
-                            type: 'text',
-                            name: 'breeder_name',
-                            parentUpdateState: this.inputState.bind(this),
-                            required: true,
-                            value: (this.state.inputs.breeder_name || { value: '' }).value
-                        }),
-                        _react2.default.createElement(_input2.default, {
-                            type: 'text',
-                            name: 'breeder_affix',
-                            parentUpdateState: this.inputState.bind(this),
-                            value: (this.state.inputs.breeder_affix || { value: '' }).value
-                        }),
-                        _react2.default.createElement(_dobInput2.default, {
-                            name: 'date_of_birth',
-                            data: {
-                                format: "DD/MM/YYYY",
-                                minDate: (0, _moment2.default)(new Date()).subtract(3, 'years').format("DD.MM.YYYY"),
-                                maxDate: (0, _moment2.default)(new Date()).subtract(2, 'weeks').format("DD.MM.YYYY")
-                            },
-                            type: 'dob',
-                            required: true
                         }),
                         _react2.default.createElement(
-                            _inputGroup2.default,
-                            { onClick: this.addHoglet.bind(this) },
-                            _react2.default.createElement('i', { className: 'uk-icon-plus-circle',
-                                style: {
-                                    color: '#0d0',
-                                    marginRight: 10,
-                                    cursor: 'pointer'
-                                }
-                            }),
-                            _react2.default.createElement(
-                                'span',
-                                { style: { cursor: 'pointer' } },
-                                'Add Hedgehog'
-                            )
-                        ),
-                        this.hogletInputs()
+                            'span',
+                            { style: { cursor: 'pointer' } },
+                            'Add Hedgehog'
+                        )
+                    ),
+                    this.hogletInputs(),
+                    _react2.default.createElement(_input2.default, {
+                        type: 'text',
+                        name: 'sire_name',
+                        parentUpdateState: this.inputState.bind(this),
+                        value: (this.state.inputs.sire_name || { value: '' }).value,
+                        required: true
+                    }),
+                    _react2.default.createElement(_input2.default, {
+                        type: 'text',
+                        name: 'sire_reg_number',
+                        parentUpdateState: this.inputState.bind(this),
+                        value: (this.state.inputs.sire_reg_number || { value: '' }).value
+                    }),
+                    _react2.default.createElement(_input2.default, {
+                        type: 'text',
+                        name: 'dam_name',
+                        parentUpdateState: this.inputState.bind(this),
+                        value: (this.state.inputs.dam_name || { value: '' }).value,
+                        required: true
+                    }),
+                    _react2.default.createElement(_input2.default, {
+                        type: 'text',
+                        name: 'dam_reg_number',
+                        parentUpdateState: this.inputState.bind(this),
+                        value: (this.state.inputs.dam_reg_number || { value: '' }).value
+                    }),
+                    _react2.default.createElement(_input2.default, {
+                        type: 'text',
+                        name: 'your_name',
+                        parentUpdateState: this.inputState.bind(this),
+                        value: (this.state.inputs.your_name || { value: '' }).value,
+                        required: true
+                    }),
+                    _react2.default.createElement(_input2.default, {
+                        type: 'text',
+                        name: 'your_email',
+                        parentUpdateState: this.inputState.bind(this),
+                        value: (this.state.inputs.your_email || { value: '' }).value,
+                        required: true
+                    }),
+                    _react2.default.createElement(
+                        _inputGroup2.default,
+                        null,
+                        _react2.default.createElement(
+                            'button',
+                            {
+                                className: 'uk-button uk-button-primary uk-button-large',
+                                style: { marginRight: 15 }
+                            },
+                            'Send Registration'
+                        )
                     )
                 )
-                /* jshint ignore: end */
-
-            );
+            )
+            /* jshint ignore: end */
+            ;
         }
     }]);
 
@@ -1159,7 +1228,7 @@ var UIkitForm = function UIkitForm(_ref) {
                             input
                         )
                     );
-                } else {
+                } else if (type !== 'hidden') {
                     input = _react2.default.createElement(
                         'div',
                         { className: 'uk-form-row', key: '' + index + index1 },

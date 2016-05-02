@@ -7,14 +7,14 @@ const router = require('small-router')(http);
 
 const indexRoute = require('../routes/register');
 
-const SERVER_URL = 'http://localhost:8000';
+const SERVER_URL = 'http://localhost:8001';
 let baseRoute = '/register/';
 
 describe('register routes', () => {
     before(() => {
         indexRoute(router);
 
-        router.listen(8000);
+        router.listen(8001);
     });
 
     describe('hedgehog', () => {
@@ -64,6 +64,7 @@ describe('register routes', () => {
                     throw err;
                 }
 
+                console.log(body);
                 body.should.be.a.String();
                 done();
             });

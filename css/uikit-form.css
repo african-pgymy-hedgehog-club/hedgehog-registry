@@ -424,6 +424,10 @@ select.uk-form-width-mini {
     margin-bottom: 5px;
     font-weight: bold;
   }
+
+  div#input-group {
+      margin-left: 27%
+  }
 }
 /* Desktop and bigger */
 @media (min-width: 960px) {

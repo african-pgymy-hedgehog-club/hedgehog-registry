@@ -5,8 +5,8 @@ const React = require('react');
 const ReactDOMServer = require('react-dom/server');
 const jade = require('jade');
 const fs = require('fs');
-const browserify = require('browserify');
-const babelify = require('babelify');
+// const browserify = require('browserify');
+// const babelify = require('babelify');
 
 // Components
 const About = require('../components/about');
