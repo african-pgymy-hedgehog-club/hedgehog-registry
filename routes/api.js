@@ -120,7 +120,7 @@ module.exports = (router) => {
             //     error: JSON.stringify(fields)
             // }) );
 
-            let uploadPath = 'images/uploads';
+            let uploadPath = 'images/uploads/';
 
             Promise.all(Object.keys(files).filter((file) => ( // Filter out any missing files
                 files[file].size > 0 ? true : false
