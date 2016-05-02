@@ -1207,7 +1207,7 @@ var UIkitForm = function UIkitForm(_ref) {
                             { className: 'uk-form-label', htmlFor: name },
                             name.replace(/([\d]+)/g, '').replace(/_/g, ' ').replace(/\b[a-z]/g, function (letter) {
                                 return letter.toUpperCase();
-                            }).replace(/([\d])+/g, ''),
+                            }),
                             ':'
                         ),
                         _react2.default.createElement(
@@ -1226,7 +1226,7 @@ var UIkitForm = function UIkitForm(_ref) {
                             input
                         )
                     );
-                } else {
+                } else if (type !== 'hidden') {
                     input = _react2.default.createElement(
                         'div',
                         { className: 'uk-form-row', key: '' + index + index1 },

@@ -13,8 +13,10 @@ html(lang='en')
         script(type="text/javascript", src="/fetch.js")
         script(type="text/javascript", src="/jquery.min.js")
         script(type="text/javascript", src="/uikit.min.js")
-        script(type="text/javascript", src="/jspm_packages/system.js")
-        script(type="text/javascript", src="/config.js")
+        
+        if(component)
+            script(type="text/javascript", src="/jspm_packages/system.js")
+            script(type="text/javascript", src="/config.js")
             
         //- ----- CSS Files ----- //
         link(rel='stylesheet', href='/style.css')
