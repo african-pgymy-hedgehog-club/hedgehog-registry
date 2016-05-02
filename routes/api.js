@@ -148,7 +148,7 @@ module.exports = (router) => {
 
                 // console.log(table);
                 return new Promise((resolve, reject) => {
-                    transporter.sendmail({
+                    transporter.sendMail({
                         from: `"${fields.your_name}"<${fields.your_email}>`,
                         to: 'registrations@hedgehogregistry.co.uk',
                         subject: 'Litter Registration',
