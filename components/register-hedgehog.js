@@ -6,10 +6,10 @@ import Form from './uikit-form';
 import DOB from './dob-input';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
+import InputGroup from './input-group';
 import Input from './input';
 import PaymentModal from './payment-modal';
 import FormBase from './form-base';
-import InputGroup from './input-group';
 
 
 class RegisterHedgehog extends FormBase {
@@ -191,7 +191,6 @@ class RegisterHedgehog extends FormBase {
                         type="text"
                         name="sire_reg_number"
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.sire_reg_number || {value:""}).value}
                     />
 
                     <Input
@@ -206,7 +205,6 @@ class RegisterHedgehog extends FormBase {
                         type="text"
                         name="dam_reg_number"
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.dam_reg_number || {value:""}).value}
                     />
 
                     <Input
@@ -253,18 +251,9 @@ class RegisterHedgehog extends FormBase {
                         value={(this.state.inputs.your_email || {value: ""}).value}
                     />
 
-                    <InputGroup style={{ marginLeft: '' }}>
-                        <button
-                            className="uk-button uk-button-primary uk-button-large"
-                            style={{ marginRight: 15 }}
-                        >
-                            Send Registration
-                        </button>
-
-                        {/*<button className="uk-button uk-button-primary uk-button-large">
-                            Rest Form
-                        </button>*/}
-                    </InputGroup>
+                    <button className="uk-button uk-button-primary uk-button-large">
+                        Send Registration
+                    </button>
                 </Form>
             </div>
             /* jshint ignore: end */

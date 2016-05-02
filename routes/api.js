@@ -58,7 +58,7 @@ module.exports = (router) => {
                     transporter.sendMail({
                         from: `"${fields.your_name}"<${fields.your_email}>`,
                         to: 'registrations@hedgehogregistry.co.uk',
-                        subject: 'Register Hedgehog',
+                        subject: 'Hedgehog Registration',
                         html: table,
                         attachments
                     }, (err, info) => {
@@ -114,6 +114,12 @@ module.exports = (router) => {
                 return console.error(`Error: ${err.stack || err.message.toString()}`);
             }
 
+            // Debug posted fields
+            // res.writeHead(500, { 'Content-Type': 'application/json' });
+            // return res.end( JSON.stringify({
+            //     error: JSON.stringify(fields)
+            // }) );
+
             let uploadPath = 'images/uploads';
 
             Promise.all(Object.keys(files).filter((file) => ( // Filter out any missing files
@@ -145,7 +151,7 @@ module.exports = (router) => {
                     transporter.sendmail({
                         from: `"${fields.your_name}"<${fields.your_email}>`,
                         to: 'registrations@hedgehogregistry.co.uk',
-                        subject: 'Register Litter',
+                        subject: 'Litter Registration',
                         html: table,
                         attachments
                     }, (err, info) => {

@@ -19,7 +19,7 @@ module.exports = (router) => {
         let html = jade.renderFile('jade/index.jade', {
             title: "Register Hedgehog",
             html: registerHedgehog,
-            // component: 'register-hedgehog'
+            component: 'register-hedgehog'
         });
 
         res.writeHead(200, { 'Content-Type': 'text/html' });
@@ -35,7 +35,7 @@ module.exports = (router) => {
         let html = jade.renderFile('jade/index.jade', {
             title: "Register Litter",
             html: registerHedgehog,
-            // component: 'register-litter'
+            component: 'register-litter'
         });
 
         res.writeHead(200, { 'Content-Type': 'text/html' });

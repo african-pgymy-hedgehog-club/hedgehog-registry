@@ -56,7 +56,7 @@ export default class Input extends React.Component {
                     if(value.length < 2 && required) {
                         this.setState({
                             valid: false,
-                            invalidMessage: `${name} is not valid`,
+                            invalidMessage: `${name.replace(/([\d])+/g, '')} is not valid`,
                             value
                         });
                     }

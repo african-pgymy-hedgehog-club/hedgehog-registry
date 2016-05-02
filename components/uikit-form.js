@@ -33,7 +33,7 @@ const UIkitForm = ({
         <form className={className} onSubmit={onSubmit} style={style} ref={referance} method='POST' action={action}>
             {children.map((input, index) => { // For each child input
                 input = (!Array.isArray(input) ? [input] : input); // Make sure input is an array to make dealing with array inputs easier
-                
+
                 return input.map((input, index1) => { // Incase there are dynamic arrays of children inputs
                     let {name} = input.props
                     let type = input.props.type || input.type;
@@ -52,7 +52,7 @@ const UIkitForm = ({
                             <div className="uk-form-row" key={`${index}${index1}`}>
                                 <label className="uk-form-label" htmlFor={name}>
                                     {/* Replace _ with a space and for each space change the first letter after to uppercase */}
-                                    {name.replace(/([\d]+)/g, '').replace(/_/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase())}:
+                                    {name.replace(/([\d]+)/g, '').replace(/_/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase()).replace(/([\d])+/g, '')}:
                                 </label>
                                 <div className="uk-form-controls">
                                     {input}
@@ -62,15 +62,14 @@ const UIkitForm = ({
                     }
                     else if(type !== 'hidden' && type !== 'submit' && type !== 'hr') {
                         input = (
-                        <div className="uk-form-row" key={`${index}${index1}`}>
-                            <div className="uk-form-controls">
-                                {input}
+                            <div className="uk-form-row" key={`${index}${index1}`}>
+                                <div className="uk-form-controls">
+                                    {input}
+                                </div>
                             </div>
-                        </div>
                         );
                     }
-
-                    else if(type !== 'hidden') {
+                    else {
                         input = (
                         <div className="uk-form-row" key={`${index}${index1}`}>
                             {input}

@@ -311,7 +311,7 @@ var Input = function (_React$Component) {
                     if (value.length < 2 && required) {
                         this.setState({
                             valid: false,
-                            invalidMessage: name + ' is not valid',
+                            invalidMessage: name.replace(/([\d])+/g, '') + ' is not valid',
                             value: value
                         });
                     } else {
@@ -814,9 +814,6 @@ var RegisterLitter = function (_FormBase) {
                                 id: 1,
                                 name: {
                                     value: ''
-                                },
-                                owner_address: {
-                                    value: ''
                                 }
                             }],
                             inputs: inputs
@@ -866,7 +863,7 @@ var RegisterLitter = function (_FormBase) {
     }, {
         key: 'hogletState',
         value: function hogletState(id, name, state, ref) {
-            name = name.replace('hoglet_', '');
+            name = name.replace('hoglet_', '').replace(/([\d])+/, '');
             var hoglets = this.state.hoglets.map(function (hoglet, index) {
                 if (hoglet.id === id) {
                     hoglet[name] = _extends({
@@ -941,7 +938,7 @@ var RegisterLitter = function (_FormBase) {
                     element = _react2.default.createElement(_input2.default, {
                         key: '' + id + index,
                         type: 'text',
-                        name: 'hoglet_' + inputType,
+                        name: 'hoglet_' + inputType + id,
                         parentUpdateState: _this4.hogletState.bind(_this4, id),
                         value: (_this4.state.hoglets[hogletIndex][inputType] || { value: '' }).value,
                         required: inputType != 'owner_name' ? true : false
@@ -949,7 +946,7 @@ var RegisterLitter = function (_FormBase) {
                 } else if (inputType == 'gender') {
                     element = _react2.default.createElement(
                         'select',
-                        { name: 'hedgehog_gender', key: '' + id + index },
+                        { name: 'hedgehog_gender' + id, key: '' + id + index },
                         _react2.default.createElement(
                             'option',
                             { value: 'male' },
@@ -965,7 +962,7 @@ var RegisterLitter = function (_FormBase) {
                     element = _react2.default.createElement(_input2.default, {
                         key: '' + id + index,
                         type: 'file',
-                        name: 'image',
+                        name: 'image' + id,
                         parentUpdateState: _this4.hogletState.bind(_this4, id)
                     });
                 } else if (inputType == 'owner_address') {
@@ -973,7 +970,7 @@ var RegisterLitter = function (_FormBase) {
                         key: '' + id + index,
                         cols: '25',
                         rows: '5',
-                        name: inputType,
+                        name: '' + inputType + id,
                         'data-id': id
                     });
                 } else if (inputType == 'hr' && _this4.state.hoglets.length > 1) {
@@ -1209,7 +1206,7 @@ var UIkitForm = function UIkitForm(_ref) {
                             { className: 'uk-form-label', htmlFor: name },
                             name.replace(/([\d]+)/g, '').replace(/_/g, ' ').replace(/\b[a-z]/g, function (letter) {
                                 return letter.toUpperCase();
-                            }),
+                            }).replace(/([\d])+/g, ''),
                             ':'
                         ),
                         _react2.default.createElement(
@@ -1228,7 +1225,7 @@ var UIkitForm = function UIkitForm(_ref) {
                             input
                         )
                     );
-                } else if (type !== 'hidden') {
+                } else {
                     input = _react2.default.createElement(
                         'div',
                         { className: 'uk-form-row', key: '' + index + index1 },
