@@ -17,6 +17,23 @@ const transporter = nodemailer.createTransport(
     })
 );
 
+/**
+ * Delete attachments by file path
+ * @param object attachments
+ * @return Promise
+ */
+const deleteAttachments = (attachments) => {
+    return Promise.all(attachments.map(({ path }) => { // Remove all attachment files
+        new Promise((resolve, reject) => {
+            fs.unlink(path, (err) => {
+                if(err) {
+                    return reject(new Error(err));
+                }
+            });
+        });
+    }));
+};
+
 
 module.exports = (router) => {
     router.prefix = '/api/register/';
@@ -66,16 +83,12 @@ module.exports = (router) => {
                             return reject(new Error(err));
                         }
 
-                        fs.emptyDir(uploadPath, (err) => {
-                            if(err) {
-                                return reject(new Error(err));
-                            }
-
-                            resolve({
+                        resolve(
+                            deleteAttachments(attachments).then(() => ({
                                 name: fields.breeder_name,
                                 type: 'hedgehog'
-                            });
-                        });
+                            }))
+                        );
                     });
                 });
             }, err => { // Catch reject call
@@ -159,16 +172,12 @@ module.exports = (router) => {
                             return reject(new Error(err));
                         }
 
-                        fs.emptyDir(uploadPath, (err) => {
-                            if(err) {
-                                return reject(new Error(err));
-                            }
-
-                            resolve({
+                        resolve(
+                            deleteAttachments(attachments).then(() => ({
                                 name: fields.breeder_affix,
                                 type: 'litter'
-                            });
-                        });
+                            }))
+                        );
                     });
                 });
             }, err => { // Catch reject call
