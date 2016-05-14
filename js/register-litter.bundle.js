@@ -819,6 +819,9 @@ var RegisterLitter = function (_FormBase) {
                             }],
                             inputs: inputs
                         });
+                    }).catch(function (err) {
+                        logError(err, 'componenets/register-litter');
+                        console.error(err);
                     });
                 }
             });
@@ -934,12 +937,13 @@ var RegisterLitter = function (_FormBase) {
 
             var inputElements = HOGLET_INPUT_TYPES.map(function (inputType, index) {
                 var element = void 0;
+                var hogletNum = hogletIndex + 1;
 
                 if (inputType == 'name' || inputType == 'colour' || inputType == 'owner_name') {
                     element = _react2.default.createElement(_input2.default, {
                         key: '' + id + index,
                         type: 'text',
-                        name: 'hoglet_' + inputType + id,
+                        name: 'hoglet_' + inputType + hogletNum,
                         parentUpdateState: _this4.hogletState.bind(_this4, id),
                         value: (_this4.state.hoglets[hogletIndex][inputType] || { value: '' }).value,
                         required: inputType != 'owner_name' ? true : false
@@ -947,7 +951,7 @@ var RegisterLitter = function (_FormBase) {
                 } else if (inputType == 'gender') {
                     element = _react2.default.createElement(
                         'select',
-                        { name: 'hedgehog_gender' + id, key: '' + id + index },
+                        { name: 'hedgehog_gender' + hogletNum, key: '' + id + index },
                         _react2.default.createElement(
                             'option',
                             { value: 'male' },
@@ -963,7 +967,7 @@ var RegisterLitter = function (_FormBase) {
                     element = _react2.default.createElement(_input2.default, {
                         key: '' + id + index,
                         type: 'file',
-                        name: 'image' + id,
+                        name: 'image' + hogletNum,
                         parentUpdateState: _this4.hogletState.bind(_this4, id)
                     });
                 } else if (inputType == 'owner_address') {
@@ -971,7 +975,7 @@ var RegisterLitter = function (_FormBase) {
                         key: '' + id + index,
                         cols: '25',
                         rows: '5',
-                        name: '' + inputType + id,
+                        name: '' + inputType + hogletNum,
                         'data-id': id
                     });
                 } else if (inputType == 'hr' && _this4.state.hoglets.length > 1) {

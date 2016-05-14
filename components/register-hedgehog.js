@@ -10,6 +10,7 @@ import InputGroup from './input-group';
 import Input from './input';
 import PaymentModal from './payment-modal';
 import FormBase from './form-base';
+import logError from '../lib/log-error';
 
 
 class RegisterHedgehog extends FormBase {
@@ -76,6 +77,7 @@ class RegisterHedgehog extends FormBase {
                         inputs
                     });
                 }).catch(err => {
+                    logError(err, 'componenet/register-hedgehog.js');
                     console.error(err);
                 });
             }
