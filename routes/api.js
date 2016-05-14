@@ -52,40 +52,40 @@ module.exports = (router) => {
                 files[file].size > 0 ? true : false
             ))).then((files) => {
                 return bPromise.map(files, (file) => { // Map files object to attachment array nd copy file from tmp to local folder
-                file = files[file];
-                let newPath = `${uploadPath}${file.name}`;
+                    file = files[file];
+                    let newPath = `${uploadPath}${file.name}`;
 
-                return uploadFile(file, newPath).then((path) => {
-                    return {
-                        fileName: file.name,
-                        path: newPath
-                    };
-                });
-            }, , {concurrency: 1}).then((attachments) => {
-                let table = jade.renderFile('templates/hedgehog-table.jade', {
-                    fields,
-                    type: 'Hedgehog'
-                });
+                    return uploadFile(file, newPath).then((path) => {
+                        return {
+                            fileName: file.name,
+                            path: newPath
+                        };
+                    });
+                }, {concurrency: 1}).then((attachments) => {
+                    let table = jade.renderFile('templates/hedgehog-table.jade', {
+                        fields,
+                        type: 'Hedgehog'
+                    });
+                    // console.log(table);
+                    return new Promise((resolve, reject) => { // Wrap sendmail in Promise api
+                        transporter.sendMail({
+                            from: `"${fields.your_name}"<${fields.your_email}>`,
+                            to: 'registrations@hedgehogregistry.co.uk',
+                            subject: 'Hedgehog Registration',
+                            html: table,
+                            attachments
+                        }, (err, info) => {
+                            if(err){
+                                return reject(new Error(err));
+                            }
 
-                // console.log(table);
-                return new Promise((resolve, reject) => { // Wrap sendmail in Promise api
-                    transporter.sendMail({
-                        from: `"${fields.your_name}"<${fields.your_email}>`,
-                        to: 'registrations@hedgehogregistry.co.uk',
-                        subject: 'Hedgehog Registration',
-                        html: table,
-                        attachments
-                    }, (err, info) => {
-                        if(err){
-                            return reject(new Error(err));
-                        }
-
-                        resolve(
-                            deleteAttachments(attachments).then(() => ({
-                                name: fields.breeder_name,
-                                type: 'hedgehog'
-                            }))
-                        );
+                            resolve(
+                                deleteAttachments(attachments).then(() => ({
+                                    name: fields.breeder_name,
+                                    type: 'hedgehog'
+                                }))
+                            );
+                        });
                     });
                 });
             }, err => { // Catch reject call
