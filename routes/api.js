@@ -136,9 +136,9 @@ module.exports = (router) => {
                 postedFiles[file].size > 0 ? true : false
             ))).then((files) => {
                 return bPromise.map(files, (file) => { // Map files object to attachment array nd copy file from tmp to local folder
-                    console.log(file);
+                    // console.log(file);
                     file = postedFiles[file];
-                    console.log(file);
+                    // console.log(file);
                     let newPath = `${uploadPath}${file.name}`;
 
                     return uploadFile(file, newPath).then((path) => {
