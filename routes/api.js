@@ -40,7 +40,7 @@ const deleteAttachments = (attachments) => {
 module.exports = (router) => {
     router.prefix = '/api/register/';
     router.addRoute('hedgehog', (req, res, url) => {
-        router.parseData(req, (err, fields, files) => {
+        router.parseData(req, (err, fields, postedFiles) => {
             if(err) {
                 return console.log(`Error: ${err.stack || err.message.toString()}`);
             }
@@ -48,11 +48,11 @@ module.exports = (router) => {
             // console.log(fields, Object.keys(files));
             let uploadPath = 'images/uploads/';
 
-            Promise.all(Object.keys(files).filter((file) => ( // Filter out any missing files
-                files[file].size > 0 ? true : false
+            Promise.all(Object.keys(postedFiles).filter((file) => ( // Filter out any missing files
+                postedFiles[file].size > 0 ? true : false
             ))).then((files) => {
                 return bPromise.map(files, (file) => { // Map files object to attachment array nd copy file from tmp to local folder
-                    file = files[file];
+                    file = postedFiles[file];
                     let newPath = `${uploadPath}${file.name}`;
 
                     return uploadFile(file, newPath).then((path) => {
@@ -119,7 +119,7 @@ module.exports = (router) => {
     });
 
     router.addRoute('litter', (req, res, url) => {
-        router.parseData(req, (err, fields, files) => {
+        router.parseData(req, (err, fields, postedFiles) => {
             if(err) {
                 return console.error(`Error: ${err.stack || err.message.toString()}`);
             }
@@ -132,11 +132,13 @@ module.exports = (router) => {
 
             let uploadPath = 'images/uploads/';
 
-            Promise.all(Object.keys(files).filter((file) => ( // Filter out any missing files
-                files[file].size > 0 ? true : false
+            Promise.all(Object.keys(postedFiles).filter((file) => ( // Filter out any missing files
+                postedFiles[file].size > 0 ? true : false
             ))).then((files) => {
                 return bPromise.map(files, (file) => { // Map files object to attachment array nd copy file from tmp to local folder
-                    file = files[file];
+                    console.log(file);
+                    file = postedFiles[file];
+                    console.log(file);
                     let newPath = `${uploadPath}${file.name}`;
 
                     return uploadFile(file, newPath).then((path) => {
