@@ -58,7 +58,7 @@ module.exports = (router) => {
                     return uploadFile(file, newPath).then((path) => {
                         return {
                             fileName: file.name,
-                            path: newPath
+                            path: path
                         };
                     });
                 }, {concurrency: 1}).then((attachments) => {
@@ -134,47 +134,43 @@ module.exports = (router) => {
 
             Promise.all(Object.keys(files).filter((file) => ( // Filter out any missing files
                 files[file].size > 0 ? true : false
-            )).map((file) => { // Map files to attachment array and copy file from tmp to local folder
-                file = files[file];
-                let newPath = `${uploadPath}${file.name}`;
+            ))).then((files) => {
+                return bPromise.map(files, (file) => { // Map files object to attachment array nd copy file from tmp to local folder
+                    file = files[file];
+                    let newPath = `${uploadPath}${file.name}`;
 
-                return new Promise((resolve, reject) => { // Wrap fs.copy in Promise api
-                    fs.copy(file.path, newPath, (err) => {
-                        if(err) {
-                            return reject(new Error(err));
-                        }
-
-                        resolve({
+                    return uploadFile(file, newPath).then((path) => {
+                        return {
                             fileName: file.name,
-                            path: newPath
-                        });
+                            path: path
+                        };
                     });
-                });
-            })).then((attachments) => {
-                let table = jade.renderFile('templates/hedgehog-litter.jade', {
-                    fields,
-                    type: 'Litter'
-                });
+                }, {concurrency: 1}).then((attachments) => {
+                    let table = jade.renderFile('templates/hedgehog-litter.jade', {
+                        fields,
+                        type: 'Litter'
+                    });
 
-                // console.log(table);
-                return new Promise((resolve, reject) => {
-                    transporter.sendMail({
-                        from: `"${fields.your_name}"<${fields.your_email}>`,
-                        to: 'registrations@hedgehogregistry.co.uk',
-                        subject: 'Litter Registration',
-                        html: table,
-                        attachments
-                    }, (err, info) => {
-                        if(err) {
-                            return reject(new Error(err));
-                        }
+                    // console.log(table);
+                    return new Promise((resolve, reject) => {
+                        transporter.sendMail({
+                            from: `"${fields.your_name}"<${fields.your_email}>`,
+                            to: 'registrations@hedgehogregistry.co.uk',
+                            subject: 'Litter Registration',
+                            html: table,
+                            attachments
+                        }, (err, info) => {
+                            if(err) {
+                                return reject(new Error(err));
+                            }
 
-                        resolve(
-                            deleteAttachments(attachments).then(() => ({
-                                name: fields.breeder_affix,
-                                type: 'litter'
-                            }))
-                        );
+                            resolve(
+                                deleteAttachments(attachments).then(() => ({
+                                    name: fields.breeder_affix,
+                                    type: 'litter'
+                                }))
+                            );
+                        });
                     });
                 });
             }, err => { // Catch reject call
