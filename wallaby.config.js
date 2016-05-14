@@ -13,11 +13,12 @@ module.exports = function(wallaby) {
             "routes/*.js",
             "jade/*.jade",
             "templates/*.jade",
+            "lib/upload-file.js",
             { pattern: "components/input.js", include: false },
         ],
         tests: [
             "tests/*.js",
-            "tests/api.js",
+            "!tests/api.js",
             { pattern: "test/components/*.js", include: false }
         ],
         env: {
