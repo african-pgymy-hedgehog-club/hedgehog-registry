@@ -10,6 +10,8 @@ const browserify = require('browserify');
 const babelify = require('babelify');
 const nodemailer = require('nodemailer');
 const sendmailTransport = require('nodemailer-sendmail-transport');
+const uploadFile = require('../lib/upload-file');
+const bPromise = require('bluebird');
 
 const transporter = nodemailer.createTransport(
     sendmailTransport({
@@ -48,23 +50,18 @@ module.exports = (router) => {
 
             Promise.all(Object.keys(files).filter((file) => ( // Filter out any missing files
                 files[file].size > 0 ? true : false
-            )).map((file) => { // Map files object to attachment array and copy file from tmp to local folder
+            ))).then((files) => {
+                return bPromise.map(files, (file) => { // Map files object to attachment array nd copy file from tmp to local folder
                 file = files[file];
                 let newPath = `${uploadPath}${file.name}`;
 
-                return new Promise((resolve, reject) => { // Wrap fs.copy in Promise api
-                    fs.copy(file.path, newPath, (err) => { // Copy temp file
-                        if(err) {
-                            return reject(new Error(err));
-                        }
-
-                        resolve({
-                            fileName: file.name,
-                            path: newPath
-                        });
-                    });
+                return uploadFile(file, newPath).then((path) => {
+                    return {
+                        fileName: file.name,
+                        path: newPath
+                    };
                 });
-            })).then((attachments) => {
+            }, , {concurrency: 1}).then((attachments) => {
                 let table = jade.renderFile('templates/hedgehog-table.jade', {
                     fields,
                     type: 'Hedgehog'
