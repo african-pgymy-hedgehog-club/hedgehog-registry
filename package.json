@@ -9,7 +9,7 @@
     "test-api": "mocha -w tests/api.js",
     "start": "node --harmony index",
     "nodemon": "nodemon -L index",
-    "hot-reload-server": "chokidar-socket-emitter -p components",
+    "hot-reload-server": "chokidar-socket-emitter -p /app/components/ -P",
     "dev": "node ./node_modules/concurrently/src/main.js --kill-others \"npm run nodemon\" \"npm run hot-reload-server\"",
     "build": "jspm bundle-sfx",
     "build-litter": "\"npm run build --\"components\register-litter.js js\register-litter.bundle.js\"\""

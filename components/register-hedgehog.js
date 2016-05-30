@@ -10,8 +10,6 @@ import InputGroup from './input-group';
 import Input from './input';
 import PaymentModal from './payment-modal';
 import FormBase from './form-base';
-import logError from '../lib/log-error';
-
 
 class RegisterHedgehog extends FormBase {
     constructor() {
@@ -91,7 +89,7 @@ class RegisterHedgehog extends FormBase {
             loading
         } = this.state.paymentModal;
 
-        console.log(this.state.inputs);
+        // console.log(this.state.inputs);
 
         return (
             /* jshint ignore: start */

@@ -86,6 +86,9 @@ class RegisterLitter extends FormBase {
                         }],
                         inputs
                     });
+                }).catch(err => {
+                    logError(err, 'componenets/register-litter');
+                    console.error(err);
                 });
             }
         });
@@ -186,18 +189,20 @@ class RegisterLitter extends FormBase {
             'image',
             'owner_name',
             'owner_address',
+            'owner_email',
             'hr'
         ];
 
         let inputElements = HOGLET_INPUT_TYPES.map((inputType, index) => {
             let element;
+            let hogletNum = hogletIndex + 1;
 
-            if(inputType == 'name' || inputType == 'colour' || inputType == 'owner_name') {
+            if(inputType == 'name' || inputType == 'colour' || inputType == 'owner_name' || inputType == 'owner_email') {
                 element = (
                     <Input
                         key={`${id}${index}`}
                         type="text"
-                        name={`hoglet_${inputType}${id}`}
+                        name={`hoglet_${inputType}${hogletNum}`}
                         parentUpdateState={this.hogletState.bind(this, id)}
                         value={(this.state.hoglets[hogletIndex][inputType] || {value: ''}).value}
                         required={((inputType != 'owner_name') ? true : false)}
@@ -206,7 +211,7 @@ class RegisterLitter extends FormBase {
             }
             else if(inputType == 'gender') {
                 element = (
-                    <select name={`hedgehog_gender${id}`} key={`${id}${index}`}>
+                    <select name={`hedgehog_gender${hogletNum}`} key={`${id}${index}`}>
                         <option value="male">
                             Male
                         </option>
@@ -221,7 +226,7 @@ class RegisterLitter extends FormBase {
                     <Input
                         key={`${id}${index}`}
                         type="file"
-                        name={`image${id}`}
+                        name={`image${hogletNum}`}
                         parentUpdateState={this.hogletState.bind(this, id)}
                     />
                 );
@@ -232,7 +237,7 @@ class RegisterLitter extends FormBase {
                         key={`${id}${index}`}
                         cols="25"
                         rows="5"
-                        name={`${inputType}${id}`}
+                        name={`${inputType}${hogletNum}`}
                         data-id={id}
                     >
                     </textarea>

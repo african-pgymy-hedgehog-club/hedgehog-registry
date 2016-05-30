@@ -933,13 +933,13 @@ var RegisterLitter = function (_FormBase) {
         value: function hogletInputTypes(id, hogletIndex, hogletInputs) {
             var _this4 = this;
 
-            var HOGLET_INPUT_TYPES = ['name', 'gender', 'colour', 'image', 'owner_name', 'owner_address', 'hr'];
+            var HOGLET_INPUT_TYPES = ['name', 'gender', 'colour', 'image', 'owner_name', 'owner_address', 'owner_email', 'hr'];
 
             var inputElements = HOGLET_INPUT_TYPES.map(function (inputType, index) {
                 var element = void 0;
                 var hogletNum = hogletIndex + 1;
 
-                if (inputType == 'name' || inputType == 'colour' || inputType == 'owner_name') {
+                if (inputType == 'name' || inputType == 'colour' || inputType == 'owner_name' || inputType == 'owner_email') {
                     element = _react2.default.createElement(_input2.default, {
                         key: '' + id + index,
                         type: 'text',
