@@ -10,6 +10,7 @@ services:
             - PORT=3100
         ports:
             - 3100:3100
+            - 5776:5776
         volumes:
             - ./:/app/
     couchdb:
