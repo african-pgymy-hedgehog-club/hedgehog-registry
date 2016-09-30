@@ -7,8 +7,10 @@ services:
             service: web
         environment:
             - PORT='3001'
+        restart: always
 
     couchdb:
         extends:
             file: services.yml
             service: couchdb
+        restart: always
