@@ -9,6 +9,6 @@ services:
             - PORT='3001'
 
     couchdb:
-        extends: services.yml
+        extends:
             file: services.yml
             service: couchdb
