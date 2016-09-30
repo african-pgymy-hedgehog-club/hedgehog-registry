@@ -10,4 +10,5 @@ services:
 
     couchdb:
         extends: services.yml
-        service: couchdb
+            file: services.yml
+            service: couchdb
