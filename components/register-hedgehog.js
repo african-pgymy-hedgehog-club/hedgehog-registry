@@ -75,7 +75,7 @@ class RegisterHedgehog extends FormBase {
                         inputs
                     });
                 }).catch(err => {
-                    logError(err, 'componenet/register-hedgehog.js');
+                    // logError(err, 'componenet/register-hedgehog.js');
                     console.error(err);
                 });
             }

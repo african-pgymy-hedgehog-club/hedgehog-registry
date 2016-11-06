@@ -50,7 +50,7 @@ const PaymentModal = ({
     error,
     data: {
     ppURL = 'https://www.paypal.com/cgi-bin/websrc',
-    ppAccount = 'registrations@hedgehogregistry.co.uk',
+    ppAccount = 'tayer@hedgehogregistry.co.uk',
     name,
     type,
 }}) => (

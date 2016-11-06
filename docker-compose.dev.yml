@@ -18,4 +18,4 @@ services:
             file: services.yml
             service: couchdb
         ports:
-            - '5984:5984'
+            - 5984:5984
