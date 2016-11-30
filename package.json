@@ -12,7 +12,7 @@
     "hot-reload-server": "chokidar-socket-emitter -p /app/components/ -P",
     "dev": "node ./node_modules/concurrently/src/main.js --kill-others \"npm run nodemon\" \"npm run hot-reload-server\"",
     "build": "jspm bundle-sfx",
-    "build-litter": "\"npm run build --\"components\register-litter.js js\register-litter.bundle.js\"\""
+    "build-litter": "\"npm run build --\"components/register-litter.js js/register-litter.bundle.js\"\""
   },
   "babel": {
     "presets": [
@@ -53,6 +53,8 @@
     "small-router": "^1.0.0"
   },
   "devDependencies": {
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.8",
     "babel-plugin-react-transform": "^1.1.1",
     "babel-preset-es2015": "^6.1.18",
     "babel-preset-react": "^6.1.18",
@@ -73,9 +75,6 @@
     "wallabify": "0.0.14"
   },
   "jspm": {
-    "directories": {
-      "baseURL": "js"
-    },
     "dependencies": {
       "es6-promise": "npm:es6-promise@^3.1.2",
       "fetch-ie8": "npm:fetch-ie8@^1.4.2",
@@ -91,6 +90,10 @@
       "babel-runtime": "npm:babel-runtime@^5.8.24",
       "capaj/systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@^0.5.7",
       "core-js": "npm:core-js@^1.1.4"
+    },
+    "buildConfig": {
+      "transpileES6": true,
+      "minify": true
     }
   }
 }
