@@ -6,7 +6,9 @@ services:
             file: services.yml
             service: web
         environment:
-            - PORT='3001'
+            - PORT=3100
+        ports:
+            - 3100:3100
         restart: always
 
     couchdb:

@@ -75,6 +75,9 @@
     "wallabify": "0.0.14"
   },
   "jspm": {
+    "directories": {
+      "baseURL": "js"
+    },
     "dependencies": {
       "es6-promise": "npm:es6-promise@^3.1.2",
       "fetch-ie8": "npm:fetch-ie8@^1.4.2",

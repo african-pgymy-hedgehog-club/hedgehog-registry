@@ -13,8 +13,11 @@ ADD components/ components/
 ADD routes/ routes/
 ADD templates/ templates/
 ADD index.js index.js
+ADD package.json package.json
 
 # Install dependencies
+RUN npm i -g jspm
 RUN npm install
+RUN jspm install -y
 
 CMD ["node", "index.js"]
