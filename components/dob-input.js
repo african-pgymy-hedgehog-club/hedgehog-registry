@@ -1,11 +1,14 @@
 import React from 'react';
+import Input from './input';
 
-const DOB = ({name, data, value}) => (
+const DOB = ({name, data, required = false, parentUpdateState = {}, value}) => (
     <div>
         <script type="text/javascript" src="datepicker.min.js"></script>
-        <input
+        <Input
             type="text"
             name={name}
+            required={required}
+            parentUpdateState={parentUpdateState}
             data-uk-datepicker={JSON.stringify(data)}
         />
     </div>

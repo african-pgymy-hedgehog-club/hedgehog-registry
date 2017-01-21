@@ -82,7 +82,7 @@ module.exports = (router) => {
                             resolve(
                                 deleteAttachments(attachments).then(() => ({
                                     name: fields.breeder_name,
-                                    type: 'hedgehog'
+                                    type: 'hedgehog registration'
                                 }))
                             );
                         });
@@ -105,12 +105,13 @@ module.exports = (router) => {
                 res.end( JSON.stringify(errRes) );
             });
 
+            // Test Data for email api
             // console.log("fields", fields);
             // console.log("files", files);
-            //
+
             // let data = {
             //     name: fields.breeder_name,
-            //     type: 'hedgehog'
+            //     type: 'hedgehog registration'
             // };
             //
             // res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -118,7 +119,7 @@ module.exports = (router) => {
         });
     });
 
-    router.addRoute('litter', (req, res, url) => {
+    router.addRoute('litter', (req, res, url) => { // Parse litter registration form and send details as email
         router.parseData(req, (err, fields, postedFiles) => {
             if(err) {
                 return console.error(`Error: ${err.stack || err.message.toString()}`);
@@ -132,13 +133,13 @@ module.exports = (router) => {
 
             let uploadPath = 'images/uploads/';
 
-            Promise.all(Object.keys(postedFiles).filter((file) => ( // Filter out any missing files
-                postedFiles[file].size > 0 ? true : false
+            Promise.all(Object.keys(files).filter((file) => ( // Filter out any missing files
+                files[file].size > 0 ? true : false
             ))).then((files) => {
                 return bPromise.map(files, (file) => { // Map files object to attachment array nd copy file from tmp to local folder
-                    // console.log(file);
-                    file = postedFiles[file];
-                    // console.log(file);
+                    console.log(file);
+                    file = files[file];
+                    console.log(file);
                     let newPath = `${uploadPath}${file.name}`;
 
                     return uploadFile(file, newPath).then((path) => {
@@ -150,7 +151,7 @@ module.exports = (router) => {
                 }, {concurrency: 1}).then((attachments) => {
                     let table = jade.renderFile('templates/hedgehog-litter.jade', {
                         fields,
-                        type: 'Litter'
+                        type: 'Litter Registration'
                     });
 
                     // console.log(table);
@@ -181,6 +182,52 @@ module.exports = (router) => {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end( JSON.stringify(data) );
             }, err => { // Catch reject call
+                let errRes = {
+                    error: err.stack || err.toString()
+                };
+
+                console.error(err.stack || err);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end( JSON.stringify(errRes) );
+            });
+        });
+    });
+
+    router.addRoute('update-ownership', (req, res, url) => {
+        router.parseData(req, (err, fields, postedFiles) => {
+            if(err) {
+                return console.error(`Error ${err.stack || err.message.toString()}`);
+            }
+
+            let table = jade.renderFile('templates/update-ownership.jade', {
+                fields
+            });
+
+            new Promise((resolve, reject) => {
+                // transporter.sendMail({
+                //     from: `"${fields.your_name}"<${fields.your_email}>`,
+                //     to: 'registrations@hedgehogregistry.co.uk',
+                //     subject: 'Update Ownership',
+                //     html:table
+                // }, (err, info) => {
+                //     if(err) {
+                //         return reject(new Error(err));
+                //     }
+                //
+                //     resolve({
+                //         name: fields.hedgehog_name
+                //         type: 'update ownership'
+                //     });
+                // });
+
+                resolve({
+                    name: fields.hedgehog_name,
+                    type: 'update ownership'
+                });
+            }).then(data => {
+                res.writeHead(200, { 'Content-Type': 'application/json'});
+                res.end( JSON.stringify(data) );
+            }).catch(err => {
                 let errRes = {
                     error: err.stack || err.toString()
                 };

@@ -286,9 +286,7 @@ class RegisterLitter extends FormBase {
                     loading={loading}
                 />
 
-                <h2>
-                    Register Litter
-                </h2>
+                <h2>Register Litter</h2>
 
                 <Form type="horizontal"
                     style={{

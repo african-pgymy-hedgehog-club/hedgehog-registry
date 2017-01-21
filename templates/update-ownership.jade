@@ -1,0 +1,11 @@
+table(border="1" style="text-align: center;")
+    tr
+        td(colspan="2")
+            h2 Update Ownership
+            
+    each val, name in fields
+        - name = name.replace(/_/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase())
+        tr
+            td= name
+            td= val
+            

@@ -135,6 +135,8 @@ export default class Input extends React.Component {
             name,
             className
         } = this.props;
+
+        let dataUKDatepicker = this.props['data-uk-datepicker'] || false;
         let require = this.props.required || false;
         type = (type == 'email' ? 'text' : type);
         style = {
@@ -142,18 +144,26 @@ export default class Input extends React.Component {
             ...this.props.style
         }
 
+        let attrs = { // input attributes
+            style: style,
+            type: type,
+            name: name,
+            className: className,
+            value: this.state.value
+        }
+
+        if(dataUKDatepicker) {
+            attrs['data-uk-datepicker'] = dataUKDatepicker;
+        }
+
         return (
             <input
-                style={style}
-                type={type}
-                name={name}
-                className={className}
-                ref="input"
+                {...attrs}
                 onChange={e => this.setState({
                     value: this.refs.input.value
                 })}
+                ref="input"
                 onBlur={e => this.validate(e)}
-                value={this.state.value}
             />
         );
     }

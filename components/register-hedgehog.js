@@ -158,8 +158,8 @@ class RegisterHedgehog extends FormBase {
                         name="date_of_birth"
                         data={{
                             format: "DD/MM/YYYY",
-                            minDate: moment(new Date()).subtract(5, 'years').format("DD.MM.YYYY"), //"16.05.15",
-                            maxDate: moment(new Date()).subtract(2, 'weeks').format("DD.MM.YYYY") //"08.03.15"
+                            minDate: moment(new Date()).subtract(5, 'years').format("DD.MM.YYYY"),
+                            maxDate: moment(new Date()).subtract(2, 'weeks').format("DD.MM.YYYY")
                         }}
                         type="dob"
                         required={true}
