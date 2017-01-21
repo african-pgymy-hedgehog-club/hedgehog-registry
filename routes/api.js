@@ -204,26 +204,26 @@ module.exports = (router) => {
             });
 
             new Promise((resolve, reject) => {
-                // transporter.sendMail({
-                //     from: `"${fields.your_name}"<${fields.your_email}>`,
-                //     to: 'registrations@hedgehogregistry.co.uk',
-                //     subject: 'Update Ownership',
-                //     html:table
-                // }, (err, info) => {
-                //     if(err) {
-                //         return reject(new Error(err));
-                //     }
-                //
-                //     resolve({
-                //         name: fields.hedgehog_name
-                //         type: 'update ownership'
-                //     });
-                // });
+                transporter.sendMail({
+                    from: `"${fields.your_name}"<${fields.your_email}>`,
+                    to: 'registrations@hedgehogregistry.co.uk',
+                    subject: 'Update Ownership',
+                    html:table
+                }, (err, info) => {
+                    if(err) {
+                        return reject(new Error(err));
+                    }
 
-                resolve({
-                    name: fields.hedgehog_name,
-                    type: 'update ownership'
+                    resolve({
+                        name: fields.hedgehog_name
+                        type: 'update ownership'
+                    });
                 });
+
+                // resolve({
+                //     name: fields.hedgehog_name,
+                //     type: 'update ownership'
+                // });
             }).then(data => {
                 res.writeHead(200, { 'Content-Type': 'application/json'});
                 res.end( JSON.stringify(data) );
