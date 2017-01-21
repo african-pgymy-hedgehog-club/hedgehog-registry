@@ -215,7 +215,7 @@ module.exports = (router) => {
                     }
 
                     resolve({
-                        name: fields.hedgehog_name
+                        name: fields.hedgehog_name,
                         type: 'update ownership'
                     });
                 });
