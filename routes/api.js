@@ -133,13 +133,13 @@ module.exports = (router) => {
 
             let uploadPath = 'images/uploads/';
 
-            Promise.all(Object.keys(files).filter((file) => ( // Filter out any missing files
-                files[file].size > 0 ? true : false
+            Promise.all(Object.keys(postedFiles).filter((file) => ( // Filter out any missing files
+                postedFiles[file].size > 0 ? true : false
             ))).then((files) => {
                 return bPromise.map(files, (file) => { // Map files object to attachment array nd copy file from tmp to local folder
-                    console.log(file);
-                    file = files[file];
-                    console.log(file);
+                    // console.log(file);
+                    file = postedFiles[file];
+                    // console.log(file);
                     let newPath = `${uploadPath}${file.name}`;
 
                     return uploadFile(file, newPath).then((path) => {
@@ -151,7 +151,7 @@ module.exports = (router) => {
                 }, {concurrency: 1}).then((attachments) => {
                     let table = jade.renderFile('templates/hedgehog-litter.jade', {
                         fields,
-                        type: 'Litter Registration'
+                        type: 'Litter'
                     });
 
                     // console.log(table);
