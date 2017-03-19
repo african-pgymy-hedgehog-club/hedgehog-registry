@@ -13,11 +13,17 @@ const sendmailTransport = require('nodemailer-sendmail-transport');
 const uploadFile = require('../lib/upload-file');
 const bPromise = require('bluebird');
 
-const transporter = nodemailer.createTransport(
-    sendmailTransport({
-        path: "/usr/sbin/sendmail"
-    })
-);
+const transporter = nodemailer.createTransport({
+    host: '95.154.246.177',
+    secure: false,
+    auth: {
+        user: 'registrations@hedgehogregistry.co.uk',
+        pass: 'ukclubregistry1'
+    },
+    tls: {
+       rejectUnauthorized: false
+   }
+});
 
 /**
  * Delete attachments by file path
