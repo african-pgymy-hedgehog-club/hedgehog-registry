@@ -42,4 +42,9 @@ module.exports = (router) => {
     router.addRoute('/log-error', (parameters) => {
         //code
     });
+
+    router.addRoute('/.well-known/:acme([a-z\-]+)/:file([\w]+)', (req, res, url) => {
+        res.writeHead(200);
+        res.end("ok");
+    });
 }

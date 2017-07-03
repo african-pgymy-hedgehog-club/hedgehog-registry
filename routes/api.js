@@ -14,7 +14,7 @@ const uploadFile = require('../lib/upload-file');
 const bPromise = require('bluebird');
 
 const transporter = nodemailer.createTransport({
-    host: '95.154.246.177',
+    host: '176.58.104.35',
     secure: false,
     auth: {
         user: 'registrations@hedgehogregistry.co.uk',
