@@ -52,7 +52,7 @@ const UIkitForm = ({
                             <div className="uk-form-row" key={`${index}${index1}`}>
                                 <label className="uk-form-label" htmlFor={name}>
                                     {/* Replace _ with a space and for each space change the first letter after to uppercase */}
-                                    {name.replace(/([\d]+)/g, '').replace(/_/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase())}:
+                                    {name.replace(/(!affix)([\d]+)/g, '').replace(/_/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase())}:
                                 </label>
                                 <div className="uk-form-controls">
                                     {input}

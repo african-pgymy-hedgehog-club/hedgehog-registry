@@ -227,7 +227,9 @@ class RegisterHedgehog extends FormBase {
                         cols="25"
                         rows="7"
                         name="owners_address"
-                    />
+                    >
+                        {(this.state.inputs.owners_address || {value: ""}).value}
+                    </textarea
 
                     <Input
                         type="email"

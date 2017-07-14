@@ -1,17 +1,12 @@
 "use strict";
 
 require('babel-core/register');
-const React = require('react');
-const ReactDOMServer = require('react-dom/server');
 const jade = require('jade');
-const fs = require('fs');
-const browserify = require('browserify');
-const babelify = require('babelify');
 
 module.exports = (router) => {
     router.prefix = '/register/';
 
-    router.addRoute('hedgehog', (req, res, url) => {
+    router.addRoute('hedgehog', (req, res) => {
         let registerHedgehog = `
             <script type="text/javascript" src="/datepicker.min.js"></script>
             <script type="text/javascript" src="/register-hedgehog.min.js"></script>
@@ -27,7 +22,7 @@ module.exports = (router) => {
         res.end(html);
     });
 
-    router.addRoute('litter', (req, res, url) => {
+    router.addRoute('litter', (req, res) => {
         let registerHedgehog = `
             <script type="text/javascript" src="/datepicker.min.js"></script>
             <script type="text/javascript" src="/register-litter.min.js"></script>
@@ -43,7 +38,7 @@ module.exports = (router) => {
         res.end(html);
     });
 
-    router.addRoute('update_ownership', (req, res, url) => {
+    router.addRoute('update_ownership', (req, res) => {
         let updateOwnerhip = `
             <script type="text/javascript" src="/datepicker.min.js"></script>
             <script type="text/javascript" src="/update-ownership.min.js"></script>
@@ -53,6 +48,19 @@ module.exports = (router) => {
             title: "Update Ownership",
             html: updateOwnerhip,
             // component: 'update-ownership'
+        });
+
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.end(html);
+    });
+
+    router.addRoute('apply_for_breeder_affix', (req, res) => {
+        let applyForBreederAffix = '<script type="text/javascript" src="/apply-for-breeder-affix.min.js"></script>';
+
+        let html = jade.renderFile('jade/index.jade', {
+            title: "Apply For Breeder Affix",
+            html: applyForBreederAffix,
+            component: 'apply-for-breeder-affix'
         });
 
         res.writeHead(200, { 'Content-Type': 'text/html' });

@@ -45,15 +45,15 @@ export default class Input extends React.Component {
      * Validate input values against types of input
      * @param {object} e
      */
-    validate(e) {
+    validate() {
         let {type, name} = this.props;
-        let required = this.props.required || false;
+        let {required = false, minlength = 2} = this.props;
         name = name.replace(/_/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase());
         let {value} = this.refs.input;
 
         switch (type) {
             case 'text':
-                    if(value.length < 2 && required) {
+                    if(value.length < minlength && required) {
                         this.setState({
                             valid: false,
                             invalidMessage: `${name.replace(/([\d])+/g, '')} is not valid`,
@@ -137,12 +137,11 @@ export default class Input extends React.Component {
         } = this.props;
 
         let dataUKDatepicker = this.props['data-uk-datepicker'] || false;
-        let require = this.props.required || false;
         type = (type == 'email' ? 'text' : type);
         style = {
             ...style,
             ...this.props.style
-        }
+        };
 
         let attrs = { // input attributes
             style: style,
@@ -150,7 +149,7 @@ export default class Input extends React.Component {
             name: name,
             className: className,
             value: this.state.value
-        }
+        };
 
         if(dataUKDatepicker) {
             attrs['data-uk-datepicker'] = dataUKDatepicker;
@@ -159,7 +158,7 @@ export default class Input extends React.Component {
         return (
             <input
                 {...attrs}
-                onChange={e => this.setState({
+                onChange={() => this.setState({
                     value: this.refs.input.value
                 })}
                 ref="input"
@@ -173,11 +172,7 @@ export default class Input extends React.Component {
      * @return {jsx}
      */
     invalid() {
-        let {type, name} = this.props;
-        let require = this.props.required || false;
-        let style = {
-            border: "1px solid #f00"
-        };
+        let style = { border: "1px solid #f00" };
 
         return (
             <div>
@@ -196,7 +191,6 @@ export default class Input extends React.Component {
             isValid ?
                 this.input() :
                 this.invalid()
-        )
-
+        );
     }
 }
