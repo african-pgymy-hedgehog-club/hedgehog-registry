@@ -1,13 +1,8 @@
 "use strict";
 
 require('babel-core/register');
-const mysql = require('promise-mysql');
-const React = require('react');
-const ReactDOMServer = require('react-dom/server');
 const jade = require('jade');
 const fs = require('fs-extra');
-const browserify = require('browserify');
-const babelify = require('babelify');
 const nodemailer = require('nodemailer');
 const sendmailTransport = require('nodemailer-sendmail-transport');
 const uploadFile = require('../lib/upload-file');
@@ -21,8 +16,8 @@ const transporter = nodemailer.createTransport({
         pass: 'ukclubregistry1'
     },
     tls: {
-       rejectUnauthorized: false
-   }
+        rejectUnauthorized: false
+    }
 });
 
 /**
@@ -45,7 +40,7 @@ const deleteAttachments = (attachments) => {
 
 module.exports = (router) => {
     router.prefix = '/api/register/';
-    router.addRoute('hedgehog', (req, res, url) => {
+    router.addRoute('hedgehog', (req, res) => {
         router.parseData(req, (err, fields, postedFiles) => {
             if(err) {
                 return console.log(`Error: ${err.stack || err.message.toString()}`);
@@ -80,7 +75,7 @@ module.exports = (router) => {
                             subject: 'Hedgehog Registration',
                             html: table,
                             attachments
-                        }, (err, info) => {
+                        }, (err) => {
                             if(err){
                                 return reject(new Error(err));
                             }
@@ -125,7 +120,7 @@ module.exports = (router) => {
         });
     });
 
-    router.addRoute('litter', (req, res, url) => { // Parse litter registration form and send details as email
+    router.addRoute('litter', (req, res) => { // Parse litter registration form and send details as email
         router.parseData(req, (err, fields, postedFiles) => {
             if(err) {
                 return console.error(`Error: ${err.stack || err.message.toString()}`);
@@ -168,7 +163,7 @@ module.exports = (router) => {
                             subject: 'Litter Registration',
                             html: table,
                             attachments
-                        }, (err, info) => {
+                        }, (err) => {
                             if(err) {
                                 return reject(new Error(err));
                             }
@@ -199,15 +194,13 @@ module.exports = (router) => {
         });
     });
 
-    router.addRoute('update-ownership', (req, res, url) => {
-        router.parseData(req, (err, fields, postedFiles) => {
+    router.addRoute('update-ownership', (req, res) => { // Parse update ownership form and send details as an email
+        router.parseData(req, (err, fields) => {
             if(err) {
                 return console.error(`Error ${err.stack || err.message.toString()}`);
             }
 
-            let table = jade.renderFile('templates/update-ownership.jade', {
-                fields
-            });
+            let table = jade.renderFile('templates/update-ownership.jade', { fields });
 
             new Promise((resolve, reject) => {
                 transporter.sendMail({
@@ -215,7 +208,7 @@ module.exports = (router) => {
                     to: 'registrations@hedgehogregistry.co.uk',
                     subject: 'Update Ownership',
                     html:table
-                }, (err, info) => {
+                }, (err) => {
                     if(err) {
                         return reject(new Error(err));
                     }
@@ -234,14 +227,57 @@ module.exports = (router) => {
                 res.writeHead(200, { 'Content-Type': 'application/json'});
                 res.end( JSON.stringify(data) );
             }).catch(err => {
-                let errRes = {
-                    error: err.stack || err.toString()
-                };
+                let errRes = { error: err.stack || err.toString() };
 
                 console.error(err.stack || err);
                 res.writeHead(500, { 'Content-Type': 'application/json' });
                 res.end( JSON.stringify(errRes) );
             });
+        });
+    });
+
+    router.addRoute('apply-for-breeder-affix', (req, res) => { // Parse apply for breeder affix form and send details as an email
+        new Promise((resolve, reject) => {
+            router.parseData(req, (err, fields) => {
+                if(err) {
+                    return reject(err);
+                }
+
+                return resolve(fields);
+            });
+        }).then(fields => {
+            return [
+                fields,
+                jade.renderFile('templates/apply-for-breeder-affix.jade', { fields })
+            ];
+        }).then(([fields, table]) => {
+            return new Promise((resolve, reject) => {
+                transporter.sendMail({
+                    from: `"${fields.breeder_name}"<${fields.your_email}>`,
+                    to: 'registrations@hedgehogregistry.co.uk',
+                    'subject': 'Apply For Breeder Affix',
+                    html: table
+                }, err => {
+                    if(err) {
+                        return reject(new Error(err));
+                    }
+
+                    resolve({
+                        name: fields.breeder_name,
+                        type: 'apply for breeder affix',
+                        success: true
+                    });
+                });
+            });
+        }).then(data => {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end( JSON.stringify(data));
+        }).catch(err => {
+            let errRes = { error : err.stack || err.toString() };
+
+            console.error(err.stack || err);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end( JSON.stringify(errRes) );
         });
     });
 };

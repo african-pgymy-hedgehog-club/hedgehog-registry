@@ -17,15 +17,13 @@ String.prototype.ucwords = function () {
  * Display either loading animation or error message and then close after 5 seconds
  */
 const displayloadingOrError = (loading, {error, onClose}) => {
-    let display = null;
+    let display;
     if(loading) {
         display = (
-            /* jshint ignore: start */
             <div>
                 <h3>Loading...</h3>
                 <img src="/images/loader.gif" />
             </div>
-            /* jshint ignore: end */
         );
     }
     else if(error) {
@@ -34,9 +32,7 @@ const displayloadingOrError = (loading, {error, onClose}) => {
         }, 5000);
 
         display = (
-            /* jshint ignore: start */
             <h2>Sorry for the inconvenience but an error occurred</h2>
-            /* jshint ignore: end */
         );
     }
 
@@ -69,7 +65,6 @@ const PaymentModal = ({
     }
 
     return (
-        /* jshint ignore: start */
         <Modal
             isOpen={display}
             style={{
@@ -195,8 +190,7 @@ const PaymentModal = ({
                 </div>
             )}
         </Modal>
-        /* jshint ignore: end */
     );
-}
+};
 
 export default PaymentModal;
