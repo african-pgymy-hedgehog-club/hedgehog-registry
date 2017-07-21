@@ -63,6 +63,11 @@ module.exports = function (grunt) {
 				options: browserifyOptions(4477, true),
 				src: 'components/register-litter.js',
 				dest: 'js/register-litter.bundle.js'
+			},
+			applyForAffix: {
+				options: browserifyOptions(4477, true),
+				src: 'components/apply-for-breeder-affix.js',
+				dest: 'js/apply-for-breeder-affix.bundle.js'
 			}
 		},
 
@@ -91,6 +96,22 @@ module.exports = function (grunt) {
 				files: {
 					'js/register-litter.min.js': ['js/register-litter.bundle.js']
 				}
+			},
+			registerLitter: {
+				options: {
+					beautify: true
+				},
+				files: {
+					'js/register-litter.min.js': ['js/register-litter.bundle.js']
+				}
+			},
+			applyForAffix: {
+				options: {
+					beautify: true
+				},
+				files: {
+					'js/apply-for-breeder-affix.min.js': ['js/apply-for-breeder-affix.bundle.js']
+				}
 			}
 		}
     });
@@ -101,6 +122,8 @@ module.exports = function (grunt) {
 	grunt.registerTask('register-hedgehog-live', ['env:dist', 'browserify:registerHedgehogLive', 'uglify:registerHedgehog']);
 	grunt.registerTask('register-litter-dev', ['env:dev', 'browserify:registerLitterDev']);
 	grunt.registerTask('register-litter-live', ['env:dist', 'browserify:registerLitterLive', 'uglify:registerLitter']);
+    grunt.registerTask('apply-for-affix-live', ['env:dist', 'browserify:applyForAffix', 'uglify:applyForAffix']);
+
 
 	// Load up tasks
 	grunt.loadNpmTasks('grunt-browserify');
