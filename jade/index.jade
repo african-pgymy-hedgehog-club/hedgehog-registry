@@ -41,14 +41,16 @@ html(lang='en')
             script.
                 let origin = location.origin;
                 let component = $('input[name="component"]').val();
-                if(origin.match(/localhost/) || origin.match(/docker/)) {
+                if(origin.includes('localhost') || origin.includes('docker')) {
                     origin = origin.replace(/:([0-9]+)/g, '');
+                    
+                    console.log(component);
                     
                     System.trace = true;
                     System.import('capaj/systemjs-hot-reloader').then((HotReloader) => {
                         return new HotReloader.default(`${origin}:5776`);
                     }).then((hr) => {
-                        System.import(`components/${component}`).then(() => {
+                        System.import(`/components/${component}`).then(() => {
                             $('div#loading').remove();
                         }).catch(err => {
                             $('div#loading').html(`<pre>${err}</pre>`);

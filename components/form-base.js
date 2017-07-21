@@ -57,7 +57,7 @@ export default class FormBase extends Component {
             ...state,
             ref,
             value: ref.value
-        }
+        };
 
         this.setState({
             inputs

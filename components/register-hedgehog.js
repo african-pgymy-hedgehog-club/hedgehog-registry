@@ -54,9 +54,7 @@ class RegisterHedgehog extends FormBase {
                     if(data.error) {
                         this.setState({
                             paymentModal: {
-                            /* jshint ignore: start */
-                            ...this.state.paymentModal,
-                            /* jshint ignore: end */
+                                ...this.state.paymentModal,
                                 loading: false
                             },
                             error: true
@@ -92,7 +90,6 @@ class RegisterHedgehog extends FormBase {
         // console.log(this.state.inputs);
 
         return (
-            /* jshint ignore: start */
             <div style={{
                 display: 'flex',
                 flexDirection: 'column'
@@ -227,7 +224,9 @@ class RegisterHedgehog extends FormBase {
                         cols="25"
                         rows="7"
                         name="owners_address"
-                    />
+                    >
+                        {(this.state.inputs.owners_address || {value: ""}).value}
+                    </textarea>
 
                     <Input
                         type="email"
@@ -256,19 +255,16 @@ class RegisterHedgehog extends FormBase {
                     </button>
                 </Form>
             </div>
-            /* jshint ignore: end */
         );
     }
 }
 
 
 if(typeof window !== 'undefined' && window.document)  { // If module is on the client side
-/* jshint ignore: start */
     ReactDOM.render(
         <RegisterHedgehog />,
         document.getElementById('app')
     );
-    /* jshint ignore: end */
 }
 else {
     module.exports = RegisterHedgehog;
