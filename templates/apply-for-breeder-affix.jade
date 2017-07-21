@@ -1,0 +1,11 @@
+table(border="1" style="text-align: center;" cellpadding="4")
+    tr
+        td(colspan="2")
+            h2 Apply For Breeder Affix
+            
+    each val, name in fields
+        - name = name.replace(/_/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase())
+        tr
+            td= name
+            td= val
+            
