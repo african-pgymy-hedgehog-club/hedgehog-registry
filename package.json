@@ -50,7 +50,7 @@
     "react-dom": "^0.14.3",
     "react-modal": "^0.6.1",
     "react-uikit-alert": "^0.2.3",
-    "small-router": "^1.0.0"
+    "small-router": "^1.0.9"
   },
   "devDependencies": {
     "babel-core": "^6.18.2",
