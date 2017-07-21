@@ -43,8 +43,4 @@ module.exports = (router) => {
         //code
     });
 
-    router.addRoute('/.well-known/', (req, res, url) => {
-        res.writeHead(200);
-        res.end("ok");
-    });
 }

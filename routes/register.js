@@ -60,7 +60,7 @@ module.exports = (router) => {
         let html = jade.renderFile('jade/index.jade', {
             title: "Apply For Breeder Affix",
             html: applyForBreederAffix,
-            component: 'apply-for-breeder-affix'
+            // component: 'apply-for-breeder-affix'
         });
 
         res.writeHead(200, { 'Content-Type': 'text/html' });
