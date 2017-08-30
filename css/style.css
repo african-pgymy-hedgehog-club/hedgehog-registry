@@ -15,9 +15,9 @@ html, body
 
 .banner
 {
-	background-image: url(/images/banner.jpg);
+	background-image: url(/images/regbanner.jpg);
 	width: 1000px;
-	height: 163px;
+	height: 230px;
 	margin-left: auto;
 	margin-right: auto
 }
@@ -27,7 +27,7 @@ html, body
 	background-color: #7681d2;
 	width: 1000px;
 	height: 50px;
-	margin-top: 35px;
+	margin-top: 15px;
 	margin-left: auto;
 	margin-right: auto;
 }
