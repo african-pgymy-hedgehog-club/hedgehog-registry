@@ -300,7 +300,7 @@ class RegisterLitter extends FormBase {
                     onSubmit={this.submitForm.bind(this)}
                 >
 
-                    <HogType />
+                    <HogType name="hog_type" />
 
                     <Input
                         type="text"

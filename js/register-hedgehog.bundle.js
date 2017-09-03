@@ -907,7 +907,7 @@ var RegisterHedgehog = function (_FormBase) {
                         },
                         onSubmit: this.submitForm.bind(this)
                     },
-                    _react2.default.createElement(_hogType2.default, null),
+                    _react2.default.createElement(_hogType2.default, { name: 'hog_type' }),
                     _react2.default.createElement(_input2.default, {
                         type: 'text',
                         name: 'breeder_name',
@@ -1073,7 +1073,7 @@ var UIkitForm = function UIkitForm(_ref) {
     var _ref$action = _ref.action;
     var action = _ref$action === undefined ? null : _ref$action;
 
-    var TYPES_WITH_LABELS = ['input', 'Input', 'text', 'email', 'select', 'HogType', 'DOB', 'dob', 'file', 'textarea'];
+    var TYPES_WITH_LABELS = ['input', 'Input', 'text', 'email', 'select', 'HogType', 'DOB', 'dob', 'file', 'textarea', 'i'];
 
     var className = 'uk-form uk-form-' + type;
 
@@ -1092,8 +1092,15 @@ var UIkitForm = function UIkitForm(_ref) {
 
             return input.map(function (input, index1) {
                 // Incase there are dynamic arrays of children inputs
-                var name = input.props.name || input.type.name;
+                var name = input.props.name;
+
+
+                console.log(name);
+
                 var type = input.props.type || input.type.name || input.type;
+
+                console.log(type);
+
                 if (type == 'Input') {
                     if (input.props.type == 'hidden') {
                         type = 'hidden';
@@ -1114,7 +1121,7 @@ var UIkitForm = function UIkitForm(_ref) {
                             { className: 'uk-form-label', htmlFor: name },
                             name.replace(/(!affix)([\d]+)/g, '').replace(/_/g, ' ').replace(/\b[a-z]/g, function (letter) {
                                 return letter.toUpperCase();
-                            }).replace('HogType', 'Hog Type'),
+                            }),
                             ':'
                         ),
                         _react2.default.createElement(
