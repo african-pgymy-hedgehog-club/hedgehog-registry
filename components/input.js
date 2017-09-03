@@ -15,7 +15,7 @@ export default class Input extends React.Component {
         let {name, parentUpdateState} = this.props;
         let {input: ref} = this.refs;
 
-        if(parentUpdateState) {
+        if(typeof(parentUpdateState) == 'function') {
             parentUpdateState(name, this.state, ref);
         }
     }

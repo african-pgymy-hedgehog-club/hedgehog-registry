@@ -89,8 +89,9 @@ const PaymentModal = ({
                     transform: 'translate(-50%, -50%)',
                     overflow: 'none',
                     zIndex: 999
-                }
+                },
             }}
+            contentLabel="payment modal"
         >
             {(loading || error) ?
                 displayloadingOrError(loading, {error, onClose})

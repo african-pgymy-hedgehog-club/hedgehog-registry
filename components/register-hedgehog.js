@@ -10,6 +10,7 @@ import InputGroup from './input-group';
 import Input from './input';
 import PaymentModal from './payment-modal';
 import FormBase from './form-base';
+import HogType from './hog-type';
 
 class RegisterHedgehog extends FormBase {
     constructor() {
@@ -118,6 +119,8 @@ class RegisterHedgehog extends FormBase {
                     }}
                     onSubmit={this.submitForm.bind(this)}
                 >
+
+                    <HogType />
 
                     <Input
                         type="text"

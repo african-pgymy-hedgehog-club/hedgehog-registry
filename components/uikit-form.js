@@ -14,6 +14,7 @@ const UIkitForm = ({
         'text',
         'email',
         'select',
+        'HogType',
         'DOB',
         'dob',
         'file',
@@ -35,8 +36,8 @@ const UIkitForm = ({
                 input = (!Array.isArray(input) ? [input] : input); // Make sure input is an array to make dealing with array inputs easier
 
                 return input.map((input, index1) => { // Incase there are dynamic arrays of children inputs
-                    let {name} = input.props
-                    let type = input.props.type || input.type;
+                    let name = input.props.name || input.type.name
+                    let type = input.props.type || input.type.name || input.type;
                     if(type == 'Input') {
                         if(input.props.type == 'hidden') {
                             type = 'hidden';
@@ -52,7 +53,7 @@ const UIkitForm = ({
                             <div className="uk-form-row" key={`${index}${index1}`}>
                                 <label className="uk-form-label" htmlFor={name}>
                                     {/* Replace _ with a space and for each space change the first letter after to uppercase */}
-                                    {name.replace(/(!affix)([\d]+)/g, '').replace(/_/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase())}:
+                                    {name.replace(/(!affix)([\d]+)/g, '').replace(/_/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase()).replace('HogType', 'Hog Type')}:
                                 </label>
                                 <div className="uk-form-controls">
                                     {input}

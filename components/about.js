@@ -10,7 +10,7 @@ const paragraphs = [
     "All registrations cost £1"
 ];
 
-const About = (props) => (
+const About = () => (
     <div style={{
         padding: 5
     }}>

@@ -10,6 +10,7 @@ import Input from './input';
 import DOB from './dob-input';
 import moment from 'moment';
 import InputGroup from './input-group';
+import HogType from './hog-type';
 
 let hogletIDCounter = 1;
 
@@ -298,6 +299,9 @@ class RegisterLitter extends FormBase {
                     }}
                     onSubmit={this.submitForm.bind(this)}
                 >
+
+                    <HogType />
+
                     <Input
                         type="text"
                         name="breeder_name"
