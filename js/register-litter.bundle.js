@@ -595,7 +595,7 @@ var PaymentModal = function PaymentModal(_ref2) {
     if (type == 'update ownership') {
         description = '\n            Thankyou for requesting a change of ownership with the African Pygmy Hedgehog Club,\n            please click the button below to pay \xA31 for your ownership change\n        ';
     } else {
-        description = '\n            Thank you for registering your {type} with the African Pygmy Hedgehog Club Registry,\n            please click the button below to pay \xA31 for your registration\n         ';
+        description = '\n            Thank you for registering your ' + type + ' with the African Pygmy Hedgehog Club Registry,\n            please click the button below to pay \xA31 for your registration\n         ';
     }
 
     return _react2.default.createElement(
