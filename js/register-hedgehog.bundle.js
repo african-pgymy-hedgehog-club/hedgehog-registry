@@ -1073,7 +1073,7 @@ var UIkitForm = function UIkitForm(_ref) {
     var _ref$action = _ref.action;
     var action = _ref$action === undefined ? null : _ref$action;
 
-    var TYPES_WITH_LABELS = ['input', 'Input', 'text', 'email', 'select', 'HogType', 'DOB', 'dob', 'file', 'textarea', 'i'];
+    var TYPES_WITH_LABELS = ['input', 'Input', 'text', 'email', 'select', 'hog_type', 'DOB', 'dob', 'file', 'textarea'];
 
     var className = 'uk-form uk-form-' + type;
 
@@ -1094,12 +1094,7 @@ var UIkitForm = function UIkitForm(_ref) {
                 // Incase there are dynamic arrays of children inputs
                 var name = input.props.name;
 
-
-                console.log(name);
-
                 var type = input.props.type || input.type.name || input.type;
-
-                console.log(type);
 
                 if (type == 'Input') {
                     if (input.props.type == 'hidden') {
@@ -1111,7 +1106,7 @@ var UIkitForm = function UIkitForm(_ref) {
                     }
                 }
 
-                if (TYPES_WITH_LABELS.indexOf(type) !== -1) {
+                if (TYPES_WITH_LABELS.indexOf(type) !== -1 || TYPES_WITH_LABELS.indexOf(name) !== -1) {
                     // If the type of form input if in the types array
                     input = _react2.default.createElement(
                         'div',
