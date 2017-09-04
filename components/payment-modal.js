@@ -59,7 +59,7 @@ const PaymentModal = ({
     }
     else {
         description = `
-            Thank you for registering your {type} with the African Pygmy Hedgehog Club Registry,
+            Thank you for registering your ${type} with the African Pygmy Hedgehog Club Registry,
             please click the button below to pay £1 for your registration
          `;
     }
