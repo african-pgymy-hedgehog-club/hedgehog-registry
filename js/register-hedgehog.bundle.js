@@ -17,7 +17,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var DOB = function DOB(_ref) {
     var name = _ref.name;
-    var data = _ref.data;
+    var _ref$data = _ref.data;
+    var minDate = _ref$data.minDate;
+    var maxDate = _ref$data.maxDate;
     var _ref$required = _ref.required;
     var required = _ref$required === undefined ? false : _ref$required;
     var _ref$parentUpdateStat = _ref.parentUpdateState;
@@ -26,13 +28,14 @@ var DOB = function DOB(_ref) {
     return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement('script', { type: 'text/javascript', src: 'datepicker.min.js' }),
         _react2.default.createElement(_input2.default, {
-            type: 'text',
+            type: 'date',
             name: name,
             required: required,
             parentUpdateState: parentUpdateState,
-            'data-uk-datepicker': JSON.stringify(data)
+            min: minDate,
+            max: maxDate,
+            value: value
         })
     );
 };
@@ -70,7 +73,7 @@ var FormBase = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FormBase).call(this, props));
 
-        _this.formRef; /* jshint ignore: line */
+        _this.formRef;
         _this.state = {
             paymentModal: {
                 lading: false,
@@ -376,52 +379,56 @@ var Input = function (_React$Component) {
                     break;
 
                 case 'email':
-                    var email = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-                    if (!email.test(value)) {
-                        this.setState({
-                            valid: false,
-                            invalidMessage: name + ' is not valid',
-                            value: value
-                        });
-                    } else if (value.length < 2 && required) {
-                        this.setState({
-                            valid: false,
-                            invalidMessage: name + ' is not valid',
-                            value: value
-                        });
-                    } else {
-                        this.setState({
-                            valid: true,
-                            invalidMessage: '',
-                            value: value
-                        });
-                    }
+                    {
+                        var email = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+                        if (!email.test(value)) {
+                            this.setState({
+                                valid: false,
+                                invalidMessage: name + ' is not valid',
+                                value: value
+                            });
+                        } else if (value.length < 2 && required) {
+                            this.setState({
+                                valid: false,
+                                invalidMessage: name + ' is not valid',
+                                value: value
+                            });
+                        } else {
+                            this.setState({
+                                valid: true,
+                                invalidMessage: '',
+                                value: value
+                            });
+                        }
 
-                    break;
+                        break;
+                    }
 
                 case 'date':
-                    var date = /^([0-9]+-{2}[0-9]+-{2}[0-9]{4})?$/;
-                    if (!date.test(value)) {
-                        this.setState({
-                            valid: false,
-                            invalidMessage: name + ' is not valid',
-                            value: value
-                        });
-                    } else if (value.length < 2 && required) {
-                        this.setState({
-                            valid: false,
-                            invalidMessage: name + ' is not valid',
-                            value: value
-                        });
-                    } else {
-                        this.setState({
-                            valid: true,
-                            invalidMessage: '',
-                            value: value
-                        });
-                    }
+                    {
+                        var date = /^(\d+){4}-(\d+){2}-(\d+){2}?$/;
+                        if (!date.test(value)) {
+                            this.setState({
+                                valid: false,
+                                invalidMessage: name + ' is not valid',
+                                value: value
+                            });
+                        } else if (value.length < 2 && required) {
+                            this.setState({
+                                valid: false,
+                                invalidMessage: name + ' is not valid',
+                                value: value
+                            });
+                        } else {
+                            this.setState({
+                                valid: true,
+                                invalidMessage: '',
+                                value: value
+                            });
+                        }
 
-                    break;
+                        break;
+                    }
             }
         }
 
@@ -440,6 +447,10 @@ var Input = function (_React$Component) {
             var type = _props5.type;
             var name = _props5.name;
             var className = _props5.className;
+            var _props5$min = _props5.min;
+            var min = _props5$min === undefined ? '' : _props5$min;
+            var _props5$max = _props5.max;
+            var max = _props5$max === undefined ? '' : _props5$max;
 
 
             var dataUKDatepicker = this.props['data-uk-datepicker'] || false;
@@ -451,7 +462,9 @@ var Input = function (_React$Component) {
                 type: type,
                 name: name,
                 className: className,
-                value: this.state.value
+                value: this.state.value,
+                min: min,
+                max: max
             };
 
             if (dataUKDatepicker) {
@@ -652,7 +665,7 @@ var PaymentModal = function PaymentModal(_ref2) {
             _react2.default.createElement(
                 _uikitForm2.default,
                 { type: 'horizontal',
-                    action: 'https://www.paypal.com/cgi-bin/webscr'
+                    action: ppURL
                 },
                 _react2.default.createElement(_input2.default, {
                     type: 'hidden',
@@ -683,11 +696,6 @@ var PaymentModal = function PaymentModal(_ref2) {
                     type: 'hidden',
                     name: 'quantity_1',
                     value: '1'
-                }),
-                _react2.default.createElement(_input2.default, {
-                    type: 'hidden',
-                    name: 'image_url',
-                    value: 'http://hedgehogregistry.co.uk'
                 }),
                 _react2.default.createElement(_input2.default, {
                     type: 'hidden',
@@ -786,6 +794,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var i = 0;
 
 var RegisterHedgehog = function (_FormBase) {
     _inherits(RegisterHedgehog, _FormBase);
@@ -946,11 +956,14 @@ var RegisterHedgehog = function (_FormBase) {
                         name: 'date_of_birth',
                         data: {
                             format: "DD/MM/YYYY",
-                            minDate: (0, _moment2.default)(new Date()).subtract(5, 'years').format("DD.MM.YYYY"),
-                            maxDate: (0, _moment2.default)(new Date()).subtract(2, 'weeks').format("DD.MM.YYYY")
+                            minDate: (0, _moment2.default)(new Date()).subtract(5, 'years').format("YYYY-MM-DD"),
+                            maxDate: (0, _moment2.default)(new Date()).subtract(2, 'weeks').format("YYYY-MM-DD")
                         },
                         type: 'dob',
-                        required: true
+                        required: true,
+                        parentUpdateState: this.inputState.bind(this),
+                        value: (this.state.inputs.date_of_birth || { value: "" }).value
+
                     }),
                     _react2.default.createElement(_input2.default, {
                         type: 'text',

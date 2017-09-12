@@ -319,11 +319,12 @@ class RegisterLitter extends FormBase {
                         name="date_of_birth"
                         data={{
                             format: "DD/MM/YYYY",
-                            minDate: moment(new Date()).subtract(3, 'years').format("DD.MM.YYYY"),
-                            maxDate: moment(new Date()).subtract(2, 'weeks').format("DD.MM.YYYY")
+                            minDate: moment(new Date()).subtract(3, 'years').format("YYYY-MM-DD"),
+                            maxDate: moment(new Date()).subtract(2, 'weeks').format("YYYY-MM-DD")
                         }}
                         type="dob"
                         required={true}
+                        parentUpdateState={this.inputState.bind(this)}
                     />
 
                     <InputGroup onClick={this.addHoglet.bind(this)}>

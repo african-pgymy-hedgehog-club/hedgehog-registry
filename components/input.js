@@ -53,24 +53,24 @@ export default class Input extends React.Component {
 
         switch (type) {
             case 'text':
-                    if(value.length < minlength && required) {
-                        this.setState({
-                            valid: false,
-                            invalidMessage: `${name.replace(/([\d])+/g, '')} is not valid`,
-                            value
-                        });
-                    }
-                    else {
-                        this.setState({
-                            valid: true,
-                            invalidMessage: '',
-                            value
-                        });
-                    }
+                if(value.length < minlength && required) {
+                    this.setState({
+                        valid: false,
+                        invalidMessage: `${name.replace(/([\d])+/g, '')} is not valid`,
+                        value
+                    });
+                }
+                else {
+                    this.setState({
+                        valid: true,
+                        invalidMessage: '',
+                        value
+                    });
+                }
 
                 break;
 
-            case 'email':
+            case 'email': {
                 let email =  /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
                 if(!email.test(value)) {
                     this.setState({
@@ -95,9 +95,10 @@ export default class Input extends React.Component {
                 }
 
                 break;
+            }
 
-            case 'date':
-                let date = /^([0-9]+-{2}[0-9]+-{2}[0-9]{4})?$/;
+            case 'date': {
+                let date = /^(\d+){4}-(\d+){2}-(\d+){2}?$/;
                 if(!date.test(value)) {
                     this.setState({
                         valid: false,
@@ -121,6 +122,7 @@ export default class Input extends React.Component {
                 }
 
                 break;
+            }
         }
     }
 
@@ -133,7 +135,9 @@ export default class Input extends React.Component {
         let {
             type,
             name,
-            className
+            className,
+            min = '',
+            max = ''
         } = this.props;
 
         let dataUKDatepicker = this.props['data-uk-datepicker'] || false;
@@ -144,11 +148,13 @@ export default class Input extends React.Component {
         };
 
         let attrs = { // input attributes
-            style: style,
-            type: type,
-            name: name,
-            className: className,
-            value: this.state.value
+            style,
+            type,
+            name,
+            className,
+            value: this.state.value,
+            min,
+            max
         };
 
         if(dataUKDatepicker) {
@@ -162,7 +168,7 @@ export default class Input extends React.Component {
                     value: this.refs.input.value
                 })}
                 ref="input"
-                onBlur={e => this.validate(e)}
+                onBlur={e =>  this.validate(e)}
             />
         );
     }

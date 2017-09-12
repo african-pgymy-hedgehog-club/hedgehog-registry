@@ -12,6 +12,8 @@ import PaymentModal from './payment-modal';
 import FormBase from './form-base';
 import HogType from './hog-type';
 
+let i = 0;
+
 class RegisterHedgehog extends FormBase {
     constructor() {
         super();
@@ -158,11 +160,14 @@ class RegisterHedgehog extends FormBase {
                         name="date_of_birth"
                         data={{
                             format: "DD/MM/YYYY",
-                            minDate: moment(new Date()).subtract(5, 'years').format("DD.MM.YYYY"),
-                            maxDate: moment(new Date()).subtract(2, 'weeks').format("DD.MM.YYYY")
+                            minDate: moment(new Date()).subtract(5, 'years').format("YYYY-MM-DD"),
+                            maxDate: moment(new Date()).subtract(2, 'weeks').format("YYYY-MM-DD")
                         }}
                         type="dob"
                         required={true}
+                        parentUpdateState={this.inputState.bind(this)}
+                        value={(this.state.inputs.date_of_birth || { value: "" }).value}
+                        
                     />
 
                     <Input

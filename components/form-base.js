@@ -4,7 +4,7 @@ export default class FormBase extends Component {
     constructor(props) {
         super(props);
 
-        this.formRef; /* jshint ignore: line */
+        this.formRef;
         this.state = {
             paymentModal: {
                 lading: false,
