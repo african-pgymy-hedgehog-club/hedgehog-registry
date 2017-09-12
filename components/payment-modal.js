@@ -45,10 +45,10 @@ const PaymentModal = ({
     loading,
     error,
     data: {
-    ppURL = 'https://www.paypal.com/cgi-bin/websrc',
-    ppAccount = 'tayer@hedgehogregistry.co.uk',
-    name,
-    type,
+        ppURL = 'https://www.paypal.com/cgi-bin/websrc',
+        ppAccount = 'tayer@hedgehogregistry.co.uk',
+        name,
+        type,
 }}) => {
     let description = '';
     if(type == 'update ownership') {
@@ -95,7 +95,7 @@ const PaymentModal = ({
         >
             {(loading || error) ?
                 displayloadingOrError(loading, {error, onClose})
-            : (<div>
+                : (<div>
                     <div id="modal-title">
                         {(type || '').replace( /\b[a-z]/g, letter => letter.toUpperCase() )}  Payment
                         <span id="modal-close" onClick={onClose}>
@@ -106,7 +106,7 @@ const PaymentModal = ({
                     <p>{description}</p>
 
                     <Form type="horizontal"
-                        action="https://www.paypal.com/cgi-bin/webscr"
+                        action={ppURL}
                     >
                         <Input
                             type="hidden"
@@ -142,12 +142,6 @@ const PaymentModal = ({
                             type="hidden"
                             name="quantity_1"
                             value='1'
-                        />
-
-                        <Input
-                            type="hidden"
-                            name="image_url"
-                            value="http://hedgehogregistry.co.uk"
                         />
 
                         <Input
@@ -189,7 +183,7 @@ const PaymentModal = ({
                         />
                     </Form>
                 </div>
-            )}
+                )}
         </Modal>
     );
 };
