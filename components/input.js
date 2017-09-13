@@ -98,8 +98,10 @@ export default class Input extends React.Component {
             }
 
             case 'date': {
-                let date = /^(\d+){4}-(\d+){2}-(\d+){2}?$/;
-                if(!date.test(value)) {
+                let date1 = /^(\d+){4}-(\d+){2}-(\d+){2}?$/;
+                let date2 = /^(\d+){2}(-|\/)(\d+){2}(-|\/)(\d+){4}?$/
+
+                if(!date1.test(value) && !date2.test(value)) {
                     this.setState({
                         valid: false,
                         invalidMessage: `${name} is not valid`,
