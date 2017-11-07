@@ -16,8 +16,14 @@ div.nav
                     a(href='/register/update_health', title="Update Health", attr) Update Health
                 li
                     a(href='/register/apply_for_breeder_affix', title="Apply for Breeder Affix", attr) Apply for Breeder Affix            
-        li
-            a(href='https://africanpygmyhedgehogclub.co.uk/club_breeders', title="Club Breeders", attr) Club Breeders
+        li.dropdown
+            span#title
+                a(href='https://africanpygmyhedgehogclub.co.uk/club_breeders', title="Club Breeders") Club Breeders
+            ul.sub_nav(style="margin-left: 40px;")
+                li
+                    a(href='https://africanpygmyhedgehogclub.co.uk/club_breeders/ethics', title="Eithics") Ethics
+                li
+                    a(href='https://africanpygmyhedgehogclub.co.uk/become_aproved/', title="Become Aproved") Become Aproved
         li
             a(href='https://www.facebook.com/groups/africanpygmyhedgehogclubuk/', title="Facebook", target="_blank") Facebook
         li
