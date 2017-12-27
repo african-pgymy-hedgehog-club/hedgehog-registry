@@ -4,3 +4,4 @@ jspm_packages/
 js/components/update-ownership.js
 js/components/
 upload_*
+.cache/*

@@ -70,6 +70,23 @@ export default class Input extends React.Component {
 
                 break;
 
+            case 'number': 
+                if((value === 0 || value === '') && required) {
+                    this.setState({
+                        valid: false,
+                        invalidMessage: `${name.replace(/([\d])+/g, '')} is not valid`,
+                        value
+                    });
+                } else {
+                    this.setState({
+                        valid: true,
+                        invalidMessage: '',
+                        value
+                    });
+                }
+
+                break;
+
             case 'email': {
                 let email =  /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
                 if(!email.test(value)) {

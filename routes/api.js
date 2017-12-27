@@ -1,6 +1,5 @@
 "use strict";
 
-require('babel-core/register');
 const jade = require('jade');
 const fs = require('fs-extra');
 const nodemailer = require('nodemailer');
@@ -245,24 +244,22 @@ module.exports = (router) => {
 
                 return resolve(fields);
             });
-        }).then(fields => {
-            return [
-                fields,
-                jade.renderFile('templates/apply-for-breeder-affix.jade', { fields })
-            ];
-        }).then(([fields, table]) => {
+        }).then(fields => ([
+            fields,
+            jade.renderFile('templates/apply-for-breeder-affix.jade', { fields })
+        ])).then(([fields, table]) => {
             return new Promise((resolve, reject) => {
                 transporter.sendMail({
                     from: `"${fields.breeder_name}"<${fields.your_email}>`,
                     to: 'registrations@hedgehogregistry.co.uk',
-                    'subject': 'Apply For Breeder Affix',
+                    subject: 'Apply For Breeder Affix',
                     html: table
                 }, err => {
                     if(err) {
                         return reject(new Error(err));
                     }
 
-                    resolve({
+                    return resolve({
                         name: fields.breeder_name,
                         type: 'apply for breeder affix',
                         success: true
@@ -274,6 +271,51 @@ module.exports = (router) => {
             res.end( JSON.stringify(data));
         }).catch(err => {
             let errRes = { error : err.stack || err.toString() };
+
+            console.error(err.stack || err);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end( JSON.stringify(errRes) );
+        });
+    });
+
+    // Health api routes
+    router.prefix = '/api/health/';
+
+    router.addRoute('form', (req, res) => {
+        new Promise((resolve, reject) => {
+            router.parseData(req, (err, fields) => {
+                if(err) {
+                    return reject(err);
+                }
+
+                return resolve(fields);
+            });
+        }).then(fields => ([
+            fields,
+            jade.renderFile('templates/health.jade', { fields })
+        ])).then(([{
+            owners_name: name,
+            owners_email: email
+        }, table]) => (
+            new Promise((resolve, reject) => {
+                transporter.sendMail({
+                    from: `"${name}"<${email}>`,
+                    to: 'health@hedgehogregistry.co.uk',
+                    subject: 'Health',
+                    html: table
+                }, err => {
+                    if(err) {
+                        return reject(new Error(err));
+                    }
+
+                    return resolve(true);
+                });
+            })
+        )).then(success => {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end( JSON.stringify({ success }) );
+        }).catch(err => {
+            let errRes = { error: err.stack || err.toString() };
 
             console.error(err.stack || err);
             res.writeHead(500, { 'Content-Type': 'application/json' });

@@ -1,6 +1,5 @@
 "use strict";
 
-require('babel-core/register');
 const jade = require('jade');
 
 module.exports = (router) => {

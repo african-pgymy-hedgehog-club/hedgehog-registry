@@ -75,6 +75,7 @@ export default class FormBase extends Component {
                 display: false,
                 data: {}
             },
+            submitModal: { display: false },
             error: false
         });
     }

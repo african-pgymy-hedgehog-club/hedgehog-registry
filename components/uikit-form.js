@@ -18,6 +18,7 @@ const UIkitForm = ({
         'DOB',
         'dob',
         'file',
+        'number',
         'textarea',
         'i'
     ];
