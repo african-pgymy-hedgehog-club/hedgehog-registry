@@ -300,7 +300,7 @@ module.exports = (router) => {
             new Promise((resolve, reject) => {
                 transporter.sendMail({
                     from: `"${name}"<${email}>`,
-                    to: 'health@hedgehogregistry.co.uk',
+                    to: 'aphclubuk@gmail.com',
                     subject: 'Health',
                     html: table
                 }, err => {
