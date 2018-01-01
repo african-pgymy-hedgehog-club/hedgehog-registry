@@ -15,7 +15,7 @@ rules:
   indent:
     - error
     - 4
-    indentSwitchCase: true
+    # indentSwitchCase: 1
   linebreak-style:
     - error
     - unix
