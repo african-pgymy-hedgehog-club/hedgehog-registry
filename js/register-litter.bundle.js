@@ -158,6 +158,7 @@ var FormBase = function (_Component) {
                     display: false,
                     data: {}
                 },
+                submitModal: { display: false },
                 error: false
             });
         }
@@ -363,6 +364,23 @@ var Input = function (_React$Component) {
             switch (type) {
                 case 'text':
                     if (value.length < minlength && required) {
+                        this.setState({
+                            valid: false,
+                            invalidMessage: name.replace(/([\d])+/g, '') + ' is not valid',
+                            value: value
+                        });
+                    } else {
+                        this.setState({
+                            valid: true,
+                            invalidMessage: '',
+                            value: value
+                        });
+                    }
+
+                    break;
+
+                case 'number':
+                    if ((value === 0 || value === '') && required) {
                         this.setState({
                             valid: false,
                             invalidMessage: name.replace(/([\d])+/g, '') + ' is not valid',
@@ -600,17 +618,20 @@ var PaymentModal = function PaymentModal(_ref2) {
     var error = _ref2.error;
     var _ref2$data = _ref2.data;
     var _ref2$data$ppURL = _ref2$data.ppURL;
-    var ppURL = _ref2$data$ppURL === undefined ? 'https://www.paypal.com/cgi-bin/websrc' : _ref2$data$ppURL;
+    var ppURL = _ref2$data$ppURL === undefined ? "https://www.paypal.com/cgi-bin/websrc" : _ref2$data$ppURL;
     var _ref2$data$ppAccount = _ref2$data.ppAccount;
-    var ppAccount = _ref2$data$ppAccount === undefined ? 'tayer@hedgehogregistry.co.uk' : _ref2$data$ppAccount;
+    var ppAccount = _ref2$data$ppAccount === undefined ? "tayer@hedgehogregistry.co.uk" : _ref2$data$ppAccount;
     var name = _ref2$data.name;
     var type = _ref2$data.type;
+    var _ref2$data$hogCount = _ref2$data.hogCount;
+    var hogCount = _ref2$data$hogCount === undefined ? 1 : _ref2$data$hogCount;
 
-    var description = '';
-    if (type == 'update ownership') {
+    var description = "";
+    var amount = 1 * hogCount;
+    if (type == "update ownership") {
         description = '\n            Thankyou for requesting a change of ownership with the African Pygmy Hedgehog Club,\n            please click the button below to pay \xA31 for your ownership change\n        ';
     } else {
-        description = '\n            Thank you for registering your ' + type + ' with the African Pygmy Hedgehog Club Registry,\n            please click the button below to pay \xA31 for your registration\n         ';
+        description = '\n            Thank you for registering your ' + type + ' with the African Pygmy Hedgehog Club Registry,\n            please click the button below to pay \xA3' + (type == 'litter' ? amount + ' (\xA31 per hoglet)' : '1') + ' for your registration\n         ';
     }
 
     return _react2.default.createElement(
@@ -619,25 +640,25 @@ var PaymentModal = function PaymentModal(_ref2) {
             isOpen: display,
             style: {
                 overlay: {
-                    position: 'fixed',
+                    position: "fixed",
                     top: 0,
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    backgroundColor: 'rgba(0, 0, 0, 0.75)'
+                    backgroundColor: "rgba(0, 0, 0, 0.75)"
                 },
                 content: {
-                    backgroundColor: 'rgb(118, 129, 210)',
-                    width: '550px',
-                    height: '170px',
-                    top: '50%',
-                    left: '50%',
-                    right: 'auto',
-                    bottom: 'auto',
-                    marginRight: '-50%',
+                    backgroundColor: "rgb(118, 129, 210)",
+                    width: "550px",
+                    height: "170px",
+                    top: "50%",
+                    left: "50%",
+                    right: "auto",
+                    bottom: "auto",
+                    marginRight: "-50%",
                     borderRadious: 5,
-                    transform: 'translate(-50%, -50%)',
-                    overflow: 'none',
+                    transform: "translate(-50%, -50%)",
+                    overflow: "none",
                     zIndex: 999
                 }
             },
@@ -649,10 +670,11 @@ var PaymentModal = function PaymentModal(_ref2) {
             _react2.default.createElement(
                 'div',
                 { id: 'modal-title' },
-                (type || '').replace(/\b[a-z]/g, function (letter) {
+                (type || "").replace(/\b[a-z]/g, function (letter) {
                     return letter.toUpperCase();
                 }),
-                '  Payment',
+                " ",
+                'Payment',
                 _react2.default.createElement(
                     'span',
                     { id: 'modal-close', onClick: onClose },
@@ -666,44 +688,18 @@ var PaymentModal = function PaymentModal(_ref2) {
             ),
             _react2.default.createElement(
                 _uikitForm2.default,
-                { type: 'horizontal',
-                    action: ppURL
-                },
-                _react2.default.createElement(_input2.default, {
-                    type: 'hidden',
-                    name: 'cmd',
-                    value: '_cart'
-                }),
-                _react2.default.createElement(_input2.default, {
-                    type: 'hidden',
-                    name: 'upload',
-                    value: '1'
-                }),
-                _react2.default.createElement(_input2.default, {
-                    type: 'hidden',
-                    name: 'business',
-                    value: ppAccount
-                }),
+                { type: 'horizontal', action: ppURL },
+                _react2.default.createElement(_input2.default, { type: 'hidden', name: 'cmd', value: '_cart' }),
+                _react2.default.createElement(_input2.default, { type: 'hidden', name: 'upload', value: '1' }),
+                _react2.default.createElement(_input2.default, { type: 'hidden', name: 'business', value: ppAccount }),
                 _react2.default.createElement(_input2.default, {
                     type: 'hidden',
                     name: 'item_name_1',
                     value: (name + ' ' + type + ' registration').ucwords()
                 }),
-                _react2.default.createElement(_input2.default, {
-                    type: 'hidden',
-                    name: 'amount_1',
-                    value: '1'
-                }),
-                _react2.default.createElement(_input2.default, {
-                    type: 'hidden',
-                    name: 'quantity_1',
-                    value: '1'
-                }),
-                _react2.default.createElement(_input2.default, {
-                    type: 'hidden',
-                    name: 'rm',
-                    value: '2'
-                }),
+                _react2.default.createElement(_input2.default, { type: 'hidden', name: 'amount_1', value: '1' }),
+                _react2.default.createElement(_input2.default, { type: 'hidden', name: 'quantity_1', value: hogCount }),
+                _react2.default.createElement(_input2.default, { type: 'hidden', name: 'rm', value: '2' }),
                 _react2.default.createElement(_input2.default, {
                     type: 'hidden',
                     name: 'cbt',
@@ -714,19 +710,11 @@ var PaymentModal = function PaymentModal(_ref2) {
                     name: 'cancel_return',
                     value: 'http://hedgehogregistry.co.uk'
                 }),
-                _react2.default.createElement(_input2.default, {
-                    type: 'hidden',
-                    name: 'lc',
-                    value: 'GB'
-                }),
-                _react2.default.createElement(_input2.default, {
-                    type: 'hidden',
-                    name: 'currency_code',
-                    value: 'GBP'
-                }),
+                _react2.default.createElement(_input2.default, { type: 'hidden', name: 'lc', value: 'GB' }),
+                _react2.default.createElement(_input2.default, { type: 'hidden', name: 'currency_code', value: 'GBP' }),
                 _react2.default.createElement(_input2.default, {
                     className: 'uk-button uk-button-primary',
-                    style: { color: 'rgb(255, 255, 255)' },
+                    style: { color: "rgb(255, 255, 255)" },
                     type: 'submit',
                     name: 'submit_paypal_payment',
                     value: 'Pay for your ' + type + ' registration'
@@ -866,6 +854,7 @@ var RegisterLitter = function (_FormBase) {
                             throw data.error;
                         }
 
+                        data.hogCount = _this2.state.hoglets.length;
                         var inputs = {};
                         return _this2.setState({
                             paymentModal: {
@@ -1233,7 +1222,7 @@ var UIkitForm = function UIkitForm(_ref) {
     var _ref$action = _ref.action;
     var action = _ref$action === undefined ? null : _ref$action;
 
-    var TYPES_WITH_LABELS = ['input', 'Input', 'text', 'email', 'select', 'HogType', 'DOB', 'dob', 'file', 'textarea', 'i'];
+    var TYPES_WITH_LABELS = ['input', 'Input', 'text', 'email', 'select', 'HogType', 'DOB', 'dob', 'file', 'number', 'textarea', 'i'];
 
     var className = 'uk-form uk-form-' + type;
 

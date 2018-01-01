@@ -72,6 +72,7 @@ class RegisterLitter extends FormBase {
                         throw data.error;
                     }
 
+                    data.hogCount = this.state.hoglets.length;
                     let inputs = {};
                     return this.setState({
                         paymentModal: {
@@ -174,7 +175,7 @@ class RegisterLitter extends FormBase {
                 hogletInputs.push(removeHedgehog);
             }
 
-            this.hogletInputTypes(id, hogletIndex, hogletInputs)
+            this.hogletInputTypes(id, hogletIndex, hogletInputs);
 
             return;
         });
