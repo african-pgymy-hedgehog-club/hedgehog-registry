@@ -1,7 +1,13 @@
 import React from 'react';
 import Input from './input';
 
-const DOB = ({name, data: {minDate, maxDate}, required = false, parentUpdateState = {}, value}) => (
+const DOB = ({
+    name, 
+    data: {minDate, maxDate}, 
+    required = false, 
+    parentUpdateState = {}, 
+    value
+}) => (
     <div>
         <Input
             type="date"
@@ -13,6 +19,6 @@ const DOB = ({name, data: {minDate, maxDate}, required = false, parentUpdateStat
             value={value}
         />
     </div>
-)
+);
 
 export default DOB;

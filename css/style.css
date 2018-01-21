@@ -1,10 +1,12 @@
 @CHARSET "UTF-8";
+@import "form-advanced.css";
 @import "uikit-form.css";
 @import "uikit-button.css";
 @import "uikit-datepicker.css";
 @import "uikit-icon.css";
 @import "uikit-alert.css";
 @import "notify.min.css";
+@import "tooltip.min.css";
 
 html, body
 {
@@ -124,10 +126,18 @@ ul.sub_nav > li
 	color: #2f42c3;
 }
 
+
 form.uk-form input,
 form.uk-form select {
 	font-size: 16pt;
 	height: 35px !important;
+}
+
+form.uk-form input[type="checkbox"] {
+	height: 15px !important;
+	width: 16px !important;
+	background-color: #fff;
+	padding-top: 1px;
 }
 
 form.uk-form select {
@@ -184,4 +194,9 @@ span#modal-close:hover {
 /* 1 */
 [class*='uk-float-'] {
   max-width: 100%;
+}
+
+.uk-tooltip-inner {
+	font-size: 12pt;
+	line-height: 1.3;
 }

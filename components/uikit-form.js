@@ -17,6 +17,7 @@ const UIkitForm = ({
         'HogType',
         'DOB',
         'dob',
+        'PetOnly',
         'file',
         'number',
         'textarea',
@@ -38,8 +39,12 @@ const UIkitForm = ({
                 input = (!Array.isArray(input) ? [input] : input); // Make sure input is an array to make dealing with array inputs easier
 
                 return input.map((input, index1) => { // Incase there are dynamic arrays of children inputs
-                    let {name} = input.props
+                    let {name, explanation = ''} = input.props;
                     let type = input.props.type || input.type.name || input.type;
+
+                    if(type == 'PetOnly') {
+                        name = 'pet_only';
+                    }
                     
                     if(type == 'Input') {
                         if(input.props.type == 'hidden') {
@@ -56,7 +61,15 @@ const UIkitForm = ({
                             <div className="uk-form-row" key={`${index}${index1}`}>
                                 <label className="uk-form-label" htmlFor={name}>
                                     {/* Replace _ with a space and for each space change the first letter after to uppercase */}
-                                    {name.replace(/(!affix)([\d]+)/g, '').replace(/_/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase())}:
+                                    {name.replace(/(!affix)([\d]+)/g, '').replace(/_/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase())}
+                                    {explanation !== '' ? 
+                                        <span>
+                                            &nbsp;
+                                            <i className="uk-icon-question-circle-o" title={explanation} data-uk-tooltip="{pos: 'top'}"></i>
+                                        </span>
+                                        : ''
+                                    }
+                                    :
                                 </label>
                                 <div className="uk-form-controls">
                                     {input}
@@ -66,18 +79,22 @@ const UIkitForm = ({
                     }
                     else if(type !== 'hidden' && type !== 'submit' && type !== 'hr') {
                         input = (
-                        <div className="uk-form-row" key={`${index}${index1}`}>
-                            <div className="uk-form-controls">
-                                {input}
+                            <div className="uk-form-row" key={`${index}${index1}`}>
+                                <div className="uk-form-controls">
+                                    {input}
+                                    {explanation !== '' ? 
+                                        <i className="uk-icon-question-circle-o" title={explanation} data-uk-tooltip></i>
+                                        : ''
+                                    }
+                                </div>
                             </div>
-                        </div>
                         );
                     }
                     else if(type !== 'hidden') {
                         input = (
-                        <div className="uk-form-row" key={`${index}${index1}`}>
-                            {input}
-                        </div>
+                            <div className="uk-form-row" key={`${index}${index1}`}>
+                                {input}
+                            </div>
                         );
                     }
 

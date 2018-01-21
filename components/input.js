@@ -52,96 +52,96 @@ export default class Input extends React.Component {
         let {value} = this.refs.input;
 
         switch (type) {
-            case 'text':
-                if(value.length < minlength && required) {
-                    this.setState({
-                        valid: false,
-                        invalidMessage: `${name.replace(/([\d])+/g, '')} is not valid`,
-                        value
-                    });
-                }
-                else {
-                    this.setState({
-                        valid: true,
-                        invalidMessage: '',
-                        value
-                    });
-                }
-
-                break;
-
-            case 'number': 
-                if((value === 0 || value === '') && required) {
-                    this.setState({
-                        valid: false,
-                        invalidMessage: `${name.replace(/([\d])+/g, '')} is not valid`,
-                        value
-                    });
-                } else {
-                    this.setState({
-                        valid: true,
-                        invalidMessage: '',
-                        value
-                    });
-                }
-
-                break;
-
-            case 'email': {
-                let email =  /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-                if(!email.test(value)) {
-                    this.setState({
-                        valid: false,
-                        invalidMessage: `${name} is not valid`,
-                        value
-                    });
-                }
-                else if(value.length < 2 && required) {
-                    this.setState({
-                        valid: false,
-                        invalidMessage: `${name} is not valid`,
-                        value
-                    });
-                }
-                else {
-                    this.setState({
-                        valid: true,
-                        invalidMessage: '',
-                        value
-                    });
-                }
-
-                break;
+        case 'text':
+            if(value.length < minlength && required) {
+                this.setState({
+                    valid: false,
+                    invalidMessage: `${name.replace(/([\d])+/g, '')} is not valid`,
+                    value
+                });
+            }
+            else {
+                this.setState({
+                    valid: true,
+                    invalidMessage: '',
+                    value
+                });
             }
 
-            case 'date': {
-                let date1 = /^(\d+){4}-(\d+){2}-(\d+){2}?$/;
-                let date2 = /^(\d+){2}(-|\/)(\d+){2}(-|\/)(\d+){4}?$/
+            break;
 
-                if(!date1.test(value) && !date2.test(value)) {
-                    this.setState({
-                        valid: false,
-                        invalidMessage: `${name} is not valid`,
-                        value
-                    });
-                }
-                else if(value.length < 2 && required) {
-                    this.setState({
-                        valid: false,
-                        invalidMessage: `${name} is not valid`,
-                        value
-                    });
-                }
-                else {
-                    this.setState({
-                        valid: true,
-                        invalidMessage: '',
-                        value
-                    });
-                }
-
-                break;
+        case 'number': 
+            if((value === 0 || value === '') && required) {
+                this.setState({
+                    valid: false,
+                    invalidMessage: `${name.replace(/([\d])+/g, '')} is not valid`,
+                    value
+                });
+            } else {
+                this.setState({
+                    valid: true,
+                    invalidMessage: '',
+                    value
+                });
             }
+
+            break;
+
+        case 'email': {
+            let email =  /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+            if(!email.test(value)) {
+                this.setState({
+                    valid: false,
+                    invalidMessage: `${name} is not valid`,
+                    value
+                });
+            }
+            else if(value.length < 2 && required) {
+                this.setState({
+                    valid: false,
+                    invalidMessage: `${name} is not valid`,
+                    value
+                });
+            }
+            else {
+                this.setState({
+                    valid: true,
+                    invalidMessage: '',
+                    value
+                });
+            }
+
+            break;
+        }
+
+        case 'date': {
+            let date1 = /^(\d+){4}-(\d+){2}-(\d+){2}?$/;
+            let date2 = /^(\d+){2}(-|\/)(\d+){2}(-|\/)(\d+){4}?$/;
+
+            if(!date1.test(value) && !date2.test(value)) {
+                this.setState({
+                    valid: false,
+                    invalidMessage: `${name} is not valid`,
+                    value
+                });
+            }
+            else if(value.length < 2 && required) {
+                this.setState({
+                    valid: false,
+                    invalidMessage: `${name} is not valid`,
+                    value
+                });
+            }
+            else {
+                this.setState({
+                    valid: true,
+                    invalidMessage: '',
+                    value
+                });
+            }
+
+            break;
+        }
         }
     }
 
@@ -156,7 +156,7 @@ export default class Input extends React.Component {
             name,
             className,
             min = '',
-            max = ''
+            max = '',
         } = this.props;
 
         let dataUKDatepicker = this.props['data-uk-datepicker'] || false;

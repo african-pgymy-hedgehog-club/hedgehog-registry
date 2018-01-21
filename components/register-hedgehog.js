@@ -11,6 +11,7 @@ import Input from './input';
 import PaymentModal from './payment-modal';
 import FormBase from './form-base';
 import HogType from './hog-type';
+import PetOnly from './pet-only';
 
 let i = 0;
 
@@ -168,6 +169,13 @@ class RegisterHedgehog extends FormBase {
                         parentUpdateState={this.inputState.bind(this)}
                         value={(this.state.inputs.date_of_birth || { value: "" }).value}
                         
+                    />
+
+                    <PetOnly
+                        name="pet_only"
+                        explanation="Hedgehog is a pet and not to be bred from without the breeders permission" 
+                        parentUpdateState={this.inputState.bind(this)}
+                        value={(this.state.inputs.pet_only || {value: ''}).value}
                     />
 
                     <Input

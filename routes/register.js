@@ -9,6 +9,7 @@ module.exports = (router) => {
         let registerHedgehog = `
             <script type="text/javascript" src="/datepicker.min.js"></script>
             <script type="text/javascript" src="/register-hedgehog.min.js"></script>
+            <script type="text/javascript" src="/js/tooltip.min.js"></script>
         `;
 
         let html = jade.renderFile('jade/index.jade', {
@@ -25,6 +26,7 @@ module.exports = (router) => {
         let registerHedgehog = `
             <script type="text/javascript" src="/datepicker.min.js"></script>
             <script type="text/javascript" src="/register-litter.min.js"></script>
+            <script type="text/javascript" src="/js/tooltip.min.js"></script>
         `;
 
         let html = jade.renderFile('jade/index.jade', {

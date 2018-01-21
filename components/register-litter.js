@@ -11,6 +11,7 @@ import DOB from './dob-input';
 import moment from 'moment';
 import InputGroup from './input-group';
 import HogType from './hog-type';
+import PetOnly from './pet-only';
 
 let hogletIDCounter = 1;
 
@@ -134,7 +135,7 @@ class RegisterLitter extends FormBase {
      */
     hogletState(id, name, state, ref) {
         name = name.replace('hoglet_', '').replace(/([\d])+/, '');
-        let hoglets = this.state.hoglets.map((hoglet, index) => {
+        let hoglets = this.state.hoglets.map((hoglet) => {
             if(hoglet.id === id) {
                 hoglet[name] = {
                     ref,
@@ -154,12 +155,10 @@ class RegisterLitter extends FormBase {
     hogletInputs() {
         let hogletInputs = [];
 
-        this.state.hoglets.forEach(({id, name, visible}, hogletIndex) => {
+        this.state.hoglets.forEach(({id}, hogletIndex) => {
             if(id > 1) {
                 let removeHedgehog = (
-                    <InputGroup onClick={() => {
-                        this.removeHoglet(id);
-                    }} key={id}>
+                    <InputGroup onClick={() => this.removeHoglet(id)} key={id}>
                         <i className="uk-icon-times-circle"
                             style={{
                                 color: '#d00',
@@ -188,6 +187,7 @@ class RegisterLitter extends FormBase {
             'name',
             'gender',
             'colour',
+            'pet only',
             'image',
             'owner_name',
             'owner_address',
@@ -250,12 +250,23 @@ class RegisterLitter extends FormBase {
                     <hr key={`${id}${index}`} />
                 );
             }
+            else if(inputType == 'pet only') {
+                element = (
+                    <PetOnly
+                        key={`${id}${index}`}
+                        name="pet_only"
+                        explanation="Hedgehog is a pet and not to be bred from without the breeders permission"
+                        value={(this.state.hoglets[hogletIndex][inputType] || {value: ''}).value}
+                        parentUpdateState={this.hogletState.bind(this, id)}
+                    />
+                );
+            }
 
             if(element) {
                 hogletInputs.push(element);
             }
 
-            return element
+            return element;
         });
 
         return inputElements;
