@@ -1027,7 +1027,7 @@ var RegisterLitter = function (_FormBase) {
                 if (inputType == 'name' || inputType == 'colour' || inputType == 'owner_name' || inputType == 'owner_email') {
                     element = _react2.default.createElement(_input2.default, {
                         key: '' + id + index,
-                        type: 'text',
+                        type: inputType.includes('email') ? 'email' : 'text',
                         name: 'hoglet_' + inputType + hogletNum,
                         parentUpdateState: _this4.hogletState.bind(_this4, id),
                         value: (_this4.state.hoglets[hogletIndex][inputType] || { value: '' }).value,
@@ -1204,7 +1204,7 @@ var RegisterLitter = function (_FormBase) {
                         required: true
                     }),
                     _react2.default.createElement(_input2.default, {
-                        type: 'text',
+                        type: 'email',
                         name: 'your_email',
                         parentUpdateState: this.inputState.bind(this),
                         value: (this.state.inputs.your_email || { value: '' }).value,

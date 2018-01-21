@@ -203,7 +203,7 @@ class RegisterLitter extends FormBase {
                 element = (
                     <Input
                         key={`${id}${index}`}
-                        type="text"
+                        type={inputType.includes('email') ? 'email' : 'text'}
                         name={`hoglet_${inputType}${hogletNum}`}
                         parentUpdateState={this.hogletState.bind(this, id)}
                         value={(this.state.hoglets[hogletIndex][inputType] || {value: ''}).value}
@@ -391,7 +391,7 @@ class RegisterLitter extends FormBase {
                     />
 
                     <Input
-                        type="text"
+                        type="email"
                         name="your_email"
                         parentUpdateState={this.inputState.bind(this)}
                         value={(this.state.inputs.your_email || {value: ''}).value}
