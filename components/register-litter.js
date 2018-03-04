@@ -254,7 +254,7 @@ class RegisterLitter extends FormBase {
                 element = (
                     <PetOnly
                         key={`${id}${index}`}
-                        name="pet_only"
+                        name={`pet_only${hogletNum}`}
                         explanation="Hedgehog is a pet and not to be bred from without the breeders permission"
                         value={(this.state.hoglets[hogletIndex][inputType] || {value: ''}).value}
                         parentUpdateState={this.hogletState.bind(this, id)}

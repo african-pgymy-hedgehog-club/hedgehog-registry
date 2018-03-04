@@ -1068,7 +1068,7 @@ var RegisterLitter = function (_FormBase) {
                 } else if (inputType == 'pet only') {
                     element = _react2.default.createElement(_petOnly2.default, {
                         key: '' + id + index,
-                        name: 'pet_only',
+                        name: 'pet_only' + hogletNum,
                         explanation: 'Hedgehog is a pet and not to be bred from without the breeders permission',
                         value: (_this4.state.hoglets[hogletIndex][inputType] || { value: '' }).value,
                         parentUpdateState: _this4.hogletState.bind(_this4, id)
