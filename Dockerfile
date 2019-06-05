@@ -1,4 +1,4 @@
-FROM node:8.0.0
+FROM node:10.0.0
 
 # Add files
 RUN mkdir /app/
