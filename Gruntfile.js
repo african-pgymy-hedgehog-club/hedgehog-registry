@@ -14,7 +14,7 @@ module.exports = function (grunt) {
                 keepAlive: true,
                 transform: [
                     [{}, 'babelify', {
-                        loose: 'all'
+                        loose: 'all',
                     }],
                     [{global: true}, 'envify']
                 ],
@@ -25,8 +25,13 @@ module.exports = function (grunt) {
         }
         else if(live) {
             options = {
+                browserifyOptions: {
+                    debug: true
+                },
                 transform: [
-                    [{}, 'babelify', {
+                    'envify',
+                    'babelify',
+                    ['browserify-istanbul', {
                         loose: 'all'
                     }]
                 ]
@@ -68,14 +73,19 @@ module.exports = function (grunt) {
                 options: browserifyOptions(4477, true),
                 src: 'components/apply-for-breeder-affix.js',
                 dest: 'js/apply-for-breeder-affix.bundle.js'
+            },
+            updateOwnership: {
+                options: browserifyOptions(4477, true),
+                src: 'components/update-ownership.js',
+                dest: 'js/update-ownership.bundle.js'
             }
         },
 
         env: {
             dist: {
-		        NODE_ENV : 'production',
+		            NODE_ENV : 'production',
             },
-		    dev: {
+		        dev: {
                 NODE_ENV: 'development',
             }
         },
@@ -104,6 +114,14 @@ module.exports = function (grunt) {
                 files: {
                     'js/apply-for-breeder-affix.min.js': ['js/apply-for-breeder-affix.bundle.js']
                 }
+            },
+            updateOwnership: {
+                options: {
+                    beautify: true
+                },
+                files: {
+                    'js/update-ownership.min.js': ['js/update-ownership.bundle.js']
+                }
             }
         }
     });
@@ -115,6 +133,7 @@ module.exports = function (grunt) {
     grunt.registerTask('register-litter-dev', ['env:dev', 'browserify:registerLitterDev']);
     grunt.registerTask('register-litter-live', ['env:dist', 'browserify:registerLitterLive', 'uglify:registerLitter']);
     grunt.registerTask('apply-for-affix-live', ['env:dist', 'browserify:applyForAffix', 'uglify:applyForAffix']);
+    grunt.registerTask('update-ownership-live', ['env:dist', 'browserify:updateOwnership', 'uglify:updateOwnership']);
 
 
     // Load up tasks

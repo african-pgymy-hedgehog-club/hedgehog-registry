@@ -7,6 +7,8 @@ const sendmailTransport = require('nodemailer-sendmail-transport');
 const uploadFile = require('../lib/upload-file');
 const bPromise = require('bluebird');
 
+const uploadPath = 'images/uploads/';
+
 const transporter = nodemailer.createTransport({
     host: '176.58.104.35',
     secure: false,
@@ -31,6 +33,8 @@ const deleteAttachments = (attachments) => {
                 if(err) {
                     return reject(new Error(err));
                 }
+
+                resolve();
             });
         });
     }));
@@ -46,8 +50,6 @@ module.exports = (router) => {
             }
 
             // console.log(fields, Object.keys(files));
-            let uploadPath = 'images/uploads/';
-
             Promise.all(Object.keys(postedFiles).filter((file) => ( // Filter out any missing files
                 postedFiles[file].size > 0 ? true : false
             ))).then((files) => {
@@ -131,16 +133,16 @@ module.exports = (router) => {
             //     error: JSON.stringify(fields)
             // }) );
 
-            let uploadPath = 'images/uploads/';
+
 
             Promise.all(Object.keys(postedFiles).filter((file) => ( // Filter out any missing files
                 postedFiles[file].size > 0 ? true : false
             ))).then((files) => {
-                return bPromise.map(files, (file) => { // Map files object to attachment array nd copy file from tmp to local folder
+                return bPromise.map(files, (file) => { // Map files object to attachment array and copy file from tmp to local folder
                     // console.log(file);
                     file = postedFiles[file];
                     // console.log(file);
-                    let newPath = `${uploadPath}${file.name}`;
+                    const newPath = `${uploadPath}${file.name}`;
 
                     return uploadFile(file, newPath).then((path) => {
                         return {
@@ -149,7 +151,7 @@ module.exports = (router) => {
                         };
                     });
                 }, {concurrency: 1}).then((attachments) => {
-                    let table = jade.renderFile('templates/hedgehog-litter.jade', {
+                    const table = jade.renderFile('templates/hedgehog-litter.jade', {
                         fields,
                         type: 'Litter'
                     });
@@ -194,34 +196,50 @@ module.exports = (router) => {
     });
 
     router.addRoute('update-ownership', (req, res) => { // Parse update ownership form and send details as an email
-        router.parseData(req, (err, fields) => {
+        router.parseData(req, (err, fields, postedFiles) => {
             if(err) {
                 return console.error(`Error ${err.stack || err.message.toString()}`);
             }
 
-            let table = jade.renderFile('templates/update-ownership.jade', { fields });
+            Promise.all(Object.keys(postedFiles).filter(file => ( //Filter out any missing files
+                postedFiles[file].size > 0 ? true : false
+            ))).then(files => {
+                // console.log("upload files");
 
-            new Promise((resolve, reject) => {
-                transporter.sendMail({
-                    from: `"${fields.your_name}"<${fields.your_email}>`,
-                    to: 'registrations@hedgehogregistry.co.uk',
-                    subject: 'Update Ownership',
-                    html:table
-                }, (err) => {
-                    if(err) {
-                        return reject(new Error(err));
-                    }
+                return bPromise.map(files, file => { // Map files object to attachment array and copy file from tmp to local folder
+                    file = postedFiles[file];
+                    const newPath = `${uploadPath}${file.name}`;
 
-                    resolve({
-                        name: fields.hedgehog_name,
-                        type: 'update ownership'
+                    return uploadFile(file, newPath).then(path => ({
+                        fileName: file.name,
+                        path
+                    }));
+                }, { concurrency: 1 }).then(attachments => {
+                    const table = jade.renderFile('templates/update-ownership.jade', { fields });
+                    // console.log("send email");
+
+                    return new Promise((resolve, reject) => {
+                        transporter.sendMail({
+                            from: `"${fields.your_name}"<${fields.your_email}>`,
+                            to: 'registrations@hedgehogregistry.co.uk',
+                            subject: 'Update Ownership',
+                            html: table,
+                            attachments
+                        }, (err) => {
+                            if (err) {
+                                return reject(new Error(err));
+                            }
+                            resolve(
+                                deleteAttachments(attachments).then(() => ({
+                                    name: fields.hedgehog_name,
+                                    type: 'update ownership'
+                                }))
+                            );
+                        });
                     });
                 });
-
-                // resolve({
-                //     name: fields.hedgehog_name,
-                //     type: 'update ownership'
-                // });
+            }, err => { // Catch reject call
+                throw err;
             }).then(data => {
                 res.writeHead(200, { 'Content-Type': 'application/json'});
                 res.end( JSON.stringify(data) );
