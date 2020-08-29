@@ -18,6 +18,8 @@ let i = 0;
 class RegisterHedgehog extends FormBase {
     constructor() {
         super();
+        this.radioRef0;
+        this.radioRef1
     }
 
     /**
@@ -32,14 +34,24 @@ class RegisterHedgehog extends FormBase {
                 console.error(err);
             }
 
+            // console.log(this.state.inputs);
+            // console.log({valid});
+
             if(valid) {
                 let formData = new FormData(this.formRef);
+                if (this.state.inputs.import_hedgehog && this.state.inputs.import_hedgehog.value === 1) {
+                    formData.set("import_hedgehog", 'Yes');
+                } else {
+                    formData.delete("import_hedgehog");
+                }
 
-                // console.log(inputs);
+                // console.log(this.state.inputs);
                 //
                 // this.setState({
                 //     inputs
                 // });
+
+                // console.log({importHedgehog: formData.get("import_hedgehog")});
 
                 this.setState({
                     paymentModal: {
@@ -122,6 +134,36 @@ class RegisterHedgehog extends FormBase {
                     }}
                     onSubmit={this.submitForm.bind(this)}
                 >
+                    <div label="Import Hedgehog">
+                        <span style={{marginRight: 20}}>
+                            <input type="radio" ref={ref => this.radioRef0 = ref} name="import_hedgehog" onChange={() => {
+                              this.setState(state => ({
+                                  ...state,
+                                  inputs: {
+                                      ...state.inputs,
+                                      "import_hedgehog": {
+                                        value: 0,
+                                        ref: this.radioRef0,
+                                        valid: true
+                                      }
+                                  }
+                              }))
+                            }} checked={(this.state.inputs.import_hedgehog || {value: 0}).value === 0} value="0" /> No
+                        </span>
+                        <input type="radio" ref={ref => this.radioRef1 = ref} name="import_hedgehog" onChange={() => {
+                          this.setState(state => ({
+                              ...state,
+                              inputs: {
+                                  ...state.inputs,
+                                  "import_hedgehog": {
+                                    value: 1,
+                                    ref: this.radioRef1,
+                                    valid: true
+                                  }
+                              }
+                          }))
+                        }} checked={(this.state.inputs.import_hedgehog || {value: 0}).value === 1} value="0" /> Yes
+                    </div>
 
                     <HogType name="hog_type" />
 
@@ -168,12 +210,13 @@ class RegisterHedgehog extends FormBase {
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
                         value={(this.state.inputs.date_of_birth || { value: "" }).value}
-                        
+
                     />
 
                     <PetOnly
+                        label="Pet Only"
                         name="pet_only"
-                        explanation="Hedgehog is a pet and not to be bred from without the breeders permission" 
+                        explanation="Hedgehog is a pet and not to be bred from without the breeders permission"
                         parentUpdateState={this.inputState.bind(this)}
                         value={(this.state.inputs.pet_only || {value: ''}).value}
                     />
@@ -189,6 +232,12 @@ class RegisterHedgehog extends FormBase {
                     <Input
                         type="file"
                         name="hedgehog_image"
+                        parentUpdateState={this.inputState.bind(this)}
+                    />
+
+                    <Input
+                        type={(this.state.inputs.import_hedgehog || {value: 0}).value === 1 ? "file" : "hidden"}
+                        name="import_certificate"
                         parentUpdateState={this.inputState.bind(this)}
                     />
 
