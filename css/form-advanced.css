@@ -14,7 +14,7 @@
 .uk-form input[type="checkbox"] {
   /* 1 */
   display: inline-block;
-  height: 14px;
+  height: 14px !important;
   width: 14px;
   border: 1px solid #aaa;
   /* 2 */
