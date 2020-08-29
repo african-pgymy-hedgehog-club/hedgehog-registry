@@ -165,7 +165,7 @@ class RegisterHedgehog extends FormBase {
                         }} checked={(this.state.inputs.import_hedgehog || {value: 0}).value === 1} value="0" /> Yes
                     </div>
 
-                    <HogType name="hog_type" />
+                    <HogType type="HogType" name="hog_type" />
 
                     <Input
                         type="text"
@@ -214,7 +214,7 @@ class RegisterHedgehog extends FormBase {
                     />
 
                     <PetOnly
-                        label="Pet Only"
+                        type="PetOnly"
                         name="pet_only"
                         explanation="Hedgehog is a pet and not to be bred from without the breeders permission"
                         parentUpdateState={this.inputState.bind(this)}
