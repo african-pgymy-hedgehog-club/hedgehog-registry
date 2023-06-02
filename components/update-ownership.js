@@ -1,17 +1,17 @@
 "use strict";
 
-import Promise from 'es6-promise';
-import React from 'react';
-import Form from './uikit-form';
-import DOB from './dob-input';
-import ReactDOM from 'react-dom';
-import moment from 'moment';
-import InputGroup from './input-group';
-import Input from './input';
-import PaymentModal from './payment-modal';
-import FormBase from './form-base';
-import HogType from './hog-type';
-import PetOnly from './pet-only';
+import Promise from "es6-promise";
+import React from "react";
+import Form from "./uikit-form";
+import DOB from "./dob-input";
+import ReactDOM from "react-dom";
+import moment from "moment";
+import InputGroup from "./input-group";
+import Input from "./input";
+import PaymentModal from "./payment-modal";
+import FormBase from "./form-base";
+import HogType from "./hog-type";
+import PetOnly from "./pet-only";
 
 let i = 0;
 
@@ -28,11 +28,11 @@ class UpdateOwnership extends FormBase {
         e.preventDefault();
 
         this.formValid((err, valid) => {
-            if(err) {
+            if (err) {
                 console.error(err);
             }
 
-            if(valid) {
+            if (valid) {
                 let formData = new FormData(this.formRef);
 
                 // console.log(inputs);
@@ -45,45 +45,57 @@ class UpdateOwnership extends FormBase {
                     paymentModal: {
                         loading: true,
                         display: true,
-                        data: this.state.paymentModal.data
-                    }
+                        data: this.state.paymentModal.data,
+                    },
                 });
 
-                fetch('/api/register/update-ownership', { // Post form data to server
-                    method: 'POST',
-                    body: formData
-                }).then(res => {
-                    return res.clone().json().catch(err => {
-                        res.text().then(text => {
-                            console.log("JSON error:", err, "Returned text:", text);
-                        });
-                    });
-                }).then(data => {
-                    if(data.error) {
-                        this.setState({
+                fetch("/api/register/update-ownership", {
+                    // Post form data to server
+                    method: "POST",
+                    body: formData,
+                })
+                    .then((res) => {
+                        return res
+                            .clone()
+                            .json()
+                            .catch((err) => {
+                                res.text().then((text) => {
+                                    console.log(
+                                        "JSON error:",
+                                        err,
+                                        "Returned text:",
+                                        text
+                                    );
+                                });
+                            });
+                    })
+                    .then((data) => {
+                        if (data.error) {
+                            this.setState({
+                                paymentModal: {
+                                    ...this.state.paymentModal,
+                                    loading: false,
+                                },
+                                error: true,
+                            });
+
+                            throw data.error;
+                        }
+
+                        let inputs = {};
+                        return this.setState({
                             paymentModal: {
-                                ...this.state.paymentModal,
-                                loading: false
+                                loading: false,
+                                display: true,
+                                data,
                             },
-                            error: true
+                            inputs,
                         });
-
-                        throw data.error;
-                    }
-
-                    let inputs = {};
-                    return this.setState({
-                        paymentModal: {
-                            loading: false,
-                            display: true,
-                            data
-                        },
-                        inputs
+                    })
+                    .catch((err) => {
+                        // logError(err, 'componenet/register-hedgehog.js');
+                        console.error(err);
                     });
-                }).catch(err => {
-                    // logError(err, 'componenet/register-hedgehog.js');
-                    console.error(err);
-                });
             }
         });
     }
@@ -92,17 +104,18 @@ class UpdateOwnership extends FormBase {
         let {
             data: paymentData,
             display: displayPayment,
-            loading
+            loading,
         } = this.state.paymentModal;
 
         // console.log(this.state.inputs);
 
         return (
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
-
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                }}
+            >
                 <PaymentModal
                     display={displayPayment}
                     data={paymentData}
@@ -111,18 +124,16 @@ class UpdateOwnership extends FormBase {
                     loading={loading}
                 />
 
-                <h2>
-                    Update Ownership
-                </h2>
+                <h2>Update Ownership</h2>
 
-                <Form type="horizontal"
+                <Form
+                    type="horizontal"
                     style={{
-                        marginLeft: '20%',
-                        marginRight: '20%',
-                        paddingBottom: 15
+                        marginLeft: "20%",
+                        marginRight: "20%",
+                        paddingBottom: 15,
                     }}
-
-                    referance={node => {
+                    referance={(node) => {
                         this.formRef = node;
                     }}
                     onSubmit={this.submitForm.bind(this)}
@@ -132,7 +143,10 @@ class UpdateOwnership extends FormBase {
                         name="hedgehog_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.hedgehog_name || {value: ""}).value}
+                        value={
+                            (this.state.inputs.hedgehog_name || { value: "" })
+                                .value
+                        }
                     />
 
                     <Input
@@ -140,21 +154,30 @@ class UpdateOwnership extends FormBase {
                         name="reg_number"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.reg_number || {value: ""}).value}
+                        value={
+                            (this.state.inputs.reg_number || { value: "" })
+                                .value
+                        }
                     />
 
                     <DOB
                         name="date_of_birth"
                         data={{
                             format: "DD/MM/YYYY",
-                            minDate: moment(new Date()).subtract(5, 'years').format("YYYY-MM-DD"),
-                            maxDate: moment(new Date()).subtract(2, 'weeks').format("YYYY-MM-DD")
+                            minDate: moment(new Date())
+                                .subtract(5, "years")
+                                .format("YYYY-MM-DD"),
+                            maxDate: moment(new Date())
+                                .subtract(2, "weeks")
+                                .format("YYYY-MM-DD"),
                         }}
                         type="dob"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.date_of_birth || { value: "" }).value}
-
+                        value={
+                            (this.state.inputs.date_of_birth || { value: "" })
+                                .value
+                        }
                     />
 
                     <Input
@@ -162,7 +185,10 @@ class UpdateOwnership extends FormBase {
                         name="new_owner_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.new_owner_name || {value: ""}).value}
+                        value={
+                            (this.state.inputs.new_owner_name || { value: "" })
+                                .value
+                        }
                     />
 
                     <textarea
@@ -171,7 +197,13 @@ class UpdateOwnership extends FormBase {
                         name="new_owners_address"
                         required={true}
                     >
-                        {(this.state.inputs.new_owners_address || {value: ""}).value}
+                        {
+                            (
+                                this.state.inputs.new_owners_address || {
+                                    value: "",
+                                }
+                            ).value
+                        }
                     </textarea>
 
                     <Input
@@ -179,7 +211,10 @@ class UpdateOwnership extends FormBase {
                         name="new_owner_email"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.new_owner_email || {value: ""}).value}
+                        value={
+                            (this.state.inputs.new_owner_email || { value: "" })
+                                .value
+                        }
                     />
 
                     <Input
@@ -187,7 +222,9 @@ class UpdateOwnership extends FormBase {
                         name="your_name"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.your_name || {value: ""}).value}
+                        value={
+                            (this.state.inputs.your_name || { value: "" }).value
+                        }
                     />
 
                     <Input
@@ -195,7 +232,10 @@ class UpdateOwnership extends FormBase {
                         name="your_email"
                         required={true}
                         parentUpdateState={this.inputState.bind(this)}
-                        value={(this.state.inputs.your_email || {value: ""}).value}
+                        value={
+                            (this.state.inputs.your_email || { value: "" })
+                                .value
+                        }
                     />
 
                     <Input
@@ -203,7 +243,6 @@ class UpdateOwnership extends FormBase {
                         name="hedgehog_image"
                         parentUpdateState={this.inputState.bind(this)}
                     />
-
 
                     <button className="uk-button uk-button-primary uk-button-large">
                         Send Registration
@@ -214,13 +253,9 @@ class UpdateOwnership extends FormBase {
     }
 }
 
-
-if(typeof window !== 'undefined' && window.document)  { // If module is on the client side
-    ReactDOM.render(
-        <UpdateOwnership />,
-        document.getElementById('app')
-    );
-}
-else {
+if (typeof window !== "undefined" && window.document) {
+    // If module is on the client side
+    ReactDOM.render(<UpdateOwnership />, document.getElementById("app"));
+} else {
     module.exports = UpdateOwnership;
 }

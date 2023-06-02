@@ -10,9 +10,13 @@
     "start": "node index",
     "nodemon": "nodemon -L index --ignore components/ --ignore js/",
     "hot-reload-server": "chokidar-socket-emitter -p /app/components/ -P",
-    "dev": "npx concurrently --kill-others \"npm run nodemon\" \"npm run hot-reload-server\"",
-    "build": "jspm bundle-sfx",
-    "build-litter": "\"npm run build --\"components/register-litter.js js/register-litter.bundle.js\"\""
+    "register-hedgehog-dev": "npx grunt register-hedgehog-dev",
+    "register-litter-dev": "npx grunt register-litter-dev",
+    "apply-for-affix-dev": "npx grunt apply-for-affix-dev",
+    "update-ownership-dev": "npx grunt update-ownership-dev",
+    "dev": "npx concurrently --kill-others \"npm run nodemon\" \"npm run register-hedgehog-dev\" \"npm run register-litter-dev\" \"npm run apply-for-affix-dev\" \"npm run update-ownership-dev\"",
+    "build": "npx grunt register-hedgehog-live && npx grunt register-litter-live && npx grunt apply-for-affix-live && npx grunt update-ownership-live",
+    "build-litter": "\"npm run build --\"components/register-litter.js js/register-litter.bundle.js\""
   },
   "prettier": {
     "tabWidth": 4

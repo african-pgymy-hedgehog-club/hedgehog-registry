@@ -1,14 +1,14 @@
-import React from 'react';
-import Modal from 'react-modal';
-import Form from './uikit-form';
-import Input from './input';
+import React from "react";
+import Modal from "react-modal";
+import Form from "./uikit-form";
+import Input from "./input";
 
 String.prototype.capitalizeFirst = function () {
     return `${this.charAt(0).toUpperCase()}${this.slice(1)}`;
 };
 
 String.prototype.ucwords = function () {
-    return this.replace(/\b[a-z]/g, letter => letter.toUpperCase());
+    return this.replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
 };
 
 // TODO: Add submitting form loader and display error then close after 3 seconds if an error occurs
@@ -16,24 +16,22 @@ String.prototype.ucwords = function () {
 /**
  * Display either loading animation or error message and then close after 5 seconds
  */
-const displayloadingOrError = (loading, {error, onClose}) => {
+const displayloadingOrError = (loading, { error, onClose }) => {
     let display;
-    if(loading) {
+    if (loading) {
         display = (
             <div>
                 <h3>Loading...</h3>
                 <img src="/images/loader.gif" />
             </div>
         );
-    }
-    else if(error) {
-        setTimeout(() => { // After 5 seconds close the modal
+    } else if (error) {
+        setTimeout(() => {
+            // After 5 seconds close the modal
             onClose();
         }, 5000);
 
-        display = (
-            <h2>Sorry for the inconvenience but an error occurred</h2>
-        );
+        display = <h2>Sorry for the inconvenience but an error occurred</h2>;
     }
 
     return display;
@@ -46,11 +44,11 @@ const PaymentModal = ({
     error,
     data: {
         ppURL = "https://www.paypal.com/cgi-bin/websrc",
-        ppAccount = "tayer@hedgehogregistry.co.uk",
+        ppAccount = "registry@aphclub.co.uk",
         name,
         type,
-        hogCount = 1
-    }
+        hogCount = 1,
+    },
 }) => {
     let description = "";
     let amount = 1 * hogCount;
@@ -62,7 +60,9 @@ const PaymentModal = ({
     } else {
         description = `
             Thank you for registering your ${type} with the African Pygmy Hedgehog Club Registry,
-            please click the button below to pay £${type == 'litter' ? `${amount} (£1 per hoglet)` : '1'} for your registration
+            please click the button below to pay £${
+                type == "litter" ? `${amount} (£1 per hoglet)` : "1"
+            } for your registration
          `;
     }
 
@@ -76,7 +76,7 @@ const PaymentModal = ({
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    backgroundColor: "rgba(0, 0, 0, 0.75)"
+                    backgroundColor: "rgba(0, 0, 0, 0.75)",
                 },
                 content: {
                     backgroundColor: "rgb(118, 129, 210)",
@@ -90,8 +90,8 @@ const PaymentModal = ({
                     borderRadious: 5,
                     transform: "translate(-50%, -50%)",
                     overflow: "none",
-                    zIndex: 999
-                }
+                    zIndex: 999,
+                },
             }}
             contentLabel="payment modal"
         >
@@ -100,7 +100,9 @@ const PaymentModal = ({
             ) : (
                 <div>
                     <div id="modal-title">
-                        {(type || "").replace(/\b[a-z]/g, letter => letter.toUpperCase())}{" "}
+                        {(type || "").replace(/\b[a-z]/g, (letter) =>
+                            letter.toUpperCase()
+                        )}{" "}
                         Payment
                         <span id="modal-close" onClick={onClose}>
                             <i className="uk-icon uk-icon-times" />
@@ -114,7 +116,11 @@ const PaymentModal = ({
 
                         <Input type="hidden" name="upload" value="1" />
 
-                        <Input type="hidden" name="business" value={ppAccount} />
+                        <Input
+                            type="hidden"
+                            name="business"
+                            value={ppAccount}
+                        />
 
                         <Input
                             type="hidden"
@@ -124,7 +130,11 @@ const PaymentModal = ({
 
                         <Input type="hidden" name="amount_1" value="1" />
 
-                        <Input type="hidden" name="quantity_1" value={hogCount} />
+                        <Input
+                            type="hidden"
+                            name="quantity_1"
+                            value={hogCount}
+                        />
 
                         <Input type="hidden" name="rm" value="2" />
 

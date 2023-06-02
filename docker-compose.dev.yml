@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 
 services:
     web:
@@ -11,11 +11,16 @@ services:
         ports:
             - 3100:3100
             - 5776:5776
+            - 4477:4477
+            - 4478:4478
+            - 4479:4479
+            - 4480:4480
+            - 4482:4482
         volumes:
             - ./:/app/
-    couchdb:
-        extends:
-            file: services.yml
-            service: couchdb
-        ports:
-            - 5984:5984
+    # couchdb:
+    #     extends:
+    #         file: services.yml
+    #         service: couchdb
+    #     ports:
+    #         - 5984:5984
