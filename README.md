@@ -14,6 +14,6 @@
 1. Run `npm run build`
 2. Commit changed to git
 3. Push files using `git push origin master`
-4. Login to the server and go to `/home/admin/web/hedgehog-registry`
+4. Ssh into the server and go to `/home/admin/web/hedgehog-registry`
 5. Pull changes using `git pull origin master`
 6. Deploy the new changes using `docker-compose up --build -d`
